@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Devisi Kelas Buel - Sistem Administrasi Guru</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #fff0f3;
+            font-family: 'Poppins', sans-serif;
+        }
+        .pink-gradient {
+            background: linear-gradient(135deg, #fff5f7 0%, #ffe3e8 100%);
+        }
+    </style>
+</head>
+<body class="p-4 md:p-6">
+
+    <div class="flex flex-col lg:flex-row gap-6 max-w-7xl mx-auto">
+        
+        <aside class="w-full lg:w-64 bg-white rounded-3xl p-4 shadow-sm border border-pink-100 shrink-0">
+            <div class="bg-[#e05275] text-white font-bold py-2 px-4 rounded-xl mb-4 flex justify-between items-center">
+                <span><i class="fa-solid fa-gear mr-2"></i> MENU UTAMA</span>
+                <i class="fa-solid fa-chevron-right text-xs"></i>
+            </div>
+            <nav class="space-y-1">
+                <a href="#" class="flex items-center text-gray-600 hover:bg-pink-50 p-2.5 rounded-xl transition"><i class="fa-solid fa-house w-6 text-pink-400"></i> Dashboard</a>
+                <a href="#" class="flex items-center text-gray-600 hover:bg-pink-50 p-2.5 rounded-xl transition"><i class="fa-solid fa-user-tie w-6 text-pink-400"></i> Data Guru</a>
+                <a href="#" class="flex items-center text-gray-600 hover:bg-pink-50 p-2.5 rounded-xl transition"><i class="fa-solid fa-users w-6 text-pink-400"></i> Data Siswa</a>
+                <a href="#" class="flex items-center text-[#e05275] bg-pink-50 font-semibold p-2.5 rounded-xl transition border border-pink-200"><i class="fa-solid fa-square-check w-6"></i> Absensi Siswa</a>
+                <a href="#" class="flex items-center text-gray-600 hover:bg-pink-50 p-2.5 rounded-xl transition"><i class="fa-solid fa-book-open w-6 text-pink-400"></i> Jurnal Mengajar</a>
+                <a href="#" class="flex items-center text-gray-600 hover:bg-pink-50 p-2.5 rounded-xl transition"><i class="fa-solid fa-folder-open w-6 text-pink-400"></i> Modul Ajar</a>
+                <a href="#" class="flex items-center text-gray-600 hover:bg-pink-50 p-2.5 rounded-xl transition"><i class="fa-solid fa-file-invoice w-6 text-pink-400"></i> Asesmen</a>
+                <a href="#" class="flex items-center text-gray-600 hover:bg-pink-50 p-2.5 rounded-xl transition"><i class="fa-solid fa-layer-group w-6 text-pink-400"></i> Perangkat Ajar</a>
+                <a href="#" class="flex items-center text-gray-600 hover:bg-pink-50 p-2.5 rounded-xl transition"><i class="fa-solid fa-images w-6 text-pink-400"></i> Galeri Media</a>
+                <a href="#" class="flex items-center text-gray-600 hover:bg-pink-50 p-2.5 rounded-xl transition"><i class="fa-solid fa-address-book w-6 text-pink-400"></i> Catatan Wali Kelas</a>
+            </nav>
+        </aside>
+
+        <main class="flex-1 space-y-6">
+            
+            <div class="bg-white rounded-3xl p-6 shadow-sm border border-pink-100 flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden">
+                <div class="flex items-center gap-4">
+                    <div class="w-24 h-24 bg-pink-100 rounded-full flex items-center justify-center text-pink-500 font-bold border-2 border-pink-200 text-center text-xs p-2">
+                        Logo Kelas Buel
+                    </div>
+                    <div>
+                        <h1 class="text-3xl md:text-4xl font-extrabold text-[#e05275] tracking-wide">DEVISI KELAS BUEL</h1>
+                        <p class="text-xl italic font-serif text-gray-700 mt-1">Sistem Administrasi Guru Super Lengkap</p>
+                        <p class="text-xs text-[#e05275] mt-2 font-medium">"Satu Aplikasi, Semua Administrasi Guru Jadi Mudah & Menyenangkan"</p>
+                    </div>
+                </div>
+
+                <div class="bg-pink-50 border border-pink-100 rounded-2xl p-3 flex items-center gap-3 self-end md:self-auto">
+                    <div class="text-right">
+                        <p class="text-xs font-bold text-[#e05275]">Hai, Guru Hebat!</p>
+                        <p class="text-[10px] text-gray-500">Selamat datang kembali</p>
+                    </div>
+                    <div class="w-10 h-10 bg-amber-400 rounded-xl overflow-hidden flex items-center justify-center text-white text-xs font-bold">
+                        Profil
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="bg-white p-4 rounded-2xl border border-pink-100 shadow-sm flex items-center gap-3">
+                    <div class="p-3 bg-pink-100 rounded-xl text-[#e05275]"><i class="fa-solid fa-users text-xl"></i></div>
+                    <div>
+                        <p class="text-xs text-gray-500">Jumlah Siswa</p>
+                        <p class="text-lg font-bold text-gray-800">128 <span class="text-xs font-normal text-gray-400">Siswa Aktif</span></p>
+                    </div>
+                </div>
+                <div class="bg-white p-4 rounded-2xl border border-pink-100 shadow-sm flex items-center gap-3">
+                    <div class="p-3 bg-amber-100 rounded-xl text-amber-500"><i class="fa-solid fa-book text-xl"></i></div>
+                    <div>
+                        <p class="text-xs text-gray-500">Perangkat Ajar</p>
+                        <p class="text-lg font-bold text-gray-800">52 <span class="text-xs font-normal text-gray-400">Dokumen</span></p>
+                    </div>
+                </div>
+                <div class="bg-white p-4 rounded-2xl border border-pink-100 shadow-sm flex items-center gap-3">
+                    <div class="p-3 bg-teal-100 rounded-xl text-teal-500"><i class="fa-solid fa-calendar-check text-xl"></i></div>
+                    <div>
+                        <p class="text-xs text-gray-500">Absensi Hari Ini</p>
+                        <p class="text-lg font-bold text-gray-800">25 <span class="text-xs font-normal text-gray-400">Hadir</span></p>
+                    </div>
+                </div>
+                <div class="bg-white p-4 rounded-2xl border border-pink-100 shadow-sm flex items-center gap-3">
+                    <div class="p-3 bg-indigo-100 rounded-xl text-indigo-500"><i class="fa-solid fa-graduation-cap text-xl"></i></div>
+                    <div>
+                        <p class="text-xs text-gray-500">Tahun Ajaran</p>
+                        <p class="text-sm font-bold text-gray-800">2024/2025 <br><span class="text-[10px] font-normal text-gray-400">Semester Genap</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-3xl p-6 shadow-sm border border-pink-100">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="font-bold text-[#e05275] flex items-center gap-2"><i class="fa-solid fa-star text-amber-400"></i> AKSES CEPAT</h2>
+                    <div class="flex gap-2">
+                        <button onclick="alert('Cetak Dokumen...')" class="bg-pink-100 text-xs text-[#e05275] px-2.5 py-1 rounded-full font-medium hover:bg-pink-200 transition">Cetak</button>
+                        <button onclick="alert('Export Excel...')" class="bg-pink-100 text-xs text-[#e05275] px-2.5 py-1 rounded-full font-medium hover:bg-pink-200 transition">Excel</button>
+                        <button onclick="alert('Export PDF...')" class="bg-pink-100 text-xs text-[#e05275] px-2.5 py-1 rounded-full font-medium hover:bg-pink-200 transition">PDF</button>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+                    <div class="border border-pink-100 rounded-2xl p-3 text-center flex flex-col justify-between items-center bg-pink-50/50">
+                        <span class="text-2xl">👩‍🏫</span>
+                        <p class="text-xs font-bold text-[#e05275] mt-1">DATA GURU</p>
+                        <p class="text-[10px] text-gray-400 my-1 line-clamp-2">Kelola data guru dengan mudah</p>
+                        <button onclick="alert('Membuka Manajemen Data Guru')" class="w-full mt-2 bg-[#e05275] hover:bg-[#c64160] text-white text-xs py-1.5 rounded-xl font-medium transition shadow-sm shadow-pink-200">Kelola</button>
+                    </div>
+                    <div class="border border-pink-100 rounded-2xl p-3 text-center flex flex-col justify-between items-center bg-pink-50/50">
+                        <span class="text-2xl">👥</span>
+                        <p class="text-xs font-bold text-[#e05275] mt-1">DATA SISWA</p>
+                        <p class="text-[10px] text-gray-400 my-1 line-clamp-2">Kelola data siswa dengan mudah</p>
+                        <button onclick="alert('Membuka Manajemen Data Siswa')" class="w-full mt-2 bg-[#e05275] hover:bg-[#c64160] text-white text-xs py-1.5 rounded-xl font-medium transition shadow-sm shadow-pink-200">Kelola</button>
+                    </div>
+                    <div class="border border-pink-100 rounded-2xl p-3 text-center flex flex-col justify-between items-center bg-pink-50/50">
+                        <span class="text-2xl">☑️</span>
+                        <p class="text-xs font-bold text-[#e05275] mt-1">ABSENSI SISWA</p>
+                        <p class="text-[10px] text-gray-400 my-1 line-clamp-2">Absensi digital praktis & akurat</p>
+                        <button onclick="alert('Membuka Absensi')" class="w-full mt-2 bg-[#e05275] hover:bg-[#c64160] text-white text-xs py-1.5 rounded-xl font-medium transition shadow-sm shadow-pink-200">Kelola</button>
+                    </div>
+                    <div class="border border-pink-100 rounded-2xl p-3 text-center flex flex-col justify-between items-center bg-pink-50/50">
+                        <span class="text-2xl">📖</span>
+                        <p class="text-xs font-bold text-[#e05275] mt-1">JURNAL MENGAJAR</p>
+                        <p class="text-[10px] text-gray-400 my-1 line-clamp-2">Catat kegiatan pembelajaran harian</p>
+                        <button onclick="alert('Membuka Jurnal Mengajar')" class="w-full mt-2 bg-[#e05275] hover:bg-[#c64160] text-white text-xs py-1.5 rounded-xl font-medium transition shadow-sm shadow-pink-200">Kelola</button>
+                    </div>
+                    <div class="border border-pink-100 rounded-2xl p-3 text-center flex flex-col justify-between items-center bg-pink-50/50">
+                        <span class="text-2xl">📁</span>
+                        <p class="text-xs font-bold text-[#e05275] mt-1">MODUL AJAR</p>
+                        <p class="text-[10px] text-gray-400 my-1 line-clamp-2">Upload & kelola modul ajar</p>
+                        <button onclick="alert('Membuka Modul Ajar')" class="w-full mt-2 bg-[#e05275] hover:bg-[#c64160] text-white text-xs py-1.5 rounded-xl font-medium transition shadow-sm shadow-pink-200">Kelola</button>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+</body>
+</html>
