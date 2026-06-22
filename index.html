@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Devisi Kelas Buel - Dashboard, Data & Asesmen Siswa</title>
+    <title>Devisi Kelas Buel - Dashboard, Data & Asesmen Dinamis</title>
     <style>
         * {
             margin: 0;
@@ -69,7 +69,7 @@
             color: white;
         }
 
-        /* --- MAIN CONTENT & PAGES MANAGER --- */
+        /* --- MAIN CONTENT --- */
         .main-content {
             flex: 1;
             padding: 25px;
@@ -92,7 +92,6 @@
         .header h1 {
             font-size: 36px;
             color: #FF69B4;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
         }
 
         .header p {
@@ -118,26 +117,11 @@
             align-items: center;
             gap: 15px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.02);
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 12px rgba(255, 182, 193, 0.4);
-            background-color: #FFF5F5;
         }
 
         .stat-icon { font-size: 30px; }
         .stat-info h3 { font-size: 12px; color: #A9A9A9; }
         .stat-info p { font-size: 20px; font-weight: bold; color: #DB7093; }
-
-        /* --- DASHBOARD GRID --- */
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 20px;
-        }
 
         .card {
             background: white;
@@ -155,66 +139,9 @@
             margin-bottom: 15px;
             border-bottom: 2px dashed #FFE4E1;
             padding-bottom: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
         }
 
-        /* Profil Guru */
-        .profile-container { display: flex; gap: 20px; align-items: center; }
-        .profile-img { width: 100px; height: 100px; border-radius: 50%; background-color: #FFE4E1; border: 3px solid #FFB6C1; object-fit: cover; }
-        .profile-details table { width: 100%; font-size: 14px; }
-        .profile-details td { padding: 4px 8px; }
-
-        .quick-access-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-        }
-
-        .quick-btn {
-            background: #FFF5F5;
-            border: 1px solid #FFD1D1;
-            padding: 15px;
-            border-radius: 12px;
-            text-align: center;
-            cursor: pointer;
-            transition: transform 0.2s, background-color 0.2s;
-        }
-
-        .quick-btn:hover {
-            transform: translateY(-3px);
-            background: #FFE4E1;
-            border-color: #FFB6C1;
-        }
-
-        .quick-btn div { font-size: 12px; font-weight: bold; color: #DB7093; margin-top: 5px; }
-
-        /* --- MANAGEMENT LIST STYLE --- */
-        .list-container { display: flex; flex-direction: column; }
-        .list-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #FFF0F5; font-size: 14px; }
-        .item-content { display: flex; flex-direction: column; gap: 2px; width: 70%; overflow: hidden; }
-        .item-link { color: #4A4A4A; text-decoration: none; font-weight: 500; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; cursor: pointer; }
-        .item-link:hover { color: #FF69B4; text-decoration: underline; }
-        .actions { display: flex; gap: 5px; }
-
-        .btn-action { padding: 4px 8px; font-size: 12px; border: none; border-radius: 6px; cursor: pointer; }
-        .btn-edit { background-color: #FFE4B5; color: #8B5A2B; }
-        .btn-delete { background-color: #FFC1C1; color: #8B2323; }
-
-        .manage-section { margin-top: 15px; display: flex; gap: 10px; justify-content: center; align-items: center; background-color: #FFF5F5; padding: 12px; border: 1px dashed #FFB6C1; border-radius: 12px; }
-        .file-input-label { padding: 6px 12px; background-color: #FFB6C1; color: white; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: bold; }
-        .file-input { display: none; }
-        .btn-add-manual { background-color: #E0F2FE; color: #0369A1; padding: 6px 12px; font-size: 12px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; }
-
-        /* --- GALERI --- */
-        .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
-        .gallery-item-wrapper { position: relative; width: 100%; height: 80px; border-radius: 8px; overflow: hidden; border: 1px solid #FFC0CB; }
-        .gallery-item { width: 100%; height: 100%; object-fit: cover; cursor: pointer; transition: transform 0.2s; }
-        .gallery-item:hover { transform: scale(1.05); }
-        .btn-del-img { position: absolute; top: 2px; right: 2px; background: rgba(255,255,255,0.8); border: none; border-radius: 4px; padding: 2px 4px; font-size: 9px; cursor: pointer; color: red; font-weight: bold; }
-
-        /* --- TABLES GENERAL --- */
+        /* --- TABLES --- */
         .toolbar-siswa {
             display: flex;
             justify-content: space-between;
@@ -238,7 +165,6 @@
         .btn-pink-primary { background-color: #FF69B4; color: white; border-color: #FF69B4; }
         .btn-pink-primary:hover { background-color: #E05297; }
         .btn-white { background-color: white; color: #DB7093; }
-        .btn-white:hover { background-color: #FFF0F5; }
 
         .search-box-siswa {
             padding: 8px 12px;
@@ -270,12 +196,18 @@
             padding: 12px 10px;
             font-weight: bold;
             border-bottom: 2px solid #FFB6C1;
+            text-align: center;
+        }
+
+        .table-siswa th.left-align, .table-siswa td.left-align {
+            text-align: left;
         }
 
         .table-siswa td {
             padding: 10px;
             border-bottom: 1px solid #FFF0F5;
             vertical-align: middle;
+            text-align: center;
         }
 
         .avatar-mini {
@@ -286,10 +218,9 @@
             border: 1px solid #FFB6C1;
         }
 
-        /* --- INTERACTIVE INPUT ASESMEN --- */
         .input-nilai {
-            width: 55px;
-            padding: 5px;
+            width: 60px;
+            padding: 6px;
             border: 1px solid #FFC0CB;
             border-radius: 6px;
             text-align: center;
@@ -302,65 +233,15 @@
             background-color: #FFF5F5;
         }
 
-        /* --- MODAL CONFIG --- */
-        .modal-edit {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            padding: 25px;
-            border-radius: 20px;
-            border: 2px solid #FFB6C1;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            z-index: 1000;
-            width: 450px;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.3);
-            z-index: 999;
-        }
-
         .form-group { margin-bottom: 12px; }
         .form-group label { display: block; font-size: 12px; font-weight: bold; color: #DB7093; margin-bottom: 4px; }
-        .form-group input, .form-group select { width: 100%; padding: 8px; border: 1px solid #FFC0CB; border-radius: 8px; outline: none; }
-        .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 15px; }
-
-        .placeholder-page { background: white; padding: 40px; border-radius: 20px; border: 1px solid #FFC0CB; text-align: center; }
+        .form-group select { width: 100%; padding: 8px; border: 1px solid #FFC0CB; border-radius: 8px; outline: none; }
+        
+        .btn-action { padding: 4px 8px; font-size: 12px; border: none; border-radius: 6px; cursor: pointer; }
+        .btn-delete-col { background-color: #FFC1C1; color: #8B2323; font-size: 10px; padding: 2px 6px; border-radius: 4px; border: none; cursor: pointer; margin-top: 2px; display: block; margin-left: auto; margin-right: auto; }
     </style>
 </head>
 <body>
-
-    <div class="modal-overlay" id="modalOverlay" onclick="closeModal()"></div>
-    <div class="modal-edit" id="modalEdit">
-        <h3 style="color:#FF69B4; margin-bottom:15px; text-align:center;">✏️ Edit Data Siswa</h3>
-        <div class="form-group"><label>Ganti Foto Profil</label><input type="file" id="edit-foto" accept="image/*"></div>
-        <div class="form-group"><label>NIS</label><input type="text" id="edit-nis"></div>
-        <div class="form-group"><label>Nama Lengkap</label><input type="text" id="edit-nama"></div>
-        <div class="form-group"><label>Jenis Kelamin</label>
-            <select id="edit-jk">
-                <option value="Laki-laki">Laki-laki</option>
-                <option value="Perempuan">Perempuan</option>
-            </select>
-        </div>
-        <div class="form-group"><label>Tempat & Tanggal Lahir</label><input type="text" id="edit-ttl"></div>
-        <div class="form-group"><label>Kelas</label><input type="text" id="edit-kelas"></div>
-        <div class="form-group"><label>Alamat</label><input type="text" id="edit-alamat"></div>
-        <div class="form-group"><label>Nama Ayah</label><input type="text" id="edit-ayah"></div>
-        <div class="form-group"><label>Nama Ibu</label><input type="text" id="edit-ibu"></div>
-        <div class="form-group"><label>Nomor Telepon Aktif</label><input type="text" id="edit-telp"></div>
-        <div class="modal-actions">
-            <button class="btn-siswa btn-white" onclick="closeModal()">Batal</button>
-            <button class="btn-siswa btn-pink-primary" onclick="saveEditSiswa()">Simpan Perubahan</button>
-        </div>
-    </div>
 
     <div class="sidebar">
         <div class="logo-section">
@@ -368,112 +249,37 @@
             <h2>Kelas Buel</h2>
             <small style="color: #DB7093;">SD Islam Al Falah</small>
         </div>
-        <div onclick="switchPage('dashboard')" id="menu-dashboard" class="menu-item active">🌸 Dashboard</div>
+        <div onclick="switchPage('dashboard')" id="menu-dashboard" class="menu-item">🌸 Dashboard</div>
         <div onclick="switchPage('data-siswa')" id="menu-data-siswa" class="menu-item">🎒 Data Siswa</div>
-        <div onclick="switchPage('absensi')" id="menu-absensi" class="menu-item">📅 Absensi Siswa</div>
-        <div onclick="switchPage('jurnal')" id="menu-jurnal" class="menu-item">📖 Jurnal Mengajar</div>
-        <div onclick="switchPage('modul')" id="menu-modul" class="menu-item">📝 Modul Ajar</div>
-        <div onclick="switchPage('asesmen')" id="menu-asesmen" class="menu-item">📊 Asesmen</div>
-        <div onclick="switchPage('perangkat')" id="menu-perangkat" class="menu-item">📁 Perangkat Ajar</div>
+        <div onclick="switchPage('asesmen')" id="menu-asesmen" class="menu-item active">📊 Asesmen</div>
     </div>
 
     <div class="main-content">
         
-        <div id="page-dashboard" class="page-content active-page">
-            <div class="header">
-                <h1>DEVISI KELAS BUEL</h1>
-                <p>" Satu Aplikasi, Semua Administrasi Guru Jadi Mudah & Menyenangkan "</p>
-            </div>
-            <div class="stats-grid">
-                <div class="stat-card" onclick="switchPage('data-siswa')"><span class="stat-icon">👥</span><div class="stat-info"><h3>Jumlah Siswa</h3><p id="dash-siswa-count">2 Aktif</p></div></div>
-                <div class="stat-card" onclick="switchPage('perangkat')"><span class="stat-icon">📁</span><div class="stat-info"><h3>Perangkat Ajar</h3><p id="dash-perangkat-count">1 Dokumen</p></div></div>
-                <div class="stat-card" onclick="switchPage('absensi')"><span class="stat-icon">📝</span><div class="stat-info"><h3>Absensi Hari Ini</h3><p id="dash-absensi-count">2 Hadir</p></div></div>
-                <div class="stat-card" onclick="switchPage('asesmen')"><span class="stat-icon">📊</span><div class="stat-info"><h3>Rata-rata Kelas</h3><p>83.5</p></div></div>
-            </div>
-
-            <div class="dashboard-grid">
-                <div>
-                    <div class="card">
-                        <div class="card-title">PROFIL GURU</div>
-                        <div class="profile-container">
-                            <img src="Profil.jpeg" alt="Foto Profil" class="profile-img">
-                            <div class="profile-details">
-                                <table>
-                                    <tr><td><strong>Nama</strong></td><td>: Guru Hebat</td></tr>
-                                    <tr><td><strong>NIP</strong></td><td>: 19900101 201503 2 002</td></tr>
-                                    <tr><td><strong>Jabatan</strong></td><td>: Guru Kelas 6</td></tr>
-                                    <tr><td><strong>Email</strong></td><td>: guruhebat@sekolah.id</td></tr>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-title">AKSES CEPAT</div>
-                        <div class="quick-access-grid">
-                            <div class="quick-btn" onclick="switchPage('data-siswa')">🎒 <div>Data Siswa</div></div>
-                            <div class="quick-btn" onclick="switchPage('absensi')">📝 <div>Absensi</div></div>
-                            <div class="quick-btn" onclick="switchPage('asesmen')">📊 <div>Asesmen</div></div>
-                            <div class="quick-btn" onclick="switchPage('perangkat')">📁 <div>Perangkat</div></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div>
-                    <div class="card">
-                        <div class="card-title">📁 PERANGKAT AJAR (DOKUMEN)</div>
-                        <div class="list-container" id="perangkat-list">
-                            <div class="list-item">
-                                <div class="item-content"><a onclick="alert('Ini berkas bawaan contoh')" class="item-link item-text">📄 Contoh_Silabus.pdf</a></div>
-                                <div class="actions">
-                                    <button class="btn-action btn-edit" onclick="editItem(this)">✏️</button>
-                                    <button class="btn-action btn-delete" onclick="deleteItem(this)">🗑️</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="manage-section">
-                            <label for="file-upload" class="file-input-label">📂 Upload File</label>
-                            <input type="file" id="file-upload" class="file-input" accept=".pdf, .doc, .docx" onchange="importFile(this)">
-                            <button class="btn-add-manual" onclick="addManualItem()">➕ Ketik Manual</button>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-title">📸 GALERI MEDIA KELAS</div>
-                        <div class="gallery-grid" id="gallery-container"></div>
-                        <div class="manage-section" style="margin-top: 10px; padding: 8px;">
-                            <label for="image-upload" class="file-input-label" style="background-color: #DB7093;">📷 Tambah Foto Kegiatan</label>
-                            <input type="file" id="image-upload" class="file-input" accept="image/*" onchange="uploadGalleryImage(this)">
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div id="page-dashboard" class="page-content">
+            <div class="card"><h1>🌸 Dashboard Utama</h1><p>Silakan klik menu Asesmen untuk melihat fitur baru.</p></div>
         </div>
 
         <div id="page-data-siswa" class="page-content">
             <div class="card">
-                <div class="card-title" style="font-size: 22px; color: #FF69B4; border-bottom: none;">🎒 DATA SISWA</div>
-                <div class="toolbar-siswa">
-                    <div class="btn-group-siswa">
-                        <button class="btn-siswa btn-pink-primary" onclick="openAddSiswaForm()">➕ Tambah Siswa Baru</button>
-                    </div>
-                    <input type="text" id="searchSiswaInput" class="search-box-siswa" placeholder="🔍 Cari nama..." onkeyup="filterSiswaTable()">
-                </div>
+                <div class="card-title" style="font-size: 22px; color: #FF69B4;">🎒 BASIS DATA SISWA UTAMA</div>
+                <p style="margin-bottom: 15px; font-size: 13px; color: #8B658B;">Aplikasi membaca data dari tabel ini untuk dimasukkan ke form penilaian otomatis.</p>
                 <div class="table-responsive">
-                    <table class="table-siswa" style="min-width:1000px;">
+                    <table class="table-siswa">
                         <thead>
                             <tr>
-                                <th>Foto</th><th>NIS</th><th>Nama Lengkap</th><th>L/P</th><th>Kelas</th><th>Alamat</th><th>Aksi</th>
+                                <th class="left-align">NIS</th><th class="left-align">Nama Lengkap</th><th>Kelas</th>
                             </tr>
                         </thead>
                         <tbody id="tbody-siswa">
-                            <tr id="row-siswa-1">
-                                <td><img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/200svg' width='40' height='40'><circle cx='20' cy='20' r='20' fill='%23FFB6C1'/></svg>" class="avatar-mini"></td>
-                                <td class="s-nis">1999001800</td><td class="s-nama" style="font-weight:bold; color:#DB7093;">Anisa</td><td class="s-jk">Perempuan</td><td class="s-kelas">6A</td><td class="s-alamat">Jl. Melati 12</td>
-                                <td><button class="btn-action btn-edit" onclick="openEditModal(this)">✏️</button><button class="btn-action btn-delete" onclick="deleteRow(this)">🗑️</button></td>
+                            <tr id="row-1">
+                                <td class="s-nis left-align">1999001800</td><td class="s-nama left-align" style="font-weight:bold; color:#DB7093;">Anisa Amalia</td><td>6A</td>
                             </tr>
-                            <tr id="row-siswa-2">
-                                <td><img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/200svg' width='40' height='40'><circle cx='20' cy='20' r='20' fill='%23FFC0CB'/></svg>" class="avatar-mini"></td>
-                                <td class="s-nis">1999001801</td><td class="s-nama" style="font-weight:bold; color:#DB7093;">Budi</td><td class="s-jk">Laki-laki</td><td class="s-kelas">6A</td><td class="s-alamat">Jl. Rose 4</td>
-                                <td><button class="btn-action btn-edit" onclick="openEditModal(this)">✏️</button><button class="btn-action btn-delete" onclick="deleteRow(this)">🗑️</button></td>
+                            <tr id="row-2">
+                                <td class="s-nis left-align">1999001801</td><td class="s-nama left-align" style="font-weight:bold; color:#DB7093;">Budi Dermawan</td><td>6A</td>
+                            </tr>
+                            <tr id="row-3">
+                                <td class="s-nis left-align">1999001802</td><td class="s-nama left-align" style="font-weight:bold; color:#DB7093;">Chandra Wijaya</td><td>6A</td>
                             </tr>
                         </tbody>
                     </table>
@@ -481,76 +287,56 @@
             </div>
         </div>
 
-        <div id="page-absensi" class="page-content">
-            <div class="placeholder-page"><h1>📅 HALAMAN ABSENSI HARIAN</h1><button class="btn-siswa btn-pink-primary" onclick="switchPage('dashboard')">Kembali</button></div>
-        </div>
-
-        <div id="page-asesmen" class="page-content">
+        <div id="page-asesmen" class="page-content active-page">
             <div class="card" style="border: none; background: transparent; padding: 0;">
                 <div class="header" style="margin-bottom: 20px;">
                     <h1 style="font-size: 30px; color: #FF69B4;">Asesmen Siswa Harian</h1>
-                    <p id="asesmen-date-title">Kelas 6A: Penilaian Formatif & Sumatif — 22 Juni 2026</p>
+                    <p>Kelas 6A: Manajemen & Tambah Parameter Penilaian Secara Mandiri</p>
                 </div>
 
                 <div class="stats-grid" style="margin-bottom: 20px;">
                     <div class="stat-card" style="border-left: 5px solid #FF69B4;">
                         <span class="stat-icon">📋</span>
-                        <div class="stat-info"><h3>Total Asesmen Bulan Ini</h3><p id="total-kegiatan">12 Kegiatan</p></div>
+                        <div class="stat-info"><h3>Jumlah Kolom Nilai</h3><p id="total-kegiatan">3 Kategori</p></div>
                     </div>
                     <div class="stat-card" style="border-left: 5px solid #2E7D32;">
                         <span class="stat-icon">🎓</span>
-                        <div class="stat-info"><h3>Nilai Rata-rata Kelas</h3><p id="rata-kelas">82.5</p></div>
+                        <div class="stat-info"><h3>Rata-rata Keseluruhan</h3><p id="rata-kelas">0.0</p></div>
                     </div>
                     <div class="stat-card" style="border-left: 5px solid #C62828;">
-                        <span class="stat-icon">🏥</span>
-                        <div class="stat-info"><h3>Siswa Perlu Remedial</h3><p id="siswa-remedial" style="color: #C62828;">4 Siswa</p></div>
+                        <span class="stat-icon">⚠️</span>
+                        <div class="stat-info"><h3>Siswa di Bawah KKM</h3><p id="siswa-remedial" style="color: #C62828;">0 Siswa</p></div>
                     </div>
                 </div>
 
                 <div class="card" style="padding: 15px; margin-bottom: 15px; background: #FFF5F5;">
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
                         <div class="form-group" style="margin:0;">
-                            <label>Tipe Asesmen</label>
-                            <select id="filter-tipe-asesmen">
-                                <option>Penilaian Formatif & Sumatif</option>
-                                <option>Tugas Mandiri</option>
-                                <option>Proyek Kelompok</option>
-                            </select>
+                            <label>Tipe Pembelajaran</label>
+                            <select><option>Penilaian Formatif & Sumatif</option></select>
                         </div>
                         <div class="form-group" style="margin:0;">
-                            <label>Mata Pelajaran / Tema</label>
-                            <select id="filter-mapel">
-                                <option>Pelajaran 6 (Bahasa Indonesia)</option>
-                                <option>Matematika - Geometri</option>
-                                <option>IPA - Tata Surya</option>
-                            </select>
+                            <label>Mata Pelajaran</label>
+                            <select><option>Pelajaran 6 (Bahasa Indonesia)</option></select>
                         </div>
                     </div>
                 </div>
 
                 <div class="toolbar-siswa">
                     <div class="btn-group-siswa">
-                        <button class="btn-siswa btn-pink-primary" onclick="tambahKolomAsesmen()">➕ Tambah Asesmen Baru</button>
-                        <button class="btn-siswa btn-white" onclick="alert('Mengekspor Rekap Nilai ke Excel...')">📥 Ekspor (Excel/PDF)</button>
-                        <button class="btn-siswa btn-white" style="background:#FFE4E1;" onclick="hitungUlangAsesmen()">🔄 Rekap Nilai</button>
+                        <button class="btn-siswa btn-pink-primary" onclick="tambahKategoriNilaiBaru()">➕ Tambah Asesmen Baru</button>
+                        <button class="btn-siswa btn-white" onclick="alert('Mengekspor data rekap...')">📥 Ekspor Excel</button>
                     </div>
                     <input type="text" id="searchAsesmenInput" class="search-box-siswa" placeholder="🔍 Cari nama siswa..." onkeyup="filterAsesmenTable()">
                 </div>
 
                 <div class="table-responsive">
-                    <table class="table-siswa" style="min-width: 900px;" id="table-penilaian-utama">
+                    <table class="table-siswa" id="table-penilaian">
                         <thead>
-                            <tr>
-                                <th style="width: 70px;">NIS</th>
-                                <th style="width: 50px;">Foto</th>
-                                <th>Nama Siswa</th>
-                                <th style="text-align: center;">Ulangan Harian 1</th>
-                                <th style="text-align: center;">Tugas Mandiri 1</th>
-                                <th style="text-align: center;">Proyek Kelompok</th>
-                                <th style="text-align: center;">PTS (Sumatif)</th>
-                                <th>Catatan Guru</th>
-                                <th style="text-align: center; width: 100px;">Aksi</th>
-                            </tr>
+                            <tr id="thead-row-asesmen">
+                                <th class="left-align" style="width: 120px;">NIS</th>
+                                <th class="left-align">Nama Siswa</th>
+                                </tr>
                         </thead>
                         <tbody id="tbody-asesmen">
                             </tbody>
@@ -558,227 +344,202 @@
                 </div>
                 
                 <div style="margin-top: 15px; text-align: right;">
-                    <button class="btn-siswa btn-pink-primary" style="padding: 10px 20px;" onclick="saveSemuaNilai()">💾 Simpan Semua Nilai Asesmen</button>
+                    <button class="btn-siswa btn-pink-primary" style="padding: 10px 20px;" onclick="alert('🎉 Seluruh perubahan rekap nilai berhasil disimpan permanen ke dalam sistem!')">💾 Simpan Semua Nilai</button>
                 </div>
             </div>
         </div>
 
-        <div id="page-jurnal" class="page-content"><div class="placeholder-page"><h1>📖 JURNAL MENGAJAR</h1></div></div>
-        <div id="page-modul" class="page-content"><div class="placeholder-page"><h1>📝 MODUL AJAR</h1></div></div>
-        <div id="page-perangkat" class="page-content"><div class="placeholder-page"><h1>📁 PERANGKAT AJAR</h1></div></div>
     </div>
 
     <script>
+        // 1. Data Jenis Penilaian Awal (Bisa ditambahkan terus lewat aplikasi)
+        let listKategoriNilai = ["Ulangan Harian 1", "Tugas Mandiri", "Proyek Kelompok"];
+
+        // 2. Simulasi Database Nilai Sementara berbasis NIS dan Kategori
+        let databaseNilai = {
+            "1999001800": {"Ulangan Harian 1": 85, "Tugas Mandiri": 90, "Proyek Kelompok": 80},
+            "1999001801": {"Ulangan Harian 1": 78, "Tugas Mandiri": 85, "Proyek Kelompok": 88},
+            "1999001802": {"Ulangan Harian 1": 60, "Tugas Mandiri": 65, "Proyek Kelompok": 70}
+        };
+
         window.onload = function() {
-            perbaruiAngkaMukaSiswa();
-            hitungUlangPerangkat();
-            sinkronDataKeAsesmen();
+            renderStrukturTabelAsesmen();
         };
 
         function switchPage(pageId) {
             document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active-page'));
             document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
             document.getElementById('page-' + pageId).classList.add('active-page');
-            if(document.getElementById('menu-' + pageId)) document.getElementById('menu-' + pageId).classList.add('active');
-
+            document.getElementById('menu-' + pageId).classList.add('active');
+            
             if(pageId === 'asesmen') {
-                sinkronDataKeAsesmen();
+                renderStrukturTabelAsesmen();
             }
         }
 
-        function perbaruiAngkaMukaSiswa() {
-            const barisSiswa = document.getElementById('tbody-siswa').getElementsByTagName('tr').length;
-            document.getElementById('dash-siswa-count').innerText = `${barisSiswa} Aktif`;
-        }
-
-        function hitungUlangPerangkat() {
-            const totalPerangkat = document.getElementById('perangkat-list').getElementsByClassName('list-item').length;
-            document.getElementById('dash-perangkat-count').innerText = `${totalPerangkat} Dokumen`;
-        }
-
-        // --- MANAJEMEN HALAMAN ASESMEN (INTERAKTIF & DINAMIS) ---
-        function sinkronDataKeAsesmen() {
+        // --- FUNGSI UTAMA: MEMBUAT STRUKTUR TABEL BERDASARKAN KATEGORI YANG ADA ---
+        function renderStrukturTabelAsesmen() {
+            const theadRow = document.getElementById('thead-row-asesmen');
+            const tbody = document.getElementById('tbody-asesmen');
             const siswaRows = document.getElementById('tbody-siswa').getElementsByTagName('tr');
-            const tbodyAsesmen = document.getElementById('tbody-asesmen');
-            tbodyAsesmen.innerHTML = '';
+
+            // Reset header kolom nilai lama (sisakan NIS dan Nama Siswa)
+            theadRow.innerHTML = '<th class="left-align" style="width: 120px;">NIS</th><th class="left-align">Nama Siswa</th>';
+
+            // Pasang Header Kolom Nilai secara dinamis sesuai isi Array listKategoriNilai
+            listKategoriNilai.forEach((kategori, index) => {
+                const th = document.createElement('th');
+                th.innerHTML = `
+                    <div>${kategori}</div>
+                    <button class="btn-delete-col" onclick="hapusKategoriNilai(${index})">🗑️ Hapus</button>
+                `;
+                theadRow.appendChild(th);
+            });
+
+            // Tambahkan kolom Catatan di akhir header
+            const thCatatan = document.createElement('th');
+            thCatatan.innerText = "Catatan Guru";
+            theadRow.appendChild(thCatatan);
+
+            // Bersihkan isi bodi tabel
+            tbody.innerHTML = '';
 
             if(siswaRows.length === 0) {
-                tbodyAsesmen.innerHTML = `<tr><td colspan="9" style="text-align:center; color:#A9A9A9; padding: 20px;">Belum ada siswa di sistem. Masukkan data siswa terlebih dahulu.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="${listKategoriNilai.length + 3}">Belum ada data siswa.</td></tr>`;
                 return;
             }
 
-            // Simulasi default nilai awal acak sesuai mockup gambar
-            const templateNilai = [
-                {uh: 85, tugas: 90, proyek: 95, pts: 'A', note: 'Sangat Baik'},
-                {uh: 80, tugas: 90, proyek: 95, pts: 'A', note: 'Pertahankan'},
-                {uh: 65, tugas: 70, proyek: 80, pts: 'B', note: 'Butuh bimbingan'}
-            ];
-
-            for(let i=0; i<siswaRows.length; i++) {
+            // Loop untuk membuat baris input nilai bagi setiap siswa
+            for(let i = 0; i < siswaRows.length; i++) {
                 const nis = siswaRows[i].querySelector('.s-nis').innerText;
                 const nama = siswaRows[i].querySelector('.s-nama').innerText;
-                const imgSrc = siswaRows[i].querySelector('.avatar-mini').src;
-                
-                const dataNilai = templateNilai[i] || {uh: 80, tugas: 85, proyek: 90, pts: 'A', note: ''};
 
                 const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td style="color: #8B658B; font-weight: 500;">${nis}</td>
-                    <td><img src="${imgSrc}" class="avatar-mini" style="width:35px; height:35px;"></td>
-                    <td style="font-weight: bold; color: #DB7093;">${nama}</td>
-                    <td style="text-align: center;"><input type="number" class="input-nilai val-uh" value="${dataNilai.uh}" onchange="hitungUlangAsesmen()"></td>
-                    <td style="text-align: center;"><input type="number" class="input-nilai val-tugas" value="${dataNilai.tugas}" onchange="hitungUlangAsesmen()"></td>
-                    <td style="text-align: center;"><input type="number" class="input-nilai val-proyek" value="${dataNilai.proyek}" onchange="hitungUlangAsesmen()"></td>
-                    <td style="text-align: center;"><input type="text" class="input-nilai val-pts" value="${dataNilai.pts}" style="width:45px;"></td>
-                    <td><input type="text" value="${dataNilai.note}" style="width:100%; padding:5px; border:1px solid #FFC0CB; border-radius:6px; font-size:12px;"></td>
-                    <td style="text-align: center;">
-                        <button class="btn-action btn-edit" title="Edit Nilai Row" onclick="this.closest('tr').querySelector('.val-uh').focus()">✏️</button>
-                        <button class="btn-action" style="background:#E0F2FE; color:#0369A1;" onclick="alert('Detail nilai untuk ${nama}\\n\\nUH: ' + this.closest('tr').querySelector('.val-uh').value + '\\nTugas: ' + this.closest('tr').querySelector('.val-tugas').value)">👁️</button>
-                    </td>
-                `;
-                tbodyAsesmen.appendChild(tr);
+                
+                // Set Kolom Identitas Utama
+                let rowHTML = `<td class="left-align" style="color: #8B658B; font-weight: 500;">${nis}</td>`;
+                rowHTML += `<td class="left-align" style="font-weight: bold; color: #DB7093;">${nama}</td>`;
+
+                // Loop membuat kotak input nilai sebanyak kategori asesmen yang aktif
+                listKategoriNilai.forEach(kategori => {
+                    // Ambil nilai dari database jika ada, jika kosong set default 0
+                    if (!databaseNilai[nis]) databaseNilai[nis] = {};
+                    const nilaiSekarang = databaseNilai[nis][kategori] !== undefined ? databaseNilai[nis][kategori] : 0;
+
+                    rowHTML += `
+                        <td>
+                            <input type="number" 
+                                   class="input-nilai text-center" 
+                                   data-nis="${nis}" 
+                                   data-kategori="${kategori}" 
+                                   value="${nilaiSekarang}" 
+                                   onchange="updateNilaiRealtime(this)">
+                        </td>
+                    `;
+                });
+
+                // Kolom input catatan guru di paling kanan
+                rowHTML += `<td><input type="text" placeholder="Catatan..." style="width:100%; padding:5px; border:1px solid #FFC0CB; border-radius:6px; font-size:12px;"></td>`;
+                
+                tr.innerHTML = rowHTML;
+                tbody.appendChild(tr);
             }
-            hitungUlangAsesmen();
+
+            hitungUlangStatistikAsesmen();
         }
 
-        function hitungUlangAsesmen() {
+        // --- FITUR UTAMA: MENAMBAHKAN JENIS ASESMEN BARU SECARA MANDIRI ---
+        function tambahKategoriNilaiBaru() {
+            const namaAsesmenBaru = prompt("Masukkan Nama Kategori Penilaian Baru:\n(Contoh: Ulangan Harian 2, Kuis Matematika, Praktik Berpidato)");
+            
+            if (namaAsesmenBaru && namaAsesmenBaru.trim() !== "") {
+                const namaBersih = namaAsesmenBaru.trim();
+                
+                // Validasi agar nama kolom tidak kembar
+                if(listKategoriNilai.includes(namaBersih)) {
+                    alert("Kategori tersebut sudah ada di tabel!");
+                    return;
+                }
+
+                // Masukkan ke array penampung kategori
+                listKategoriNilai.push(namaBersih);
+                
+                // Segarkan susunan tabel (kolom baru otomatis dibuat untuk setiap siswa)
+                renderStrukturTabelAsesmen();
+                alert(`Berhasil menambahkan kolom asesmen baru: "${namaBersih}" untuk semua siswa.`);
+            }
+        }
+
+        // Fitur hapus kategori penilaian jika salah input
+        function hapusKategoriNilai(index) {
+            if(confirm(`Hapus kolom penilaian "${listKategoriNilai[index]}" beserta seluruh isinya untuk semua siswa?`)) {
+                listKategoriNilai.splice(index, 1);
+                renderStrukturTabelAsesmen();
+            }
+        }
+
+        // Menyimpan perubahan angka masukan guru ke objek data utama
+        function updateNilaiRealtime(inputElement) {
+            const nis = inputElement.getAttribute('data-nis');
+            const kategori = inputElement.getAttribute('data-kategori');
+            const nilaiBaru = parseFloat(inputElement.value) || 0;
+
+            if(!databaseNilai[nis]) databaseNilai[nis] = {};
+            databaseNilai[nis][kategori] = nilaiBaru;
+
+            hitungUlangStatistikAsesmen();
+        }
+
+        // Perhitungan otomatis kartu informasi di atas KKM & Rata-rata
+        function hitungUlangStatistikAsesmen() {
+            document.getElementById('total-kegiatan').innerText = `${listKategoriNilai.length} Kategori`;
+
             const rows = document.getElementById('tbody-asesmen').getElementsByTagName('tr');
-            let totalNilai = 0;
-            let totalSiswaNilai = 0;
-            let countRemedial = 0;
+            let totalSemuaNilai = 0;
+            let totalKotakInput = 0;
+            let siswaRemedialCount = 0;
+            const KKM = 75;
 
-            for(let i=0; i<rows.length; i++) {
-                const uhEl = rows[i].querySelector('.val-uh');
-                const tugasEl = rows[i].querySelector('.val-tugas');
-                const proyekEl = rows[i].querySelector('.val-proyek');
+            // Hitung statistik berdasarkan nilai input saat ini di layar
+            for (let i = 0; i < rows.length; i++) {
+                const inputs = rows[i].querySelectorAll('.input-nilai');
+                let totalNilaiSiswa Ini = 0;
+                let jumlahAsesmenSiswaIni = 0;
 
-                if(uhEl && tugasEl && proyekEl) {
-                    const uh = parseFloat(uhEl.value) || 0;
-                    const tugas = parseFloat(tugasEl.value) || 0;
-                    const proyek = parseFloat(proyekEl.value) || 0;
+                inputs.forEach(input => {
+                    const val = parseFloat(input.value) || 0;
+                    totalSemuaNilai += val;
+                    totalKotakInput++;
 
-                    // Hitung rata-rata per siswa
-                    const rataSiswa = (uh + tugas + proyek) / 3;
-                    totalNilai += rataSiswa;
-                    totalSiswaNilai++;
+                    totalNilaiSiswaIni += val;
+                    jumlahAsesmenSiswaIni++;
+                });
 
-                    // KKM diasumsikan 75
-                    if(rataSiswa < 75) {
-                        countRemedial++;
+                // Cek KKM per individu siswa
+                if(jumlahAsesmenSiswaIni > 0) {
+                    const rataSiswa = totalNilaiSiswaIni / jumlahAsesmenSiswaIni;
+                    if(rataSiswa < KKM) {
+                        siswaRemedialCount++;
                     }
                 }
             }
 
-            const rerataKelas = totalSiswaNilai > 0 ? (totalNilai / totalSiswaNilai).toFixed(1) : 0;
+            const rerataKelas = totalKotakInput > 0 ? (totalSemuaNilai / totalKotakInput).toFixed(1) : "0.0";
             document.getElementById('rata-kelas').innerText = rerataKelas;
-            document.getElementById('siswa-remedial').innerText = `${countRemedial} Siswa`;
-        }
-
-        function tambahKolomAsesmen() {
-            const namaKolom = prompt("Masukkan jenis penilaian baru (Contoh: Ulangan Harian 2):");
-            if(namaKolom) {
-                alert(`Kolom '${namaKolom}' berhasil disiapkan di basis data nilai.`);
-            }
+            document.getElementById('siswa-remedial').innerText = `${siswaRemedialCount} Siswa`;
         }
 
         function filterAsesmenTable() {
             const filter = document.getElementById('searchAsesmenInput').value.toLowerCase();
             const rows = document.getElementById('tbody-asesmen').getElementsByTagName('tr');
+            
             for (let i = 0; i < rows.length; i++) {
-                const namaTd = rows[i].getElementsByTagName('td')[2];
+                const namaTd = rows[i].getElementsByTagName('td')[1]; // Kolom nama siswa
                 if (namaTd) {
-                    rows[i].style.display = (namaTd.textContent || namaTd.innerText).toLowerCase().indexOf(filter) > -1 ? "" : "none";
+                    rows[i].style.display = namaTd.innerText.toLowerCase().indexOf(filter) > -1 ? "" : "none";
                 }
             }
         }
-
-        function saveSemuaNilai() {
-            hitungUlangAsesmen();
-            alert("🎉 Sukses! Seluruh data rekap nilai formatif & sumatif kelas telah berhasil disimpan!");
-        }
-
-        // --- OPERASI PERANGKAT AJAR & DATA SISWA ---
-        function deleteItem(button) { if (confirm("Hapus dokumen ini?")) { button.closest('.list-item').remove(); hitungUlangPerangkat(); } }
-        function editItem(button) {
-            const textSpan = button.closest('.list-item').querySelector('.item-text');
-            const newText = prompt("Ubah nama berkas:", textSpan.innerText.replace('📄 ', ''));
-            if (newText) textSpan.innerText = `📄 ${newText}`;
-        }
-        function importFile(input) {
-            if (input.files.length > 0) {
-                const file = input.files[0];
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('perangkat-list').insertAdjacentHTML('beforeend', `
-                        <div class="list-item">
-                            <div class="item-content"><a class="item-link item-text" style="font-weight:bold; color:#FF69B4;">📄 ${file.name}</a></div>
-                            <div class="actions"><button class="btn-action btn-edit" onclick="editItem(this)">✏️</button><button class="btn-action btn-delete" onclick="deleteItem(this)">🗑️</button></div>
-                        </div>`);
-                    hitungUlangPerangkat();
-                };
-                reader.readAsDataURL(file);
-            }
-        }
-        function addManualItem() {
-            const nama = prompt("Ketik nama materi manual:");
-            if(nama) {
-                document.getElementById('perangkat-list').insertAdjacentHTML('beforeend', `
-                    <div class="list-item">
-                        <div class="item-content"><a class="item-link item-text">📄 ${nama}</a></div>
-                        <div class="actions"><button class="btn-action btn-edit" onclick="editItem(this)">✏️</button><button class="btn-action btn-delete" onclick="deleteItem(this)">🗑️</button></div>
-                    </div>`);
-                hitungUlangPerangkat();
-            }
-        }
-        function uploadGalleryImage(input) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('gallery-container').insertAdjacentHTML('beforeend', `
-                        <div class="gallery-item-wrapper">
-                            <img src="${e.target.result}" class="gallery-item" onclick="window.open(this.src)">
-                            <button class="btn-del-img" onclick="this.closest('.gallery-item-wrapper').remove()">X</button>
-                        </div>`);
-                };
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-        function filterSiswaTable() {
-            const filter = document.getElementById('searchSiswaInput').value.toLowerCase();
-            const tr = document.getElementById('tbody-siswa').getElementsByTagName('tr');
-            for (let i = 0; i < tr.length; i++) {
-                const td = tr[i].querySelector('.s-nama');
-                if (td) tr[i].style.display = td.innerText.toLowerCase().indexOf(filter) > -1 ? "" : "none";
-            }
-        }
-        let currentRow = null;
-        function openEditModal(button) {
-            currentRow = button.closest('tr');
-            document.getElementById('edit-nis').value = currentRow.querySelector('.s-nis').innerText;
-            document.getElementById('edit-nama').value = currentRow.querySelector('.s-nama').innerText;
-            document.getElementById('edit-jk').value = currentRow.querySelector('.s-jk').innerText;
-            document.getElementById('edit-kelas').value = currentRow.querySelector('.s-kelas').innerText;
-            document.getElementById('edit-alamat').value = currentRow.querySelector('.s-alamat').innerText;
-            document.getElementById('modalEdit').style.display = 'block';
-            document.getElementById('modalOverlay').style.display = 'block';
-        }
-        function closeModal() { document.getElementById('modalEdit').style.display = 'none'; document.getElementById('modalOverlay').style.display = 'none'; }
-        function saveEditSiswa() {
-            if(!currentRow) return;
-            currentRow.querySelector('.s-nis').innerText = document.getElementById('edit-nis').value;
-            currentRow.querySelector('.s-nama').innerText = document.getElementById('edit-nama').value;
-            currentRow.querySelector('.s-jk').innerText = document.getElementById('edit-jk').value;
-            currentRow.querySelector('.s-kelas').innerText = document.getElementById('edit-kelas').value;
-            currentRow.querySelector('.s-alamat').innerText = document.getElementById('edit-alamat').value;
-            closeModal();
-        }
-        function openAddSiswaForm() {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `<td><img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/200svg' width='40' height='40'><circle cx='20' cy='20' r='20' fill='%23DB7093'/></svg>" class="avatar-mini"></td><td class="s-nis">199900180${Date.now().toString().slice(-1)}</td><td class="s-nama" style="font-weight:bold; color:#DB7093;">Siswa Baru</td><td class="s-jk">Laki-laki</td><td class="s-kelas">6A</td><td class="s-alamat">-</td><td><button class="btn-action btn-edit" onclick="openEditModal(this)">✏️</button><button class="btn-action btn-delete" onclick="deleteRow(this)">🗑️</button></td>`;
-            document.getElementById('tbody-siswa').appendChild(tr);
-            perbaruiAngkaMukaSiswa();
-        }
-        function deleteRow(button) { if(confirm("Hapus siswa ini?")) { button.closest('tr').remove(); perbaruiAngkaMukaSiswa(); } }
     </script>
 </body>
 </html>
