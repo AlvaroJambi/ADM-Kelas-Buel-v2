@@ -13,7 +13,7 @@
         }
 
         body {
-            background-color: #FFF0F5; /* LavenderBlush */
+            background-color: #FFF0F5;
             color: #4A4A4A;
             display: flex;
             min-height: 100vh;
@@ -22,7 +22,7 @@
         /* --- SIDEBAR --- */
         .sidebar {
             width: 260px;
-            background-color: #FFE4E1; /* MistyRose */
+            background-color: #FFE4E1;
             padding: 20px;
             border-right: 2px solid #FFB6C1;
             display: flex;
@@ -212,7 +212,7 @@
         .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
         .gallery-item { width: 100%; height: 80px; border-radius: 8px; object-fit: cover; border: 1px solid #FFC0CB; cursor: pointer; transition: transform 0.2s; }
 
-        /* --- STYLING HALAMAN DATA SISWA (BARU) --- */
+        /* --- DATA SISWA TABEL STYLING --- */
         .toolbar-siswa {
             display: flex;
             justify-content: space-between;
@@ -251,11 +251,6 @@
             outline: none;
         }
 
-        .search-box-siswa:focus {
-            border-color: #FF69B4;
-            box-shadow: 0 0 4px rgba(255, 105, 180, 0.3);
-        }
-
         .table-responsive {
             width: 100%;
             overflow-x: auto;
@@ -269,7 +264,7 @@
             border-collapse: collapse;
             font-size: 13px;
             text-align: left;
-            min-width: 900px;
+            min-width: 1100px;
         }
 
         .table-siswa th {
@@ -286,29 +281,125 @@
             vertical-align: middle;
         }
 
-        .table-siswa tr:hover {
-            background-color: #FFF5F5;
-        }
-
         .avatar-mini {
-            width: 35px;
-            height: 35px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             object-fit: cover;
             border: 1px solid #FFB6C1;
-            background-color: #FFE4E1;
+            cursor: pointer;
         }
 
-        .placeholder-page {
+        /* --- MODAL FORM EDIT --- */
+        .modal-edit {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             background: white;
-            padding: 40px;
+            padding: 25px;
             border-radius: 20px;
+            border: 2px solid #FFB6C1;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            z-index: 1000;
+            width: 450px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.3);
+            z-index: 999;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: bold;
+            color: #DB7093;
+            margin-bottom: 4px;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 8px;
             border: 1px solid #FFC0CB;
-            text-align: center;
+            border-radius: 8px;
+            outline: none;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 15px;
         }
     </style>
 </head>
 <body>
+
+    <div class="modal-overlay" id="modalOverlay" onclick="closeModal()"></div>
+    <div class="modal-edit" id="modalEdit">
+        <h3 style="color:#FF69B4; margin-bottom:15px; text-align:center;">✏️ Edit Data Siswa</h3>
+        <input type="hidden" id="edit-row-index">
+        
+        <div class="form-group">
+            <label>Ganti Foto Profil</label>
+            <input type="file" id="edit-foto" accept="image/*">
+        </div>
+        <div class="form-group">
+            <label>NIS</label>
+            <input type="text" id="edit-nis">
+        </div>
+        <div class="form-group">
+            <label>Nama Lengkap</label>
+            <input type="text" id="edit-nama">
+        </div>
+        <div class="form-group">
+            <label>Jenis Kelamin</label>
+            <select id="edit-jk">
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Tempat & Tanggal Lahir</label>
+            <input type="text" id="edit-ttl">
+        </div>
+        <div class="form-group">
+            <label>Kelas</label>
+            <input type="text" id="edit-kelas">
+        </div>
+        <div class="form-group">
+            <label>Alamat</label>
+            <input type="text" id="edit-alamat">
+        </div>
+        <div class="form-group">
+            <label>Nama Ayah</label>
+            <input type="text" id="edit-ayah">
+        </div>
+        <div class="form-group">
+            <label>Nama Ibu</label>
+            <input type="text" id="edit-ibu">
+        </div>
+        <div class="form-group">
+            <label>Nomor Telepon Aktif</label>
+            <input type="text" id="edit-telp">
+        </div>
+
+        <div class="modal-actions">
+            <button class="btn-siswa btn-white" onclick="closeModal()">Batal</button>
+            <button class="btn-siswa btn-pink-primary" onclick="saveEditSiswa()">Simpan Perubahan</button>
+        </div>
+    </div>
 
     <div class="sidebar">
         <div class="logo-section">
@@ -334,34 +425,10 @@
             </div>
 
             <div class="stats-grid">
-                <div class="stat-card" onclick="switchPage('data-siswa')">
-                    <span class="stat-icon">👥</span>
-                    <div class="stat-info">
-                        <h3>Jumlah Siswa</h3>
-                        <p>128 Aktif</p>
-                    </div>
-                </div>
-                <div class="stat-card" onclick="switchPage('perangkat')">
-                    <span class="stat-icon">📁</span>
-                    <div class="stat-info">
-                        <h3>Perangkat Ajar</h3>
-                        <p>52 Dokumen</p>
-                    </div>
-                </div>
-                <div class="stat-card" onclick="switchPage('absensi')">
-                    <span class="stat-icon">📝</span>
-                    <div class="stat-info">
-                        <h3>Absensi Hari Ini</h3>
-                        <p>28 Hadir</p>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-icon">⏳</span>
-                    <div class="stat-info">
-                        <h3>Tugas Hari Ini</h3>
-                        <p>6 Antrean</p>
-                    </div>
-                </div>
+                <div class="stat-card" onclick="switchPage('data-siswa')"><span class="stat-icon">👥</span><div class="stat-info"><h3>Jumlah Siswa</h3><p>128 Aktif</p></div></div>
+                <div class="stat-card" onclick="switchPage('perangkat')"><span class="stat-icon">📁</span><div class="stat-info"><h3>Perangkat Ajar</h3><p>52 Dokumen</p></div></div>
+                <div class="stat-card" onclick="switchPage('absensi')"><span class="stat-icon">📝</span><div class="stat-info"><h3>Absensi Hari Ini</h3><p>28 Hadir</p></div></div>
+                <div class="stat-card"><span class="stat-icon">⏳</span><div class="stat-info"><h3>Tugas Hari Ini</h3><p>6 Antrean</p></div></div>
             </div>
 
             <div class="dashboard-grid">
@@ -388,8 +455,6 @@
                             <div class="quick-btn" onclick="switchPage('absensi')">📝 <div>Absensi</div></div>
                             <div class="quick-btn" onclick="switchPage('jurnal')">📖 <div>Jurnal</div></div>
                             <div class="quick-btn" onclick="switchPage('perangkat')">📁 <div>Perangkat</div></div>
-                            <div class="quick-btn" onclick="switchPage('modul')">📝 <div>Modul Ajar</div></div>
-                            <div class="quick-btn" onclick="switchPage('asesmen')">📊 <div>Asesmen</div></div>
                         </div>
                     </div>
                 </div>
@@ -399,27 +464,13 @@
                         <div class="card-title">📁 DOKUMEN BARU</div>
                         <div class="list-container" id="perangkat-list">
                             <div class="list-item">
-                                <div class="item-content">
-                                    <a href="#" target="_blank" class="item-link item-text">📄 Contoh_Silabus.pdf</a>
-                                </div>
-                                <div class="actions">
-                                    <button class="btn-action btn-edit" onclick="editItem(this)">✏️</button>
-                                    <button class="btn-action btn-delete" onclick="deleteItem(this)">🗑️</button>
-                                </div>
+                                <div class="item-content"><a href="#" target="_blank" class="item-link item-text">📄 Contoh_Silabus.pdf</a></div>
+                                <div class="actions"><button class="btn-action btn-edit" onclick="editItem(this)">✏️</button><button class="btn-action btn-delete" onclick="deleteItem(this)">🗑️</button></div>
                             </div>
                         </div>
                         <div class="manage-section">
                             <label for="file-upload" class="file-input-label">📁 Import File</label>
                             <input type="file" id="file-upload" class="file-input" accept=".pdf, .doc, .docx, .xls, .xlsx" onchange="importFile(this)">
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-title">📷 GALERI MEDIA</div>
-                        <div class="gallery-grid" id="gallery-container"></div>
-                        <div class="manage-section">
-                            <label for="image-upload" class="file-input-label">📸 Tambah Foto</label>
-                            <input type="file" id="image-upload" class="file-input" accept="image/*" onchange="uploadImage(this)">
                         </div>
                     </div>
                 </div>
@@ -432,9 +483,8 @@
                 
                 <div class="toolbar-siswa">
                     <div class="btn-group-siswa">
-                        <button class="btn-siswa btn-pink-primary" onclick="addSiswaBaru()">➕ Tambah Siswa Baru</button>
-                        <button class="btn-siswa btn-white" onclick="alert('Mengekspor data ke Excel/PDF...')">📄 Ekspor (Excel/PDF)</button>
-                        <button class="btn-siswa btn-white">⏳ Filter</button>
+                        <button class="btn-siswa btn-pink-primary" onclick="openAddSiswaForm()">➕ Tambah Siswa Baru</button>
+                        <button class="btn-siswa btn-white" onclick="alert('Mengekspor ke dokumen...')">📄 Ekspor (Excel/PDF)</button>
                     </div>
                     <input type="text" class="search-box-siswa" placeholder="🔍 Search nama siswa...">
                 </div>
@@ -451,118 +501,123 @@
                                 <th>Tempat & Tgl Lahir</th>
                                 <th>Kelas</th>
                                 <th>Alamat</th>
-                                <th>Nama Orang Tua</th>
-                                <th>No. Telp</th>
+                                <th>Nama Ayah</th>
+                                <th>Nama Ibu</th>
+                                <th>Nomor Telepon Aktif</th>
                                 <th style="text-align: center;">Aksi</th>
                             </tr>
                         </thead>
                         <tbody id="tbody-siswa">
                             <tr>
                                 <td><input type="checkbox"></td>
-                                <td><div class="avatar-mini" style="background: #FFB6C1; text-align:center; line-height:35px; color:white; font-size:12px; border-radius:50%">👦</div></td>
-                                <td>S3013</td>
-                                <td class="nama-murid" style="font-weight: bold; color: #DB7093;">Nama Lengkap</td>
-                                <td>Male</td>
-                                <td>Jakarta, 15 Jul 2012</td>
-                                <td>6B</td>
-                                <td>Jl. Melati 12</td>
-                                <td>Budi Santoso (Ayah)</td>
-                                <td>08123456789</td>
+                                <td><img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/200svg' width='40' height='40' viewBox='0 0 40 40'><circle cx='20' cy='20' r='20' fill='%23FFB6C1'/></svg>" class="avatar-mini" onclick="window.open(this.src)"></td>
+                                <td class="s-nis">S3013</td>
+                                <td class="s-nama" style="font-weight: bold; color: #DB7093;">Nama LengkapMale</td>
+                                <td class="s-jk">Male</td>
+                                <td class="s-ttl">Jakarta, 15 Jul 2012</td>
+                                <td class="s-kelas">6B</td>
+                                <td class="s-alamat">Jl. Melati 12</td>
+                                <td class="s-ayah">Budi Santoso</td>
+                                <td class="s-ibu">Nama Natana</td>
+                                <td class="s-telp">08123456789</td>
                                 <td style="text-align: center;">
-                                    <button class="btn-action btn-edit" onclick="editSiswa(this)">✏️</button>
-                                    <button class="btn-action btn-delete" onclick="deleteRow(this)">🗑️</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox"></td>
-                                <td><div class="avatar-mini" style="background: #FFC0CB; text-align:center; line-height:35px; color:white; font-size:12px; border-radius:50%">👧</div></td>
-                                <td>S3014</td>
-                                <td class="nama-murid" style="font-weight: bold; color: #DB7093;">Nama B</td>
-                                <td>Female</td>
-                                <td>Bandung, 22 Aug 2012</td>
-                                <td>6B</td>
-                                <td>Jl. Rose 4</td>
-                                <td>Dewi Asturi (Ibu)</td>
-                                <td>08915555553</td>
-                                <td style="text-align: center;">
-                                    <button class="btn-action btn-edit" onclick="editSiswa(this)">✏️</button>
+                                    <button class="btn-action btn-edit" onclick="openEditModal(this)">✏️ Edit All</button>
                                     <button class="btn-action btn-delete" onclick="deleteRow(this)">🗑️</button>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-
             </div>
         </div>
-
-        <div id="page-absensi" class="page-content"><div class="placeholder-page"><h1>📅 HALAMAN ABSENSI</h1></div></div>
-        <div id="page-jurnal" class="page-content"><div class="placeholder-page"><h1>📖 JURNAL MENGAJAR</h1></div></div>
-        <div id="page-modul" class="page-content"><div class="placeholder-page"><h1>📝 MODUL AJAR</h1></div></div>
-        <div id="page-asesmen" class="page-content"><div class="placeholder-page"><h1>📊 ASESMEN KELAS</h1></div></div>
-        <div id="page-perangkat" class="page-content"><div class="placeholder-page"><h1>📁 PERANGKAT AJAR</h1></div></div>
-
     </div>
 
     <script>
         function switchPage(pageId) {
-            const pages = document.querySelectorAll('.page-content');
-            pages.forEach(page => page.classList.remove('active-page'));
-
-            const menuItems = document.querySelectorAll('.menu-item');
-            menuItems.forEach(item => item.classList.remove('active'));
-
+            document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active-page'));
+            document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
             document.getElementById('page-' + pageId).classList.add('active-page');
-
-            const activeMenu = document.getElementById('menu-' + pageId);
-            if(activeMenu) activeMenu.classList.add('active');
+            if(document.getElementById('menu-' + pageId)) document.getElementById('menu-' + pageId).classList.add('active');
         }
 
-        // Fungsi Tambah Siswa Baru via Prompt
-        function addSiswaBaru() {
-            const nama = prompt("Masukkan Nama Lengkap Siswa:");
-            if (!nama) return;
-            const nis = prompt("Masukkan NIS:", "S" + Math.floor(1000 + Math.random() * 9000));
-            const kelas = prompt("Masukkan Kelas:", "6B");
+        // Buka Jendela Pengisian Edit
+        let currentRow = null;
+        function openEditModal(button) {
+            currentRow = button.closest('tr');
+            
+            document.getElementById('edit-nis').value = currentRow.querySelector('.s-nis').innerText;
+            document.getElementById('edit-nama').value = currentRow.querySelector('.s-nama').innerText;
+            document.getElementById('edit-jk').value = currentRow.querySelector('.s-jk').innerText;
+            document.getElementById('edit-ttl').value = currentRow.querySelector('.s-ttl').innerText;
+            document.getElementById('edit-kelas').value = currentRow.querySelector('.s-kelas').innerText;
+            document.getElementById('edit-alamat').value = currentRow.querySelector('.s-alamat').innerText;
+            document.getElementById('edit-ayah').value = currentRow.querySelector('.s-ayah').innerText;
+            document.getElementById('edit-ibu').value = currentRow.querySelector('.s-ibu').innerText;
+            document.getElementById('edit-telp').value = currentRow.querySelector('.s-telp').innerText;
 
-            const tbody = document.getElementById('tbody-siswa');
-            const newRow = `
-                <tr>
-                    <td><input type="checkbox"></td>
-                    <td><div class="avatar-mini" style="background: #DB7093; text-align:center; line-height:35px; color:white; font-size:12px; border-radius:50%">✨</div></td>
-                    <td>${nis}</td>
-                    <td class="nama-murid" style="font-weight: bold; color: #DB7093;">${nama}</td>
-                    <td>-</td>
-                    <td>-</td>
-                    <td>${kelas}</td>
-                    <td>-</td>
-                    <td>-</td>
-                    <td>-</td>
-                    <td style="text-align: center;">
-                        <button class="btn-action btn-edit" onclick="editSiswa(this)">✏️</button>
-                        <button class="btn-action btn-delete" onclick="deleteRow(this)">🗑️</button>
-                    </td>
-                </tr>
-            `;
-            tbody.insertAdjacentHTML('beforeend', newRow);
+            document.getElementById('modalEdit').style.display = 'block';
+            document.getElementById('modalOverlay').style.display = 'block';
         }
 
-        // Fungsi Edit Nama Siswa di Tabel
-        function editSiswa(button) {
-            const row = button.closest('tr');
-            const targetNama = row.querySelector('.nama-murid');
-            const namaBaru = prompt("Ubah Nama Siswa:", targetNama.innerText);
-            if (namaBaru) targetNama.innerText = namaBaru;
+        function closeModal() {
+            document.getElementById('modalEdit').style.display = 'none';
+            document.getElementById('modalOverlay').style.display = 'none';
+            document.getElementById('edit-foto').value = ''; 
         }
 
-        // Fungsi Hapus Baris Siswa
-        function deleteRow(button) {
-            if (confirm("Hapus baris data siswa ini?")) {
-                button.closest('tr').remove();
+        // Menyimpan semua perubahan kolom sekaligus
+        function saveEditSiswa() {
+            if(!currentRow) return;
+
+            currentRow.querySelector('.s-nis').innerText = document.getElementById('edit-nis').value;
+            currentRow.querySelector('.s-nama').innerText = document.getElementById('edit-nama').value;
+            currentRow.querySelector('.s-jk').value = document.getElementById('edit-jk').value;
+            currentRow.querySelector('.s-ttl').value = document.getElementById('edit-ttl').value;
+            currentRow.querySelector('.s-kelas').value = document.getElementById('edit-kelas').value;
+            currentRow.querySelector('.s-alamat').value = document.getElementById('edit-alamat').value;
+            currentRow.querySelector('.s-ayah').value = document.getElementById('edit-ayah').value;
+            currentRow.querySelector('.s-ibu').value = document.getElementById('edit-ibu').value;
+            currentRow.querySelector('.s-telp').value = document.getElementById('edit-telp').value;
+
+            // Jika ada file foto baru yang diimport
+            const fotoInput = document.getElementById('edit-foto');
+            if (fotoInput.files && fotoInput.files[0]) {
+                const imgURL = URL.createObjectURL(fotoInput.files[0]);
+                const imgElement = currentRow.querySelector('.avatar-mini');
+                imgElement.src = imgURL;
+                imgElement.onclick = function() { window.open(imgURL, '_blank'); };
             }
+
+            closeModal();
         }
 
-        // --- Logika Dasbor Dokumen & Gambar Kelolaan Sebelumnya ---
+        // Tambah Siswa Baru Langsung Membuka Form Kosong Baru
+        function openAddSiswaForm() {
+            const tbody = document.getElementById('tbody-siswa');
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td><input type="checkbox"></td>
+                <td><img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/200svg' width='40' height='40' viewBox='0 0 40 40'><circle cx='20' cy='20' r='20' fill='%23DB7093'/></svg>" class="avatar-mini"></td>
+                <td class="s-nis">Baru</td>
+                <td class="s-nama" style="font-weight: bold; color: #DB7093;">Nama Siswa</td>
+                <td class="s-jk">Male</td>
+                <td class="s-ttl">-</td>
+                <td class="s-kelas">6B</td>
+                <td class="s-alamat">-</td>
+                <td class="s-ayah">-</td>
+                <td class="s-ibu">-</td>
+                <td class="s-telp">-</td>
+                <td style="text-align: center;">
+                    <button class="btn-action btn-edit" onclick="openEditModal(this)">✏️ Edit All</button>
+                    <button class="btn-action btn-delete" onclick="deleteRow(this)">🗑️</button>
+                </td>
+            `;
+            tbody.appendChild(newRow);
+            // Langsung buka modal edit untuk menginput data siswa baru tersebut
+            openEditModal(newRow.querySelector('.btn-edit'));
+        }
+
+        function deleteRow(button) { if (confirm("Hapus siswa ini?")) button.closest('tr').remove(); }
         function deleteItem(button) { if (confirm("Hapus data ini?")) button.closest('.list-item').remove(); }
         function editItem(button) {
             const textSpan = button.closest('.list-item').querySelector('.item-text');
@@ -577,12 +632,6 @@
                         <div class="item-content"><a href="${fileURL}" target="_blank" class="item-link item-text">📄 ${input.files[0].name} (Buka)</a></div>
                         <div class="actions"><button class="btn-action btn-edit" onclick="editItem(this)">✏️</button><button class="btn-action btn-delete" onclick="deleteItem(this)">🗑️</button></div>
                     </div>`);
-            }
-        }
-        function uploadImage(input) {
-            if (input.files.length > 0) {
-                const imgURL = URL.createObjectURL(input.files[0]);
-                document.getElementById('gallery-container').insertAdjacentHTML('beforeend', `<img src="${imgURL}" class="gallery-item" onclick="window.open('${imgURL}', '_blank')">`);
             }
         }
     </script>
