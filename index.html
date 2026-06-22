@@ -247,8 +247,11 @@
             border: 1px solid #FFC0CB;
             border-radius: 8px;
             font-size: 13px;
-            width: 200px;
+            width: 220px;
             outline: none;
+        }
+        .search-box-siswa:focus {
+            border-color: #FF69B4;
         }
 
         .table-responsive {
@@ -349,7 +352,6 @@
     <div class="modal-overlay" id="modalOverlay" onclick="closeModal()"></div>
     <div class="modal-edit" id="modalEdit">
         <h3 style="color:#FF69B4; margin-bottom:15px; text-align:center;">✏️ Edit Data Siswa</h3>
-        <input type="hidden" id="edit-row-index">
         
         <div class="form-group">
             <label>Ganti Foto Profil</label>
@@ -366,8 +368,8 @@
         <div class="form-group">
             <label>Jenis Kelamin</label>
             <select id="edit-jk">
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
+                <option value="Laki-laki">Laki-laki</option>
+                <option value="Perempuan">Perempuan</option>
             </select>
         </div>
         <div class="form-group">
@@ -486,7 +488,7 @@
                         <button class="btn-siswa btn-pink-primary" onclick="openAddSiswaForm()">➕ Tambah Siswa Baru</button>
                         <button class="btn-siswa btn-white" onclick="alert('Mengekspor ke dokumen...')">📄 Ekspor (Excel/PDF)</button>
                     </div>
-                    <input type="text" class="search-box-siswa" placeholder="🔍 Search nama siswa...">
+                    <input type="text" id="searchSiswaInput" class="search-box-siswa" placeholder="🔍 Cari nama siswa..." onkeyup="filterSiswaTable()">
                 </div>
 
                 <div class="table-responsive">
@@ -512,14 +514,31 @@
                                 <td><input type="checkbox"></td>
                                 <td><img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/200svg' width='40' height='40' viewBox='0 0 40 40'><circle cx='20' cy='20' r='20' fill='%23FFB6C1'/></svg>" class="avatar-mini" onclick="window.open(this.src)"></td>
                                 <td class="s-nis">S3013</td>
-                                <td class="s-nama" style="font-weight: bold; color: #DB7093;">Nama LengkapMale</td>
-                                <td class="s-jk">Male</td>
+                                <td class="s-nama" style="font-weight: bold; color: #DB7093;">Ahmad Fauzi</td>
+                                <td class="s-jk">Laki-laki</td>
                                 <td class="s-ttl">Jakarta, 15 Jul 2012</td>
                                 <td class="s-kelas">6B</td>
                                 <td class="s-alamat">Jl. Melati 12</td>
                                 <td class="s-ayah">Budi Santoso</td>
-                                <td class="s-ibu">Nama Natana</td>
+                                <td class="s-ibu">Siti Aminah</td>
                                 <td class="s-telp">08123456789</td>
+                                <td style="text-align: center;">
+                                    <button class="btn-action btn-edit" onclick="openEditModal(this)">✏️ Edit All</button>
+                                    <button class="btn-action btn-delete" onclick="deleteRow(this)">🗑️</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td><img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/200svg' width='40' height='40' viewBox='0 0 40 40'><circle cx='20' cy='20' r='20' fill='%23FFC0CB'/></svg>" class="avatar-mini" onclick="window.open(this.src)"></td>
+                                <td class="s-nis">S3014</td>
+                                <td class="s-nama" style="font-weight: bold; color: #DB7093;">Siti Balqis</td>
+                                <td class="s-jk">Perempuan</td>
+                                <td class="s-ttl">Bandung, 22 Aug 2012</td>
+                                <td class="s-kelas">6B</td>
+                                <td class="s-alamat">Jl. Mawar 4</td>
+                                <td class="s-ayah">Hendrawan</td>
+                                <td class="s-ibu">Dewi Lestari</td>
+                                <td class="s-telp">08915555553</td>
                                 <td style="text-align: center;">
                                     <button class="btn-action btn-edit" onclick="openEditModal(this)">✏️ Edit All</button>
                                     <button class="btn-action btn-delete" onclick="deleteRow(this)">🗑️</button>
@@ -540,7 +559,27 @@
             if(document.getElementById('menu-' + pageId)) document.getElementById('menu-' + pageId).classList.add('active');
         }
 
-        // Buka Jendela Pengisian Edit
+        // --- Fungsi Real-time Search Nama Siswa ---
+        function filterSiswaTable() {
+            const input = document.getElementById('searchSiswaInput');
+            const filter = input.value.toLowerCase();
+            const tbody = document.getElementById('tbody-siswa');
+            const tr = tbody.getElementsByTagName('tr');
+
+            for (let i = 0; i < tr.length; i++) {
+                const tdNama = tr[i].querySelector('.s-nama');
+                if (tdNama) {
+                    const txtValue = tdNama.textContent || tdNama.innerText;
+                    if (txtValue.toLowerCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+
+        // --- Managemen Modal Edit ---
         let currentRow = null;
         function openEditModal(button) {
             currentRow = button.closest('tr');
@@ -565,21 +604,20 @@
             document.getElementById('edit-foto').value = ''; 
         }
 
-        // Menyimpan semua perubahan kolom sekaligus
         function saveEditSiswa() {
             if(!currentRow) return;
 
             currentRow.querySelector('.s-nis').innerText = document.getElementById('edit-nis').value;
             currentRow.querySelector('.s-nama').innerText = document.getElementById('edit-nama').value;
-            currentRow.querySelector('.s-jk').value = document.getElementById('edit-jk').value;
-            currentRow.querySelector('.s-ttl').value = document.getElementById('edit-ttl').value;
-            currentRow.querySelector('.s-kelas').value = document.getElementById('edit-kelas').value;
-            currentRow.querySelector('.s-alamat').value = document.getElementById('edit-alamat').value;
-            currentRow.querySelector('.s-ayah').value = document.getElementById('edit-ayah').value;
-            currentRow.querySelector('.s-ibu').value = document.getElementById('edit-ibu').value;
-            currentRow.querySelector('.s-telp').value = document.getElementById('edit-telp').value;
+            currentRow.querySelector('.s-jk').innerText = document.getElementById('edit-jk').value;
+            currentRow.querySelector('.s-ttl').innerText = document.getElementById('edit-ttl').value;
+            currentRow.querySelector('.s-kelas').innerText = document.getElementById('edit-kelas').value;
+            currentRow.querySelector('.s-alamat').innerText = document.getElementById('edit-alamat').value;
+            currentRow.querySelector('.s-ayah').innerText = document.getElementById('edit-ayah').value;
+            currentRow.querySelector('.s-ibu').innerText = document.getElementById('edit-ibu').value;
+            currentRow.querySelector('.s-telp').innerText = document.getElementById('edit-telp').value;
 
-            // Jika ada file foto baru yang diimport
+            // Logika ganti berkas foto
             const fotoInput = document.getElementById('edit-foto');
             if (fotoInput.files && fotoInput.files[0]) {
                 const imgURL = URL.createObjectURL(fotoInput.files[0]);
@@ -591,16 +629,16 @@
             closeModal();
         }
 
-        // Tambah Siswa Baru Langsung Membuka Form Kosong Baru
+        // Tambah Baris Kosong untuk data siswa baru
         function openAddSiswaForm() {
             const tbody = document.getElementById('tbody-siswa');
             const newRow = document.createElement('tr');
             newRow.innerHTML = `
                 <td><input type="checkbox"></td>
                 <td><img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/200svg' width='40' height='40' viewBox='0 0 40 40'><circle cx='20' cy='20' r='20' fill='%23DB7093'/></svg>" class="avatar-mini"></td>
-                <td class="s-nis">Baru</td>
-                <td class="s-nama" style="font-weight: bold; color: #DB7093;">Nama Siswa</td>
-                <td class="s-jk">Male</td>
+                <td class="s-nis">S${Math.floor(1000 + Math.random() * 9000)}</td>
+                <td class="s-nama" style="font-weight: bold; color: #DB7093;">Siswa Baru</td>
+                <td class="s-jk">Laki-laki</td>
                 <td class="s-ttl">-</td>
                 <td class="s-kelas">6B</td>
                 <td class="s-alamat">-</td>
@@ -613,7 +651,6 @@
                 </td>
             `;
             tbody.appendChild(newRow);
-            // Langsung buka modal edit untuk menginput data siswa baru tersebut
             openEditModal(newRow.querySelector('.btn-edit'));
         }
 
