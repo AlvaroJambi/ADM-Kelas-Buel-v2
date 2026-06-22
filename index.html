@@ -202,6 +202,7 @@
             text-align: center;
             text-decoration: none;
             display: block;
+            cursor: pointer;
             transition: transform 0.2s, background-color 0.2s;
         }
 
@@ -239,8 +240,15 @@
             gap: 2px;
         }
 
-        .item-text {
+        .item-link {
+            color: #4A4A4A;
+            text-decoration: none;
             font-weight: 500;
+        }
+
+        .item-link:hover {
+            color: #FF69B4;
+            text-decoration: underline;
         }
 
         .date {
@@ -263,8 +271,18 @@
             transition: background-color 0.2s;
         }
 
+        .btn-add-manual {
+            background-color: #E0F2FE;
+            color: #0369A1;
+            padding: 4px 10px;
+            font-size: 12px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+        }
+
         .btn-edit {
-            background-color: #FFE4B5; /* Moccasin / Orange-yellow pastel */
+            background-color: #FFE4B5;
             color: #8B5A2B;
         }
 
@@ -273,7 +291,7 @@
         }
 
         .btn-delete {
-            background-color: #FFC1C1; /* Light Red Pastel */
+            background-color: #FFC1C1;
             color: #8B2323;
         }
 
@@ -281,26 +299,26 @@
             background-color: #FFA6A6;
         }
 
-        /* --- IMPORT FILE COMPONENT --- */
-        .import-section {
-            margin-top: 10px;
-            padding: 12px;
+        /* --- AREA INPUT / MANAGE --- */
+        .manage-section {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
             background-color: #FFF5F5;
+            padding: 12px;
             border: 1px dashed #FFB6C1;
-            border-radius: 10px;
-            text-align: center;
+            border-radius: 12px;
         }
 
         .file-input-label {
-            display: inline-block;
             padding: 6px 12px;
             background-color: #FFB6C1;
             color: white;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: bold;
-            transition: background-color 0.2s;
         }
 
         .file-input-label:hover {
@@ -308,9 +326,30 @@
         }
 
         .file-input {
-            display: none; /* Menyembunyikan input default bawaan browser */
+            display: none;
         }
 
+        /* --- GALERI FOTO MEDIA --- */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .gallery-item {
+            width: 100%;
+            height: 80px;
+            border-radius: 8px;
+            object-fit: cover;
+            border: 1px solid #FFC0CB;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
     </style>
 </head>
 <body>
@@ -322,14 +361,14 @@
             <small style="color: #DB7093;">SD Islam Al Falah</small>
         </div>
         <a href="#dashboard" class="menu-item active">🌸 Dashboard</a>
-        <a href="#data-guru" class="menu-item">👩‍🏫 Data Guru</a>
-        <a href="#data-siswa" class="menu-item">🎒 Data Siswa</a>
-        <a href="#absensi" class="menu-item">📅 Absensi Siswa</a>
-        <a href="#jurnal" class="menu-item">📖 Jurnal Mengajar</a>
-        <a href="#modul" class="menu-item">📝 Modul Ajar</a>
-        <a href="#asesmen" class="menu-item">📊 Asesmen</a>
-        <a href="#perangkat" class="menu-item">📁 Perangkat Ajar</a>
-        <a href="#pengaturan" class="menu-item">⚙️ Pengaturan</a>
+        <a href="#data-guru" class="menu-item" onclick="triggerMenu('Data Guru')">👩‍🏫 Data Guru</a>
+        <a href="#data-siswa" class="menu-item" onclick="triggerMenu('Data Siswa')">🎒 Data Siswa</a>
+        <a href="#absensi" class="menu-item" onclick="triggerMenu('Absensi Siswa')">📅 Absensi Siswa</a>
+        <a href="#jurnal" class="menu-item" onclick="triggerMenu('Jurnal Mengajar')">📖 Jurnal Mengajar</a>
+        <a href="#modul" class="menu-item" onclick="triggerMenu('Modul Ajar')">📝 Modul Ajar</a>
+        <a href="#asesmen" class="menu-item" onclick="triggerMenu('Asesmen')">📊 Asesmen</a>
+        <a href="#perangkat" class="menu-item" onclick="triggerMenu('Perangkat Ajar')">📁 Perangkat Ajar</a>
+        <a href="#pengaturan" class="menu-item" onclick="triggerMenu('Pengaturan')">⚙️ Pengaturan</a>
     </div>
 
     <div class="main-content">
@@ -340,34 +379,34 @@
         </div>
 
         <div class="stats-grid">
-            <a href="#data-siswa" class="stat-card">
+            <div class="stat-card" onclick="triggerMenu('Data Siswa')">
                 <span class="stat-icon">👥</span>
                 <div class="stat-info">
                     <h3>Jumlah Siswa</h3>
                     <p>128 Aktif</p>
                 </div>
-            </a>
-            <a href="#perangkat" class="stat-card">
+            </div>
+            <div class="stat-card" onclick="triggerMenu('Perangkat Ajar')">
                 <span class="stat-icon">📁</span>
                 <div class="stat-info">
                     <h3>Perangkat Ajar</h3>
                     <p id="total-dokumen">52 Dokumen</p>
                 </div>
-            </a>
-            <a href="#absensi" class="stat-card">
+            </div>
+            <div class="stat-card" onclick="triggerMenu('Absensi')">
                 <span class="stat-icon">📝</span>
                 <div class="stat-info">
                     <h3>Absensi Hari Ini</h3>
                     <p>28 Hadir</p>
                 </div>
-            </a>
-            <a href="#tugas" class="stat-card">
+            </div>
+            <div class="stat-card" onclick="triggerMenu('Tugas')">
                 <span class="stat-icon">⏳</span>
                 <div class="stat-info">
                     <h3>Tugas Hari Ini</h3>
-                    <p>6 Belum Selesai</p>
+                    <p>6 Antrean</p>
                 </div>
-            </a>
+            </div>
         </div>
 
         <div class="dashboard-grid">
@@ -389,21 +428,15 @@
                 </div>
 
                 <div class="card">
-                    <div class="card-title">📁 PERANGKAT AJAR</div>
+                    <div class="card-title">
+                        <span>📁 PERANGKAT AJAR</span>
+                        <button class="btn-add-manual" onclick="addManual('perangkat-list', '📄')">➕ Tambah Teks</button>
+                    </div>
                     
                     <div class="list-container" id="perangkat-list">
                         <div class="list-item">
                             <div class="item-content">
-                                <span class="item-text">📄 RPP IPA Kelas 6.pdf</span>
-                            </div>
-                            <div class="actions">
-                                <button class="btn-action btn-edit" onclick="editItem(this)">✏️ Edit</button>
-                                <button class="btn-action btn-delete" onclick="deleteItem(this)">🗑️ Hapus</button>
-                            </div>
-                        </div>
-                        <div class="list-item">
-                            <div class="item-content">
-                                <span class="item-text">📊 Nilai Semester 1.xlsx</span>
+                                <a href="#" target="_blank" class="item-link item-text">📄 Contoh_Silabus.pdf (Klik untuk buka)</a>
                             </div>
                             <div class="actions">
                                 <button class="btn-action btn-edit" onclick="editItem(this)">✏️ Edit</button>
@@ -412,10 +445,8 @@
                         </div>
                     </div>
 
-                    <div class="import-section">
-                        <label for="file-upload" class="file-input-label">
-                            ➕ Import File (PDF, Word, Excel)
-                        </label>
+                    <div class="manage-section">
+                        <label for="file-upload" class="file-input-label">📁 Import File Dokumen</label>
                         <input type="file" id="file-upload" class="file-input" accept=".pdf, .doc, .docx, .xls, .xlsx" onchange="importFile(this)">
                     </div>
                 </div>
@@ -423,26 +454,29 @@
                 <div class="card">
                     <div class="card-title">AKSES CEPAT</div>
                     <div class="quick-access-grid">
-                        <a href="#data-siswa" class="quick-btn">🎒 <div>Data Siswa</div></a>
-                        <a href="#absensi" class="quick-btn">📝 <div>Absensi</div></a>
-                        <a href="#jurnal" class="quick-btn">📖 <div>Jurnal</div></a>
-                        <a href="#perangkat" class="quick-btn">📁 <div>Perangkat</div></a>
-                        <a href="#asesmen" class="quick-btn">📊 <div>Asesmen</div></a>
-                        <a href="#galeri" class="quick-btn">📷 <div>Galeri</div></a>
-                        <a href="#catatan" class="quick-btn">✍️ <div>Catatan</div></a>
-                        <a href="#laporan" class="quick-btn">📈 <div>Laporan</div></a>
+                        <div class="quick-btn" onclick="triggerMenu('Data Siswa')">🎒 <div>Data Siswa</div></div>
+                        <div class="quick-btn" onclick="triggerMenu('Absensi')">📝 <div>Absensi</div></div>
+                        <div class="quick-btn" onclick="triggerMenu('Jurnal Mengajar')">📖 <div>Jurnal</div></div>
+                        <div class="quick-btn" onclick="triggerMenu('Perangkat Ajar')">📁 <div>Perangkat</div></div>
+                        <div class="quick-btn" onclick="triggerMenu('Asesmen')">📊 <div>Asesmen</div></div>
+                        <div class="quick-btn" onclick="triggerMenu('Galeri Media')">📷 <div>Galeri</div></div>
+                        <div class="quick-btn" onclick="triggerMenu('Catatan')">✍️ <div>Catatan</div></div>
+                        <div class="quick-btn" onclick="triggerMenu('Laporan')">📈 <div>Laporan</div></div>
                     </div>
                 </div>
             </div>
 
             <div>
                 <div class="card">
-                    <div class="card-title">PENGUMUMAN</div>
+                    <div class="card-title">
+                        <span>📌 PENGUMUMAN</span>
+                        <button class="btn-add-manual" onclick="addManual('pengumuman-list', '')">➕ Tambah</button>
+                    </div>
                     <div class="list-container" id="pengumuman-list">
                         <div class="list-item">
                             <div class="item-content">
                                 <span class="item-text">Rapat Guru Bulanan</span>
-                                <span class="date">20 Juni 2025</span>
+                                <span class="date">20 Juni 2026</span>
                             </div>
                             <div class="actions">
                                 <button class="btn-action btn-edit" onclick="editItem(this)">✏️</button>
@@ -453,74 +487,109 @@
                 </div>
 
                 <div class="card">
-                    <div class="card-title">PENGINGAT TUGAS</div>
-                    <div class="list-container" id="tugas-list">
-                        <div class="list-item">
-                            <div class="item-content">
-                                <span class="item-text">✅ Upload Modul Ajar</span>
-                            </div>
-                            <div class="actions">
-                                <button class="btn-action btn-edit" onclick="editItem(this)">✏️</button>
-                                <button class="btn-action btn-delete" onclick="deleteItem(this)">🗑️</button>
-                            </div>
+                    <div class="card-title">📷 GALERI MEDIA KELAS</div>
+                    <div class="gallery-grid" id="gallery-container">
                         </div>
+                    <div class="manage-section" style="margin-top:12px;">
+                        <label for="image-upload" class="file-input-label">📸 Tambah Foto Device</label>
+                        <input type="file" id="image-upload" class="file-input" accept="image/*" onchange="uploadImage(this)">
                     </div>
                 </div>
             </div>
 
         </div>
-
     </div>
 
     <script>
-        // Fungsi Hapus Data
+        // Fungsi Umum Menghapus Data
         function deleteItem(button) {
             if (confirm("Apakah Anda yakin ingin menghapus data ini?")) {
-                const listItem = button.closest('.list-item');
-                listItem.remove();
+                button.closest('.list-item').remove();
             }
         }
 
-        // Fungsi Edit Nama Data
+        // Fungsi Umum Mengubah/Edit Nama Data
         function editItem(button) {
             const listItem = button.closest('.list-item');
             const textSpan = listItem.querySelector('.item-text');
-            const namaLama = textSpan.innerText;
+            const currentText = textSpan.innerText;
             
-            const namaBaru = prompt("Ubah nama data:", namaLama);
-            if (namaBaru !== null && namaBaru.trim() !== "") {
-                textSpan.innerText = namaBaru;
+            const newText = prompt("Ubah teks/data:", currentText);
+            if (newText !== null && newText.trim() !== "") {
+                textSpan.innerText = newText;
             }
         }
 
-        // Fungsi Import File Dokumen Pengguna
-        function importFile(input) {
-            const fileList = input.files;
-            if (fileList.length > 0) {
-                const file = fileList[0];
-                const container = document.getElementById('perangkat-list');
-
-                // Membuat elemen list baru secara dinamis
+        // Fungsi Tambah Data Manual Lewat Klik Tombol
+        function addManual(targetId, icon = '') {
+            const container = document.getElementById(targetId);
+            const inputUser = prompt("Masukkan data baru:");
+            
+            if (inputUser !== null && inputUser.trim() !== "") {
                 const newItem = document.createElement('div');
                 newItem.className = 'list-item';
                 newItem.innerHTML = `
                     <div class="item-content">
-                        <span class="item-text">📄 ${file.name}</span>
+                        <span class="item-text">${icon} ${inputUser}</span>
                     </div>
                     <div class="actions">
                         <button class="btn-action btn-edit" onclick="editItem(this)">✏️ Edit</button>
                         <button class="btn-action btn-delete" onclick="deleteItem(this)">🗑️ Hapus</button>
                     </div>
                 `;
-
-                // Memasukkan file baru ke dalam list perangkat ajar
                 container.appendChild(newItem);
-                
-                alert(`Berhasil mengimpor file: ${file.name}`);
-                
-                // Reset form input file agar bisa memilih file yang sama lagi jika dibutuhkan
-                input.value = '';
             }
+        }
+
+        // Fungsi Unggah Perangkat Ajar & Mengaktifkan Link Buka File
+        function importFile(input) {
+            if (input.files.length > 0) {
+                const file = input.files[0];
+                const container = document.getElementById('perangkat-list');
+                
+                // Membuat URL Objek lokal sementara agar file bisa dibuka/di-klik setelah di-upload
+                const fileURL = URL.createObjectURL(file);
+
+                const newItem = document.createElement('div');
+                newItem.className = 'list-item';
+                newItem.innerHTML = `
+                    <div class="item-content">
+                        <a href="${fileURL}" target="_blank" class="item-link item-text">📄 ${file.name} (Buka File)</a>
+                    </div>
+                    <div class="actions">
+                        <button class="btn-action btn-edit" onclick="editItem(this)">✏️ Edit</button>
+                        <button class="btn-action btn-delete" onclick="deleteItem(this)">🗑️ Hapus</button>
+                    </div>
+                `;
+                container.appendChild(newItem);
+                input.value = ''; // Reset input
+            }
+        }
+
+        // Fungsi Unggah Foto Dari Perangkat Pengguna dan Membuka Gambar tersebut
+        function uploadImage(input) {
+            if (input.files.length > 0) {
+                const file = input.files[0];
+                const container = document.getElementById('gallery-container');
+                const imgURL = URL.createObjectURL(file);
+
+                const newImg = document.createElement('img');
+                newImg.src = imgURL;
+                newImg.className = 'gallery-item';
+                newImg.alt = 'Foto Kelas';
+                // Membuat foto langsung bisa dibuka di tab baru saat di klik
+                newImg.onclick = function() {
+                    window.open(imgURL, '_blank');
+                };
+
+                container.appendChild(newImg);
+                input.value = ''; // Reset input
+            }
+        }
+
+        // Fungsi Respon ketika Menu Akses Cepat atau Sidebar diklik
+        function triggerMenu(namaMenu) {
+            alert(`Anda mengklik dan masuk menuju halaman: [${namaMenu}]`);
         }
     </script>
 </body>
