@@ -28,6 +28,7 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
+            flex-shrink: 0;
         }
 
         .logo-section {
@@ -274,16 +275,8 @@
             text-align: center;
         }
 
-        .table-siswa th.left-align, .table-siswa td.left-align {
-            text-align: left;
-        }
-
-        .table-siswa td {
-            padding: 10px;
-            border-bottom: 1px solid #FFF0F5;
-            vertical-align: middle;
-            text-align: center;
-        }
+        .table-siswa th.left-align, .table-siswa td.left-align { text-align: left; }
+        .table-siswa td { padding: 10px; border-bottom: 1px solid #FFF0F5; vertical-align: middle; text-align: center; }
 
         .avatar-mini {
             width: 40px;
@@ -294,90 +287,24 @@
         }
 
         /* --- ABSENSI SPECIFIC --- */
-        .absensi-layout {
-            display: grid;
-            grid-template-columns: 320px 1fr;
-            gap: 20px;
-            align-items: start;
-        }
-
-        .absensi-summary-box {
-            background: white;
-            padding: 15px;
-            border-radius: 15px;
-            border: 1px solid #FFC0CB;
-            margin-bottom: 15px;
-        }
-
-        .date-picker-card {
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
-            border: 1px solid #FFC0CB;
-            text-align: center;
-        }
-
-        .date-input-pink {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #FFC0CB;
-            border-radius: 10px;
-            color: #DB7093;
-            font-weight: bold;
-            outline: none;
-            font-size: 15px;
-            text-align: center;
-        }
-
-        .status-radio-group {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-            text-align: left;
-        }
-
-        .status-radio-label {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 12px;
-            cursor: pointer;
-            font-weight: 500;
-        }
-
-        .catatan-input {
-            width: 100%;
-            padding: 6px 10px;
-            border: 1px solid #FFC0CB;
-            border-radius: 6px;
-            outline: none;
-            font-size: 12px;
-        }
+        .absensi-layout { display: grid; grid-template-columns: 320px 1fr; gap: 20px; align-items: start; }
+        .absensi-summary-box { background: white; padding: 15px; border-radius: 15px; border: 1px solid #FFC0CB; margin-bottom: 15px; }
+        .date-picker-card { background: white; padding: 20px; border-radius: 15px; border: 1px solid #FFC0CB; text-align: center; }
+        .date-input-pink { width: 100%; padding: 10px; border: 1px solid #FFC0CB; border-radius: 10px; color: #DB7093; font-weight: bold; outline: none; font-size: 15px; text-align: center; }
+        .status-radio-group { display: flex; flex-direction: column; gap: 5px; text-align: left; }
+        .status-radio-label { display: flex; align-items: center; gap: 6px; font-size: 12px; cursor: pointer; font-weight: 500; }
+        .catatan-input { width: 100%; padding: 6px 10px; border: 1px solid #FFC0CB; border-radius: 6px; outline: none; font-size: 12px; }
 
         /* --- ASESMEN SPECIFIC --- */
-        .input-nilai {
-            width: 60px;
-            padding: 6px;
-            border: 1px solid #FFC0CB;
-            border-radius: 6px;
-            text-align: center;
-            font-weight: bold;
-            color: #4A4A4A;
-        }
-        .input-nilai:focus {
-            border-color: #FF69B4;
-            outline: none;
-            background-color: #FFF5F5;
-        }
-
+        .input-nilai { width: 60px; padding: 6px; border: 1px solid #FFC0CB; border-radius: 6px; text-align: center; font-weight: bold; color: #4A4A4A; }
+        .input-nilai:focus { border-color: #FF69B4; outline: none; background-color: #FFF5F5; }
         .btn-delete-col { background-color: #FFC1C1; color: #8B2323; font-size: 10px; padding: 2px 6px; border-radius: 4px; border: none; cursor: pointer; margin-top: 4px; display: block; margin-left: auto; margin-right: auto; }
 
         /* --- MODALS GENERAL --- */
         .modal-edit {
             display: none;
             position: fixed;
-            top: 50%;
-            left: 50%;
+            top: 50%; left: 50%;
             transform: translate(-50%, -50%);
             background: white;
             padding: 25px;
@@ -398,12 +325,13 @@
             z-index: 999;
         }
 
-        .form-group { margin-bottom: 12px; }
-        .form-group label { display: block; font-size: 12px; font-weight: bold; color: #DB7093; margin-bottom: 4px; }
-        .form-group input, .form-group select { width: 100%; padding: 8px; border: 1px solid #FFC0CB; border-radius: 8px; outline: none; }
-        .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 15px; }
-
-        .placeholder-page { background: white; padding: 40px; border-radius: 20px; border: 1px solid #FFC0CB; text-align: center; }
+        /* --- TOGGLE ALARM SWITCH --- */
+        .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 24px; }
+        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: #FF69B4; }
+        input:checked + .slider:before { transform: translateX(20px); }
     </style>
 </head>
 <body>
@@ -424,27 +352,55 @@
         <div class="form-group"><label>Tempat & Tanggal Lahir</label><input type="text" id="edit-ttl"></div>
         <div class="form-group"><label>Kelas</label><input type="text" id="edit-kelas"></div>
         <div class="form-group"><label>Alamat</label><input type="text" id="edit-alamat"></div>
-        <div class="form-group"><label>Nama Ayah</label><input type="text" id="edit-ayah"></div>
-        <div class="form-group"><label>Nama Ibu</label><input type="text" id="edit-ibu"></div>
-        <div class="form-group"><label>Nomor Telepon Aktif</label><input type="text" id="edit-telp"></div>
-        <div class="modal-actions">
+        <div class="modal-actions" style="display:flex; justify-content:flex-end; gap:10px;">
             <button class="btn-siswa btn-white" onclick="closeAllModals()">Batal</button>
-            <button class="btn-siswa btn-pink-primary" onclick="saveEditSiswa()">Simpan Perubahan</button>
+            <button class="btn-siswa btn-pink-primary" onclick="saveEditSiswa()">Simpan</button>
         </div>
     </div>
 
     <div class="modal-edit" id="modalEditProfilGuru">
         <h3 style="color:#FF69B4; margin-bottom:15px; text-align:center;">✏️ Edit Profil Guru</h3>
-        <div class="form-group"><label>Foto Profil Baru</label><input type="file" id="edit-guru-foto" accept="image/*"></div>
         <div class="form-group"><label>Nama Guru</label><input type="text" id="edit-guru-nama"></div>
         <div class="form-group"><label>NIP</label><input type="text" id="edit-guru-nip"></div>
         <div class="form-group"><label>Jabatan</label><input type="text" id="edit-guru-jabatan"></div>
         <div class="form-group"><label>Email</label><input type="email" id="edit-guru-email"></div>
-        <div class="modal-actions">
+        <div class="modal-actions" style="display:flex; justify-content:flex-end; gap:10px;">
             <button class="btn-siswa btn-white" onclick="closeAllModals()">Batal</button>
-            <button class="btn-siswa btn-pink-primary" onclick="saveProfilGuru()">Simpan Profil</button>
+            <button class="btn-siswa btn-pink-primary" onclick="saveProfilGuru()">Simpan</button>
         </div>
     </div>
+
+    <div class="modal-edit" id="modalAlarm">
+        <h3 id="modal-alarm-title" style="color:#FF69B4; margin-bottom:15px; text-align:center;">⏰ Konfigurasi Alarm</h3>
+        <input type="hidden" id="alarm-index-id">
+        <div class="form-group">
+            <label>Hubungkan Tugas (Dari Jurnal Mengajar)</label>
+            <select id="alarm-task-link" onchange="autoFillAlarmText()">
+                </select>
+        </div>
+        <div class="form-group">
+            <label>Nama Aktivitas Alarm</label>
+            <input type="text" id="alarm-nama-input" placeholder="Masukkan nama pengingat...">
+        </div>
+        <div class="form-group">
+            <label>Waktu Pemicu (Jam)</label>
+            <input type="time" id="alarm-waktu-input">
+        </div>
+        <div class="form-group">
+            <label>Tipe Aktivitas</label>
+            <select id="alarm-tipe-input">
+                <option value="Persiapan Kelas">🏫 Persiapan Kelas</option>
+                <option value="Tugas Remedial">📝 Tugas Remedial</option>
+                <option value="Pengiriman Nilai">📊 Pengiriman Nilai</option>
+                <option value="Jadwal Pertemuan">🤝 Jadwal Pertemuan</option>
+            </select>
+        </div>
+        <div class="modal-actions" style="display:flex; justify-content:flex-end; gap:10px;">
+            <button class="btn-siswa btn-white" onclick="closeAllModals()">Batal</button>
+            <button class="btn-siswa btn-pink-primary" onclick="prosesSimpanAlarm()">Simpan Alarm</button>
+        </div>
+    </div>
+
 
     <div class="sidebar">
         <div class="logo-section">
@@ -457,6 +413,7 @@
         <div onclick="switchPage('absensi')" id="menu-absensi" class="menu-item">📅 Absensi Siswa</div>
         <div onclick="switchPage('asesmen')" id="menu-asesmen" class="menu-item">📊 Asesmen</div>
         <div onclick="switchPage('jurnal')" id="menu-jurnal" class="menu-item">📖 Jurnal Mengajar</div>
+        <div onclick="switchPage('pengingat')" id="menu-pengingat" class="menu-item">🔔 Pengingat Tugas</div>
         <div onclick="switchPage('perangkat')" id="menu-perangkat" class="menu-item">📁 Perangkat Ajar</div>
     </div>
 
@@ -471,7 +428,7 @@
                 <div class="stat-card" onclick="switchPage('data-siswa')"><span class="stat-icon">👥</span><div class="stat-info"><h3>Jumlah Siswa</h3><p id="dash-siswa-count">3 Aktif</p></div></div>
                 <div class="stat-card" onclick="switchPage('perangkat')"><span class="stat-icon">📁</span><div class="stat-info"><h3>Perangkat Ajar</h3><p id="dash-perangkat-count">1 Dokumen</p></div></div>
                 <div class="stat-card" onclick="switchPage('absensi')"><span class="stat-icon">📝</span><div class="stat-info"><h3>Absensi Hari Ini</h3><p id="dash-absensi-count">3 Hadir</p></div></div>
-                <div class="stat-card" onclick="switchPage('asesmen')"><span class="stat-icon">📊</span><div class="stat-info"><h3>Rata-Rata Asesmen</h3><p id="dash-asesmen-avg">74.4</p></div></div>
+                <div class="stat-card" onclick="switchPage('asesmen')"><span class="stat-icon">📊</span><div class="stat-info"><h3>Rata-Rata Asesmen</h3><p id="dash-asesmen-avg">82.5</p></div></div>
             </div>
 
             <div class="dashboard-grid">
@@ -479,7 +436,7 @@
                     <div class="card">
                         <div class="card-title">
                             <span>PROFIL GURU</span>
-                            <button class="btn-action btn-edit" style="font-weight:normal;" onclick="openEditProfilGuruModal()">✏️ Edit Profil</button>
+                            <button class="btn-action btn-edit" onclick="openEditProfilGuruModal()">✏️ Edit Profil</button>
                         </div>
                         <div class="profile-container">
                             <img src="Profil.jpeg" alt="Foto Profil" class="profile-img" id="guru-display-foto">
@@ -494,12 +451,12 @@
                         </div>
                     </div>
                     <div class="card">
-                        <div class="card-title">AKSES CEPAT</div>
+                        <div class="card-title">AKSES CEPAT SYNC</div>
                         <div class="quick-access-grid">
                             <div class="quick-btn" onclick="switchPage('data-siswa')">🎒 <div>Data Siswa</div></div>
                             <div class="quick-btn" onclick="switchPage('absensi')">📝 <div>Absensi</div></div>
-                            <div class="quick-btn" onclick="switchPage('asesmen')">📊 <div>Asesmen</div></div>
                             <div class="quick-btn" onclick="switchPage('jurnal')">📖 <div>Jurnal</div></div>
+                            <div class="quick-btn" onclick="switchPage('pengingat')">⏰ <div>Alarm</div></div>
                         </div>
                     </div>
                 </div>
@@ -517,17 +474,9 @@
                             </div>
                         </div>
                         <div class="manage-section">
-                            <label for="file-upload" class="file-input-label">📂 Upload File</label>
+                            <label for="file-upload" class="file-input-label">📂 Upload</label>
                             <input type="file" id="file-upload" class="file-input" accept=".pdf, .doc, .docx" onchange="importFile(this)">
-                            <button class="btn-add-manual" onclick="addManualItem()">➕ Ketik Manual</button>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-title">📸 GALERI MEDIA KELAS</div>
-                        <div class="gallery-grid" id="gallery-container"></div>
-                        <div class="manage-section" style="margin-top: 10px; padding: 8px;">
-                            <label for="image-upload" class="file-input-label" style="background-color: #DB7093;">📷 Tambah Foto Kegiatan</label>
-                            <input type="file" id="image-upload" class="file-input" accept="image/*" onchange="uploadGalleryImage(this)">
+                            <button class="btn-add-manual" onclick="addManualItem()">➕ Manual</button>
                         </div>
                     </div>
                 </div>
@@ -542,7 +491,7 @@
                     <input type="text" id="searchSiswaInput" class="search-box-siswa" placeholder="🔍 Cari nama..." onkeyup="filterSiswaTable()">
                 </div>
                 <div class="table-responsive">
-                    <table class="table-siswa" style="min-width: 1000px;">
+                    <table class="table-siswa">
                         <thead>
                             <tr>
                                 <th class="left-align">Foto</th><th class="left-align">NIS</th><th class="left-align">Nama Lengkap</th><th>L/P</th><th>Kelas</th><th>Alamat</th><th>Aksi</th>
@@ -551,17 +500,12 @@
                         <tbody id="tbody-siswa">
                             <tr id="row-siswa-1">
                                 <td class="left-align"><img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/200svg' width='40' height='40'><circle cx='20' cy='20' r='20' fill='%23FFB6C1'/></svg>" class="avatar-mini"></td>
-                                <td class="s-nis left-align">1999001800</td><td class="s-nama left-align" style="font-weight: bold; color: #DB7093;">Anisa Amalia</td><td class="s-jk">Perempuan</td><td class="s-kelas">6A</td><td class="s-alamat">Jl. Melati 12</td>
+                                <td class="s-nis left-align">1999011</td><td class="s-nama left-align" style="font-weight: bold; color: #DB7093;">Anisa</td><td class="s-jk">Perempuan</td><td class="s-kelas">6A</td><td class="s-alamat">Jl. Melati 12</td>
                                 <td><button class="btn-action btn-edit" onclick="openEditModal(this)">✏️</button> <button class="btn-action btn-delete" onclick="deleteRow(this)">🗑️</button></td>
                             </tr>
                             <tr id="row-siswa-2">
                                 <td class="left-align"><img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/200svg' width='40' height='40'><circle cx='20' cy='20' r='20' fill='%23FFC0CB'/></svg>" class="avatar-mini"></td>
-                                <td class="s-nis left-align">1999001801</td><td class="s-nama left-align" style="font-weight: bold; color: #DB7093;">Budi Dermawan</td><td class="s-jk">Laki-laki</td><td class="s-kelas">6A</td><td class="s-alamat">Jl. Rose 4</td>
-                                <td><button class="btn-action btn-edit" onclick="openEditModal(this)">✏️</button> <button class="btn-action btn-delete" onclick="deleteRow(this)">🗑️</button></td>
-                            </tr>
-                            <tr id="row-siswa-3">
-                                <td class="left-align"><img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/200svg' width='40' height='40'><circle cx='20' cy='20' r='20' fill='%23E0F2FE'/></svg>" class="avatar-mini"></td>
-                                <td class="s-nis left-align">1999001802</td><td class="s-nama left-align" style="font-weight: bold; color: #DB7093;">Chandra Wijaya</td><td class="s-jk">Laki-laki</td><td class="s-kelas">6A</td><td class="s-alamat">Jl. Gajah Mada</td>
+                                <td class="s-nis left-align">1999012</td><td class="s-nama left-align" style="font-weight: bold; color: #DB7093;">Budi</td><td class="s-jk">Laki-laki</td><td class="s-kelas">6A</td><td class="s-alamat">Jl. Rose 4</td>
                                 <td><button class="btn-action btn-edit" onclick="openEditModal(this)">✏️</button> <button class="btn-action btn-delete" onclick="deleteRow(this)">🗑️</button></td>
                             </tr>
                         </tbody>
@@ -572,33 +516,25 @@
 
         <div id="page-absensi" class="page-content">
             <div class="card">
-                <div class="card-title" style="font-size: 22px; color: #FF69B4; border-bottom: none;">📅 ABSENSI SISWA HARIAN</div>
+                <div class="card-title" style="font-size: 22px; color: #FF69B4;">📅 ABSENSI SISWA HARIAN</div>
                 <div class="absensi-layout">
                     <div>
                         <div class="absensi-summary-box">
-                            <h4 style="color:#D87093; margin-bottom:8px; font-size:14px;">📊 Ringkasan Kehadiran</h4>
-                            <p style="font-size:13px; margin:3px 0;">👥 Total Siswa: <strong id="abs-total">3</strong></p>
-                            <p style="font-size:13px; margin:3px 0; color:#2E7D32;">🟢 Hadir: <strong id="abs-hadir">3</strong></p>
-                            <p style="font-size:13px; margin:3px 0; color:#C62828;">🔴 Alfa: <strong id="abs-alfa">0</strong></p>
-                            <p style="font-size:13px; margin:3px 0; color:#EF6C00;">🟡 Sakit/Izin: <strong id="abs-sakit-izin">0</strong></p>
+                            <h4 style="color:#D87093; margin-bottom:8px;">📊 Ringkasan</h4>
+                            <p>👥 Total Siswa: <strong id="abs-total">2</strong></p>
+                            <p style="color:#2E7D32;">🟢 Hadir: <strong id="abs-hadir">2</strong></p>
+                            <p style="color:#C62828;">🔴 Alfa: <strong id="abs-alfa">0</strong></p>
                         </div>
                         <div class="date-picker-card">
-                            <label style="display:block; font-size:12px; font-weight:bold; color:#DB7093; margin-bottom:8px;">PILIH TANGGAL ABSENSI</label>
                             <input type="date" id="absensi-date" class="date-input-pink" value="2026-06-22" onchange="updateAbsensiTitle()">
                         </div>
                     </div>
-
-                    <div class="card" style="margin-bottom: 0; padding: 15px;">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-                            <h3 id="absensi-current-title" style="color:#FF69B4; font-size:16px;">Absensi Kelas - 22 Juni 2026</h3>
-                            <button class="btn-siswa btn-pink-primary" style="padding:6px 12px; font-size:12px;" onclick="hitungUlangAbsensi(); alert('Absensi hari ini berhasil disimpan!')">💾 Simpan Absen</button>
-                        </div>
+                    <div class="card" style="margin-bottom: 0; padding: 15px; width: 100%;">
+                        <h3 id="absensi-current-title" style="color:#FF69B4; font-size:16px; margin-bottom: 10px;">Absensi Kelas - 22 Juni 2026</h3>
                         <div class="table-responsive">
-                            <table class="table-siswa" style="min-width: 650px;">
+                            <table class="table-siswa">
                                 <thead>
-                                    <tr>
-                                        <th style="width: 60px;">Foto</th><th class="left-align">Nama Siswa</th><th>NIS</th><th>Status Kehadiran</th><th>Catatan</th>
-                                    </tr>
+                                    <tr><th>Nama Siswa</th><th>NIS</th><th>Status Kehadiran</th></tr>
                                 </thead>
                                 <tbody id="tbody-absensi-isi"></tbody>
                             </table>
@@ -609,75 +545,50 @@
         </div>
 
         <div id="page-asesmen" class="page-content">
-            <div class="card" style="border: none; background: transparent; padding: 0;">
-                <div class="header" style="margin-bottom: 20px;">
-                    <h1 style="font-size: 30px; color: #FF69B4;">Asesmen Siswa Harian</h1>
-                    <p>Kelas 6A: Kelola dan Tambah Kolom Parameter Penilaian Secara Mandiri</p>
-                </div>
-
-                <div class="stats-grid" style="margin-bottom: 20px;">
-                    <div class="stat-card" style="border-left: 5px solid #FF69B4;"><span class="stat-icon">📋</span><div class="stat-info"><h3>Jumlah Kategori</h3><p id="total-kegiatan">3 Kategori</p></div></div>
-                    <div class="stat-card" style="border-left: 5px solid #2E7D32;"><span class="stat-icon">🎓</span><div class="stat-info"><h3>Rata-rata Kelas</h3><p id="rata-kelas">74.4</p></div></div>
-                    <div class="stat-card" style="border-left: 5px solid #C62828;"><span class="stat-icon">⚠️</span><div class="stat-info"><h3>Di Bawah KKM (75)</h3><p id="siswa-remedial" style="color: #C62828;">1 Siswa</p></div></div>
-                </div>
-
+            <div class="card">
+                <div class="card-title" style="font-size: 22px; color: #FF69B4;">📊 ASESMEN SISWA HARIAN</div>
                 <div class="toolbar-siswa">
-                    <div class="btn-group-siswa">
-                        <button class="btn-siswa btn-pink-primary" onclick="tambahKategoriNilaiBaru()">➕ Tambah Asesmen Baru</button>
-                        <button class="btn-siswa btn-white" onclick="alert('Export Rekap Berhasil!')">📥 Ekspor Excel</button>
-                    </div>
-                    <input type="text" id="searchAsesmenInput" class="search-box-siswa" placeholder="🔍 Cari nama siswa..." onkeyup="filterAsesmenTable()">
+                    <button class="btn-siswa btn-pink-primary" onclick="tambahKategoriNilaiBaru()">➕ Tambah Parameter Nilai</button>
                 </div>
-
                 <div class="table-responsive">
                     <table class="table-siswa" id="table-penilaian">
                         <thead>
                             <tr id="thead-row-asesmen">
-                                <th class="left-align" style="width: 120px;">NIS</th><th class="left-align">Nama Siswa</th>
+                                <th class="left-align">NIS</th><th class="left-align">Nama Siswa</th>
                             </tr>
                         </thead>
                         <tbody id="tbody-asesmen"></tbody>
                     </table>
-                </div>
-                <div style="margin-top: 15px; text-align: right;">
-                    <button class="btn-siswa btn-pink-primary" style="padding: 10px 20px;" onclick="alert('Rekap seluruh nilai berhasil disimpan ke sistem!')">💾 Simpan Semua Nilai</button>
                 </div>
             </div>
         </div>
 
         <div id="page-jurnal" class="page-content">
             <div class="card">
-                <div class="card-title" style="font-size: 22px; color: #FF69B4; border-bottom: none;">📖 JURNAL MENGAJAR GURU</div>
-                
-                <div class="manage-section" style="flex-direction: column; align-items: stretch; background-color: white; border: 1px solid #FFC0CB; gap: 15px; padding: 20px;">
-                    <h4 style="color:#D87093; font-size:14px; border-bottom:1px dashed #FFE4E1; padding-bottom:5px;">➕ Tambah Riwayat Jurnal Mengajar Hari Ini</h4>
+                <div class="card-title" style="font-size: 22px; color: #FF69B4;">📖 JURNAL MENGAJAR GURU</div>
+                <div class="manage-section" style="flex-direction: column; align-items: stretch; background-color: white; border: 1px solid #FFC0CB; padding: 20px;">
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;">
-                        <div class="form-group"><label>Tanggal</label><input type="date" id="jur-tanggal" value="2026-06-22"></div>
-                        <div class="form-group"><label>Jam Ke-</label><input type="text" id="jur-jam" placeholder="Contoh: 1 - 3"></div>
-                        <div class="form-group"><label>Mata Pelajaran</label><input type="text" id="jur-mapel" placeholder="Contoh: Matematika"></div>
-                        <div class="form-group"><label>Ketercapaian</label>
-                            <select id="jur-status">
-                                <option value="Tercapai 🟢">Tercapai 🟢</option>
-                                <option value="Tersampaikan Sebagian 🟡">Tersampaikan Sebagian 🟡</option>
-                                <option value="Tertunda 🔴">Tertunda 🔴</option>
-                            </select>
-                        </div>
+                        <div class="form-group"><label>Mata Pelajaran</label><input type="text" id="jur-mapel" placeholder="Matematika"></div>
+                        <div class="form-group"><label>Materi Pembelajaran / Rencana Tugas</label><input type="text" id="jur-materi" placeholder="Siapkan Materi Aljabar (NIS: Anisa)"></div>
                     </div>
-                    <div class="form-group"><label>Materi Pokok / Pembahasan Pembelajaran</label><input type="text" id="jur-materi" placeholder="Masukkan ringkasan kompetensi dasar atau bab materi..."></div>
-                    <div style="text-align: right;"><button class="btn-siswa btn-pink-primary" onclick="simpanJurnalMengajarBaru()">➕ Masukkan ke Tabel Jurnal</button></div>
+                    <div style="text-align: right;"><button class="btn-siswa btn-pink-primary" onclick="simpanJurnalMengajarBaru()">➕ Simpan & Sinkronkan</button></div>
                 </div>
 
                 <div class="table-responsive" style="margin-top: 20px;">
                     <table class="table-siswa">
                         <thead>
-                            <tr>
-                                <th style="width:120px;">Tanggal</th><th>Jam Ke-</th><th>Mata Pelajaran</th><th>Materi Pembelajaran</th><th>Status Evaluasi</th><th>Aksi</th>
-                            </tr>
+                            <tr><th>Mata Pelajaran</th><th>Materi / Catatan Tugas</th><th>Aksi</th></tr>
                         </thead>
                         <tbody id="tbody-jurnal-mengajar">
                             <tr>
-                                <td>22 Juni 2026</td><td>1 - 2</td><td style="font-weight:bold; color:#DB7093;">Bahasa Indonesia</td><td>Membaca puisi dan menentukan unsur intrinsik cerita pendek</td><td>Tercapai 🟢</td>
-                                <td><button class="btn-action btn-delete" onclick="this.closest('tr').remove()">🗑️</button></td>
+                                <td style="font-weight:bold; color:#DB7093;">Matematika</td>
+                                <td>Siapkan Materi Matematika (NIS: Anisa)</td>
+                                <td><button class="btn-action btn-delete" onclick="hapusBarisJurnal(this)">🗑️</button></td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight:bold; color:#DB7093;">IPA</td>
+                                <td>Koreksi Tugas IPA (Budi)</td>
+                                <td><button class="btn-action btn-delete" onclick="hapusBarisJurnal(this)">🗑️</button></td>
                             </tr>
                         </tbody>
                     </table>
@@ -685,31 +596,70 @@
             </div>
         </div>
 
-        <div id="page-perangkat" class="page-content">
+        <div id="page-pengingat" class="page-content">
             <div class="card">
-                <div class="card-title" style="font-size: 22px; color: #FF69B4; border-bottom: none;">📁 PERANGKAT AJAR UTAMA</div>
-                <p style="font-size:13px; color:#8B658B; margin-bottom:15px;">Manajemen berkas perangkat mengajar otomatis tersambung dengan tabel perangkat di Dashboard.</p>
-                <div id="perangkat-mirror-notice" style="background:#FFF5F5; padding:15px; border-radius:10px; border:1px solid #FFC0CB; text-align:center; font-weight:bold; color:#DB7093; cursor:pointer;" onclick="switchPage('dashboard')">
-                    💡 Modul ini terintegrasi penuh. Gunakan widget unggah dan edit berkas langsung pada box di halaman utama "Dashboard". Klik di sini untuk kembali ke Dashboard.
+                <div class="card-title" style="font-size: 22px; color: #FF69B4; border-bottom: none;">
+                    <span>🔔 Alarm Pengingat Tugas: Konfigurasi</span>
+                    <button class="btn-siswa btn-pink-primary" onclick="openAlarmModal(false)">➕ Tambah Alarm Baru</button>
+                </div>
+                <div style="background-color: #FFF5F5; padding: 12px; border-radius: 10px; border: 1px dashed #FFB6C1; margin-bottom: 15px; font-size:13px;">
+                    💡 <strong>Tips Latar Belakang:</strong> Izinkan akses browser saat sistem meminta perizinan "Notification API" agar alarm berdering saat tab ditutup.
+                </div>
+                <div class="table-responsive">
+                    <table class="table-siswa">
+                        <thead>
+                            <tr>
+                                <th style="width: 70px;">Ikon</th>
+                                <th>Waktu Alarm</th>
+                                <th>Tipe Aktivitas</th>
+                                <th class="left-align">Nama Tugas</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody-alarm">
+                            </tbody>
+                    </table>
                 </div>
             </div>
         </div>
+
+        <div id="page-perangkat" class="page-content">
+            <div class="card">
+                <div class="card-title" style="font-size: 22px; color: #FF69B4;">📁 PERANGKAT AJAR UTAMA</div>
+                <div style="background:#FFF5F5; padding:15px; border-radius:10px; text-align:center; font-weight:bold; color:#DB7093; cursor:pointer;" onclick="switchPage('dashboard')">
+                    💡 Modul Terintegrasi. Kelola, unggah berkas, dan hapus langsung dari widget "Perangkat Ajar" di halaman Dashboard utama. Klik di sini untuk kembali.
+                </div>
+            </div>
+        </div>
+
     </div>
 
+    <audio id="alarm-sound-media" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-500.wav" loop></audio>
+
     <script>
-        // Data Global Penilaian Asesmen
-        let listKategoriNilai = ["Ulangan Harian 1", "Tugas Mandiri", "Proyek Kelompok"];
+        let listKategoriNilai = ["Ulangan Harian 1", "Tugas Mandiri 1"];
         let databaseNilai = {
-            "1999001800": {"Ulangan Harian 1": 85, "Tugas Mandiri": 90, "Proyek Kelompok": 80},
-            "1999001801": {"Ulangan Harian 1": 78, "Tugas Mandiri": 85, "Proyek Kelompok": 88},
-            "1999001802": {"Ulangan Harian 1": 60, "Tugas Mandiri": 65, "Proyek Kelompok": 55}
+            "1999011": {"Ulangan Harian 1": 85, "Tugas Mandiri 1": 90},
+            "1999012": {"Ulangan Harian 1": 80, "Tugas Mandiri 1": 90}
         };
 
+        // Database Array Alarm (Default data sesuai visual gambar mockup)
+        let databaseAlarm = [
+            { ikon: '🏫', waktu: '07:30', tipe: 'Persiapan Kelas', nama: 'Siapkan Materi Matematika (NIS: Anisa)', aktif: true },
+            { ikon: '📝', waktu: '09:45', tipe: 'Tugas Remedial', nama: 'Koreksi Tugas IPA (Budi)', aktif: true },
+            { ikon: '📊', waktu: '13:00', tipe: 'Pengiriman Nilai', nama: 'Kirim Nilai PTS', aktif: false }
+        ];
+
         window.onload = function() {
-            perbaruiAngkaMukaSiswa();
-            hitungUlangPerangkat();
-            sinkronisasiDataKeAbsensi();
+            refreshSiswaCounters();
+            syncAbsensiSiswa();
             renderStrukturTabelAsesmen();
+            renderTabelAlarm();
+            if ("Notification" in window) { Notification.requestPermission(); }
+            
+            // Jalankan background processor alarm tiap 15 detik
+            setInterval(engineCekAlarmWaktu, 15000);
         };
 
         function switchPage(pageId) {
@@ -718,303 +668,301 @@
             document.getElementById('page-' + pageId).classList.add('active-page');
             if(document.getElementById('menu-' + pageId)) document.getElementById('menu-' + pageId).classList.add('active');
 
-            if(pageId === 'absensi') sinkronisasiDataKeAbsensi();
+            if(pageId === 'pengingat') { updateDropdownPilihanTugasJurnal(); renderTabelAlarm(); }
             if(pageId === 'asesmen') renderStrukturTabelAsesmen();
-            if(pageId === 'dashboard') { perbaruiAngkaMukaSiswa(); hitungUlangPerangkat(); }
+            if(pageId === 'absensi') syncAbsensiSiswa();
         }
 
-        function perbaruiAngkaMukaSiswa() {
-            const barisSiswa = document.getElementById('tbody-siswa').getElementsByTagName('tr').length;
-            if(document.getElementById('dash-siswa-count')) document.getElementById('dash-siswa-count').innerText = `${barisSiswa} Aktif`;
+        function closeAllModals() {
+            document.getElementById('modalEdit').style.display = 'none';
+            document.getElementById('modalEditProfilGuru').style.display = 'none';
+            document.getElementById('modalAlarm').style.display = 'none';
+            document.getElementById('modalOverlay').style.display = 'none';
         }
 
-        function hitungUlangPerangkat() {
-            const totalPerangkat = document.getElementById('perangkat-list').getElementsByClassName('list-item').length;
-            document.getElementById('dash-perangkat-count').innerText = `${totalPerangkat} Dokumen`;
-        }
-
-        // --- MANAJEMEN INPUT JURNAL MENGAJAR ---
+        // --- ENGINE REKAP JURNAL & SYNC KE ALARM ---
         function simpanJurnalMengajarBaru() {
-            const tglVal = document.getElementById('jur-tanggal').value;
-            const jam = document.getElementById('jur-jam').value;
             const mapel = document.getElementById('jur-mapel').value;
             const materi = document.getElementById('jur-materi').value;
-            const status = document.getElementById('jur-status').value;
-
-            if(!jam || !mapel || !materi) return alert("Mohon lengkapi seluruh kolom input jurnal terlebih dahulu!");
-
-            const options = { year: 'numeric', month: 'long', day: 'numeric' };
-            const tglIndo = new Date(tglVal).toLocaleDateString('id-ID', options);
+            if(!mapel || !materi) return alert("Mohon lengkapi isi mata pelajaran dan materi!");
 
             const tbody = document.getElementById('tbody-jurnal-mengajar');
             const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td>${tglIndo}</td>
-                <td>${jam}</td>
-                <td style="font-weight:bold; color:#DB7093;">${mapel}</td>
-                <td>${materi}</td>
-                <td>${status}</td>
-                <td><button class="btn-action btn-delete" onclick="this.closest('tr').remove()">🗑️</button></td>
-            `;
-            tbody.insertBefore(tr, tbody.firstChild);
+            tr.innerHTML = `<td style="font-weight:bold; color:#DB7093;">${mapel}</td><td>${materi}</td><td><button class="btn-action btn-delete" onclick="hapusBarisJurnal(this)">🗑️</button></td>`;
+            tbody.appendChild(tr);
 
-            // Reset Form Input
-            document.getElementById('jur-jam').value = "";
             document.getElementById('jur-mapel').value = "";
             document.getElementById('jur-materi').value = "";
-            alert("Jurnal mengajar berhasil ditambahkan ke tabel!");
+            alert("Jurnal tersimpan! Tugas ini sekarang otomatis dapat dihubungkan di menu Alarm.");
         }
 
-        // --- MANAJEMEN EDIT PROFIL GURU ---
-        function openEditProfilGuruModal() {
-            document.getElementById('edit-guru-nama').value = document.getElementById('guru-display-nama').innerText;
-            document.getElementById('edit-guru-nip').value = document.getElementById('guru-display-nip').innerText;
-            document.getElementById('edit-guru-jabatan').value = document.getElementById('guru-display-jabatan').innerText;
-            document.getElementById('edit-guru-email').value = document.getElementById('guru-display-email').innerText;
-            
-            document.getElementById('modalEditProfilGuru').style.display = 'block';
-            document.getElementById('modalOverlay').style.display = 'block';
+        function hapusBarisJurnal(btn) {
+            btn.closest('tr').remove();
+            updateDropdownPilihanTugasJurnal();
         }
 
-        function saveProfilGuru() {
-            document.getElementById('guru-display-nama').innerText = document.getElementById('edit-guru-nama').value;
-            document.getElementById('guru-display-nip').innerText = document.getElementById('edit-guru-nip').value;
-            document.getElementById('guru-display-jabatan').innerText = document.getElementById('edit-guru-jabatan').value;
-            document.getElementById('guru-display-email').innerText = document.getElementById('edit-guru-email').value;
+        function updateDropdownPilihanTugasJurnal() {
+            const select = document.getElementById('alarm-task-link');
+            if(!select) return;
+            select.innerHTML = '<option value="">-- Ketik Kustom / Mandiri --</option>';
             
-            const fileInput = document.getElementById('edit-guru-foto');
-            if(fileInput.files && fileInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('guru-display-foto').src = e.target.result;
-                };
-                reader.readAsDataURL(fileInput.files[0]);
+            const rows = document.getElementById('tbody-jurnal-mengajar').getElementsByTagName('tr');
+            for(let i=0; i<rows.length; i++) {
+                const mapel = rows[i].getElementsByTagName('td')[0].innerText;
+                const materi = rows[i].getElementsByTagName('td')[1].innerText;
+                const gabungText = `${mapel}: ${materi}`;
+                select.innerHTML += `<option value="${materi}">${gabungText}</option>`;
             }
-            closeAllModals();
         }
 
-        // --- MANAJEMEN HALAMAN ABSENSI ---
-        function updateAbsensiTitle() {
-            const dateVal = document.getElementById('absensi-date').value;
-            const options = { year: 'numeric', month: 'long', day: 'numeric' };
-            document.getElementById('absensi-current-title').innerText = `Absensi Kelas - ${new Date(dateVal).toLocaleDateString('id-ID', options)}`;
+        function autoFillAlarmText() {
+            const select = document.getElementById('alarm-task-link');
+            if(select.value !== "") {
+                document.getElementById('alarm-nama-input').value = select.value;
+            }
         }
 
-        function sinkronisasiDataKeAbsensi() {
-            const siswaRows = document.getElementById('tbody-siswa').getElementsByTagName('tr');
-            const tbodyAbsensi = document.getElementById('tbody-absensi-isi');
-            tbodyAbsensi.innerHTML = '';
+        // --- ALARM CRUD OPERATIONS ---
+        function renderTabelAlarm() {
+            const tbody = document.getElementById('tbody-alarm');
+            if(!tbody) return;
+            tbody.innerHTML = '';
 
-            for(let i=0; i<siswaRows.length; i++) {
-                const rowId = siswaRows[i].id || 'gen-' + i;
-                const nis = siswaRows[i].querySelector('.s-nis').innerText;
-                const nama = siswaRows[i].querySelector('.s-nama').innerText;
-                const imgSrc = siswaRows[i].querySelector('.avatar-mini').src;
-
+            databaseAlarm.forEach((alarm, index) => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td><img src="${imgSrc}" class="avatar-mini" style="width:35px; height:35px;"></td>
-                    <td class="left-align" style="font-weight: bold; color: #DB7093;">${nama}</td>
-                    <td>${nis}</td>
+                    <td style="font-size:18px;">${alarm.ikon}</td>
+                    <td style="font-weight:bold; color:#FF69B4; font-size:15px;">${alarm.waktu}</td>
+                    <td><span style="background:#FFE4E1; padding:3px 8px; border-radius:6px; font-size:12px;">${alarm.tipe}</span></td>
+                    <td class="left-align" style="font-weight:500;">${alarm.nama}</td>
                     <td>
-                        <div class="status-radio-group">
-                            <label class="status-radio-label" style="color:#2E7D32;"><input type="radio" name="status-${rowId}" value="Hadir" checked onchange="hitungUlangAbsensi()"> 🟢 Hadir</label>
-                            <label class="status-radio-label" style="color:#EF6C00;"><input type="radio" name="status-${rowId}" value="Sakit" onchange="hitungUlangAbsensi()"> 🟡 Sakit</label>
-                            <label class="status-radio-label" style="color:#C62828;"><input type="radio" name="status-${rowId}" value="Alfa" onchange="hitungUlangAbsensi()"> 🔴 Alfa</label>
-                        </div>
+                        <label class="switch">
+                            <input type="checkbox" ${alarm.aktif ? 'checked' : ''} onchange="statusAlarmSwitchChanged(${index}, this.checked)">
+                            <span class="slider"></span>
+                        </label>
                     </td>
-                    <td><input type="text" class="catatan-input" placeholder="Keterangan..."></td>
+                    <td>
+                        <button class="btn-action btn-edit" onclick="openAlarmModal(true, ${index})">✏️</button>
+                        <button class="btn-action btn-delete" onclick="hapusDataAlarm(${index})">🗑️</button>
+                    </td>
                 `;
-                tbodyAbsensi.appendChild(tr);
+                tbody.appendChild(tr);
+            });
+        }
+
+        function openAlarmModal(isEdit, index = null) {
+            updateDropdownPilihanTugasJurnal();
+            document.getElementById('modalOverlay').style.display = 'block';
+            document.getElementById('modalAlarm').style.display = 'block';
+
+            if(isEdit) {
+                document.getElementById('modal-alarm-title').innerText = "✏️ Edit Konfigurasi Alarm";
+                document.getElementById('alarm-index-id').value = index;
+                document.getElementById('alarm-nama-input').value = databaseAlarm[index].nama;
+                document.getElementById('alarm-waktu-input').value = databaseAlarm[index].waktu;
+                document.getElementById('alarm-tipe-input').value = databaseAlarm[index].tipe;
+            } else {
+                document.getElementById('modal-alarm-title').innerText = "⏰ Tambah Alarm Pengingat Baru";
+                document.getElementById('alarm-index-id').value = "-1";
+                document.getElementById('alarm-nama-input').value = "";
+                document.getElementById('alarm-waktu-input').value = "";
+            }
+        }
+
+        function prosesSimpanAlarm() {
+            const idx = parseInt(document.getElementById('alarm-index-id').value);
+            const nama = document.getElementById('alarm-nama-input').value;
+            const waktu = document.getElementById('alarm-waktu-input').value;
+            const tipe = document.getElementById('alarm-tipe-input').value;
+
+            if(!nama || !waktu) return alert("Waktu jam alarm dan Nama aktivitas wajib diisi!");
+
+            let ikon = "🔔";
+            if(tipe.includes("Kelas")) ikon = "🏫";
+            else if(tipe.includes("Remedial")) ikon = "📝";
+            else if(tipe.includes("Nilai")) ikon = "📊";
+            else if(tipe.includes("Pertemuan")) ikon = "🤝";
+
+            if(idx === -1) {
+                databaseAlarm.push({ ikon, waktu, tipe, nama, aktif: true });
+            } else {
+                databaseAlarm[idx] = { ikon, waktu, tipe, nama, aktif: databaseAlarm[idx].aktif };
+            }
+
+            closeAllModals();
+            renderTabelAlarm();
+        }
+
+        function statusAlarmSwitchChanged(idx, checkedState) {
+            databaseAlarm[idx].aktif = checkedState;
+        }
+
+        function hapusDataAlarm(idx) {
+            if(confirm("Hapus alarm pengingat ini?")) {
+                databaseAlarm.splice(idx, 1);
+                renderTabelAlarm();
+            }
+        }
+
+        // --- BACKGROUND ALARM PROCESSOR ENGINE ---
+        function engineCekAlarmWaktu() {
+            const skrg = new Date();
+            const formatWaktuSistem = `${String(skrg.getHours()).padStart(2, '0')}:${String(skrg.getMinutes()).padStart(2, '0')}`;
+
+            databaseAlarm.forEach((alarm) => {
+                if(alarm.aktif && alarm.waktu === formatWaktuSistem) {
+                    alarm.aktif = false; // Hindari looping berulang pada menit yang sama
+                    triggerSuaraDanNotifikasiSistemOS(alarm.nama, alarm.tipe);
+                    renderTabelAlarm();
+                }
+            });
+        }
+
+        function triggerSuaraDanNotifikasiSistemOS(namaTugas, tipe) {
+            // Bunyikan Audio HTML5
+            const audio = document.getElementById('alarm-sound-media');
+            audio.play().catch(() => console.log("Menunggu interaksi browser untuk memutar musik"));
+
+            // Kirim Push Notification ke OS Desktop / HP Android
+            if ("Notification" in window && Notification.permission === "granted") {
+                const opsiNotif = new Notification(`⏰ Pengingat Kelas Buel: ${tipe}`, {
+                    body: `Tugas Saat Ini: ${namaTugas}`,
+                    requireInteraction: true // Notifikasi menetap sebelum ditutup manual oleh guru
+                });
+
+                opsiNotif.onclick = function() {
+                    window.focus();
+                    audio.pause();
+                    audio.currentTime = 0;
+                };
+            } else {
+                alert(`⏰ ALARM BERBUNYI! (${tipe})\nTugas: ${namaTugas}`);
+                audio.pause();
+                audio.currentTime = 0;
+            }
+        }
+
+        // --- REKAP DATA SISWA, ABSENSI & ASESMEN ---
+        function refreshSiswaCounters() {
+            const count = document.getElementById('tbody-siswa').getElementsByTagName('tr').length;
+            document.getElementById('dash-siswa-count').innerText = `${count} Aktif`;
+            document.getElementById('abs-total').innerText = count;
+        }
+
+        function syncAbsensiSiswa() {
+            const rows = document.getElementById('tbody-siswa').getElementsByTagName('tr');
+            const tbody = document.getElementById('tbody-absensi-isi');
+            tbody.innerHTML = '';
+            for(let i=0; i<rows.length; i++) {
+                const nis = rows[i].querySelector('.s-nis').innerText;
+                const nama = rows[i].querySelector('.s-nama').innerText;
+                tbody.innerHTML += `
+                    <tr>
+                        <td class="left-align" style="font-weight:bold; color:#DB7093;">${nama}</td>
+                        <td>${nis}</td>
+                        <td>
+                            <div class="status-radio-group">
+                                <label class="status-radio-label"><input type="radio" name="abs-${nis}" value="Hadir" checked onchange="hitungUlangAbsensi()"> 🟢 Hadir</label>
+                                <label class="status-radio-label"><input type="radio" name="abs-${nis}" value="Alfa" onchange="hitungUlangAbsensi()"> 🔴 Alfa</label>
+                            </div>
+                        </td>
+                    </tr>
+                `;
             }
             hitungUlangAbsensi();
         }
 
         function hitungUlangAbsensi() {
-            const trs = document.getElementById('tbody-absensi-isi').getElementsByTagName('tr');
-            let total = 0, hadir = 0, alfa = 0, sakit = 0;
-            for(let i=0; i<trs.length; i++) {
-                const checkedRadio = trs[i].querySelector('input[type="radio"]:checked');
-                if(checkedRadio) {
-                    total++;
-                    if(checkedRadio.value === 'Hadir') hadir++;
-                    else if(checkedRadio.value === 'Alfa') alfa++;
-                    else sakit++;
-                }
+            const rows = document.getElementById('tbody-absensi-isi').getElementsByTagName('tr');
+            let hadir = 0, alfa = 0;
+            for(let i=0; i<rows.length; i++) {
+                const chk = rows[i].querySelector('input[type="radio"]:checked');
+                if(chk && chk.value === 'Hadir') hadir++; else alfa++;
             }
-            document.getElementById('abs-total').innerText = total;
             document.getElementById('abs-hadir').innerText = hadir;
             document.getElementById('abs-alfa').innerText = alfa;
-            document.getElementById('abs-sakit-izin').innerText = sakit;
-            if(document.getElementById('dash-absensi-count')) document.getElementById('dash-absensi-count').innerText = `${hadir} Hadir`;
+            document.getElementById('dash-absensi-count').innerText = `${hadir} Hadir`;
         }
 
-        // --- MANAJEMEN ASESMEN SISWA DINAMIS ---
         function renderStrukturTabelAsesmen() {
-            const theadRow = document.getElementById('thead-row-asesmen');
+            const head = document.getElementById('thead-row-asesmen');
             const tbody = document.getElementById('tbody-asesmen');
-            const siswaRows = document.getElementById('tbody-siswa').getElementsByTagName('tr');
+            const siswa = document.getElementById('tbody-siswa').getElementsByTagName('tr');
 
-            theadRow.innerHTML = '<th class="left-align" style="width: 120px;">NIS</th><th class="left-align">Nama Siswa</th>';
-            listKategoriNilai.forEach((kategori, index) => {
-                const th = document.createElement('th');
-                th.innerHTML = `<div>${kategori}</div><button class="btn-delete-col" onclick="hapusKategoriNilai(${index})">🗑️ Hapus</button>`;
-                theadRow.appendChild(th);
+            head.innerHTML = '<th class="left-align">NIS</th><th class="left-align">Nama Siswa</th>';
+            listKategoriNilai.forEach((k, idx) => {
+                head.innerHTML += `<th>${k} <button class="btn-delete-col" onclick="hapusKolomAsesmen(${idx})">🗑️</button></th>`;
             });
-            theadRow.insertAdjacentHTML('beforeend', '<th>Catatan Guru</th>');
 
             tbody.innerHTML = '';
-            for(let i = 0; i < siswaRows.length; i++) {
-                const nis = siswaRows[i].querySelector('.s-nis').innerText;
-                const nama = siswaRows[i].querySelector('.s-nama').innerText;
-
-                const tr = document.createElement('tr');
-                let rowHTML = `<td class="left-align" style="color:#8B658B; font-weight:500;">${nis}</td><td class="left-align" style="font-weight:bold; color:#DB7093;">${nama}</td>`;
-
-                listKategoriNilai.forEach(kategori => {
-                    if (!databaseNilai[nis]) databaseNilai[nis] = {};
-                    const val = databaseNilai[nis][kategori] !== undefined ? databaseNilai[nis][kategori] : 0;
-                    rowHTML += `<td><input type="number" class="input-nilai" data-nis="${nis}" data-kategori="${kategori}" value="${val}" onchange="updateNilaiRealtime(this)"></td>`;
+            for(let i=0; i<siswa.length; i++) {
+                const nis = siswa[i].querySelector('.s-nis').innerText;
+                const nama = siswa[i].querySelector('.s-nama').innerText;
+                let html = `<td class="left-align">${nis}</td><td class="left-align" style="font-weight:bold; color:#DB7093;">${nama}</td>`;
+                listKategoriNilai.forEach(k => {
+                    if(!databaseNilai[nis]) databaseNilai[nis] = {};
+                    const val = databaseNilai[nis][k] || 0;
+                    html += `<td><input type="number" class="input-nilai" value="${val}" onchange="databaseNilai['${nis}']['${k}']=parseInt(this.value)||0"></td>`;
                 });
-                rowHTML += `<td><input type="text" placeholder="Catatan..." style="width:100%; padding:5px; border:1px solid #FFC0CB; border-radius:6px; font-size:12px;"></td>`;
-                tr.innerHTML = rowHTML;
-                tbody.appendChild(tr);
+                tbody.innerHTML += `<tr>${html}</tr>`;
             }
-            hitungUlangStatistikAsesmen();
         }
 
         function tambahKategoriNilaiBaru() {
-            const nama = prompt("Masukkan Jenis Penilaian Baru (Contoh: Ulangan Harian 2, Kuis):");
-            if (nama && nama.trim() !== "") {
-                if(listKategoriNilai.includes(nama.trim())) return alert("Asesmen sudah ada!");
-                listKategoriNilai.push(nama.trim());
-                renderStrukturTabelAsesmen();
-            }
+            const p = prompt("Nama Penilaian:");
+            if(p) { listKategoriNilai.push(p); renderStrukturTabelAsesmen(); }
+        }
+        function hapusKolomAsesmen(idx) {
+            listKategoriNilai.splice(idx,1); renderStrukturTabelAsesmen();
         }
 
-        function hapusKategoriNilai(index) {
-            if(confirm(`Hapus kolom "${listKategoriNilai[index]}"?`)) { listKategoriNilai.splice(index, 1); renderStrukturTabelAsesmen(); }
+        // --- PROFILE GURU & CORE PERANGKAT FILE FUNCTIONS ---
+        function openEditProfilGuruModal() {
+            document.getElementById('edit-guru-nama').value = document.getElementById('guru-display-nama').innerText;
+            document.getElementById('edit-guru-nip').value = document.getElementById('guru-display-nip').innerText;
+            document.getElementById('edit-guru-jabatan').value = document.getElementById('guru-display-jabatan').innerText;
+            document.getElementById('edit-guru-email').value = document.getElementById('guru-display-email').innerText;
+            document.getElementById('modalEditProfilGuru').style.display = 'block';
+            document.getElementById('modalOverlay').style.display = 'block';
         }
-
-        function updateNilaiRealtime(input) {
-            const nis = input.getAttribute('data-nis'), kat = input.getAttribute('data-kategori');
-            if(!databaseNilai[nis]) databaseNilai[nis] = {};
-            databaseNilai[nis][kat] = parseFloat(input.value) || 0;
-            hitungUlangStatistikAsesmen();
+        function saveProfilGuru() {
+            document.getElementById('guru-display-nama').innerText = document.getElementById('edit-guru-nama').value;
+            document.getElementById('guru-display-nip').innerText = document.getElementById('edit-guru-nip').value;
+            document.getElementById('guru-display-jabatan').innerText = document.getElementById('edit-guru-jabatan').value;
+            document.getElementById('guru-display-email').innerText = document.getElementById('edit-guru-email').value;
+            closeAllModals();
         }
-
-        function hitungUlangStatistikAsesmen() {
-            document.getElementById('total-kegiatan').innerText = `${listKategoriNilai.length} Kategori`;
-            const rows = document.getElementById('tbody-asesmen').getElementsByTagName('tr');
-            let totalSemua = 0, totalInput = 0, remedial = 0;
-
-            for (let i = 0; i < rows.length; i++) {
-                const inputs = rows[i].querySelectorAll('.input-nilai');
-                let totalSiswa = 0, countSiswa = 0;
-                inputs.forEach(input => {
-                    const val = parseFloat(input.value) || 0;
-                    totalSemua += val; totalInput++; totalSiswa += val; countSiswa++;
-                });
-                if(countSiswa > 0 && (totalSiswa / countSiswa) < 75) remedial++;
-            }
-            const avg = totalInput > 0 ? (totalSemua / totalInput).toFixed(1) : "0.0";
-            document.getElementById('rata-kelas').innerText = avg;
-            document.getElementById('siswa-remedial').innerText = `${remedial} Siswa`;
-            if(document.getElementById('dash-asesmen-avg')) document.getElementById('dash-asesmen-avg').innerText = avg;
+        function hitungUlangPerangkat() {
+            document.getElementById('dash-perangkat-count').innerText = `${document.getElementById('perangkat-list').getElementsByClassName('list-item').length} Dokumen`;
         }
-
-        function filterAsesmenTable() {
-            const filter = document.getElementById('searchAsesmenInput').value.toLowerCase();
-            const rows = document.getElementById('tbody-asesmen').getElementsByTagName('tr');
-            for (let i = 0; i < rows.length; i++) {
-                const td = rows[i].getElementsByTagName('td')[1];
-                if (td) rows[i].style.display = td.innerText.toLowerCase().indexOf(filter) > -1 ? "" : "none";
-            }
-        }
-
-        // --- CORE PERANGKAT AJAR & DATA SISWA ACTIONS ---
-        function closeAllModals() {
-            document.getElementById('modalEdit').style.display = 'none'; 
-            document.getElementById('modalEditProfilGuru').style.display = 'none';
-            document.getElementById('modalOverlay').style.display = 'none'; 
-        }
-        function deleteItem(btn) { if (confirm("Hapus berkas?")) { btn.closest('.list-item').remove(); hitungUlangPerangkat(); } }
+        function deleteItem(btn) { btn.closest('.list-item').remove(); hitungUlangPerangkat(); }
         function editItem(btn) {
             const span = btn.closest('.list-item').querySelector('.item-text');
-            const txt = prompt("Ubah nama:", span.innerText.replace('📄 ', ''));
-            if (txt) span.innerText = `📄 ${txt}`;
+            const txt = prompt("Ubah nama berkas:", span.innerText.replace('📄 ', ''));
+            if(txt) span.innerText = `📄 ${txt}`;
         }
         function importFile(input) {
-            if (input.files.length > 0) {
-                const f = input.files[0], r = new FileReader();
-                r.onload = function(e) {
-                    const newItem = document.createElement('div'); newItem.className = 'list-item';
-                    newItem.innerHTML = `<div class="item-content"><a class="item-link item-text" style="font-weight:bold; color:#FF69B4;">📄 ${f.name}</a></div><div class="actions"><button class="btn-action btn-edit" onclick="editItem(this)">✏️</button> <button class="btn-action btn-delete" onclick="deleteItem(this)">🗑️</button></div>`;
-                    newItem.querySelector('.item-link').onclick = function() {
-                        const w = window.open(); w.document.write(`<title>${f.name}</title><iframe src="${e.target.result}" style="border:0; width:100%; height:100%;"></iframe>`);
-                    };
-                    document.getElementById('perangkat-list').appendChild(newItem); hitungUlangPerangkat();
-                };
-                r.readAsDataURL(f);
-            }
-        }
-        function addManualItem() {
-            const name = prompt("Nama dokumen manual:");
-            if(name) {
-                document.getElementById('perangkat-list').insertAdjacentHTML('beforeend', `<div class="list-item"><div class="item-content"><a class="item-link item-text">📄 ${name}</a></div><div class="actions"><button class="btn-action btn-edit" onclick="editItem(this)">✏️</button> <button class="btn-action btn-delete" onclick="deleteItem(this)">🗑️</button></div></div>`);
+            if(input.files.length > 0) {
+                document.getElementById('perangkat-list').innerHTML += `<div class="list-item"><div class="item-content"><a class="item-link item-text">📄 ${input.files[0].name}</a></div><div class="actions"><button class="btn-action btn-edit" onclick="editItem(this)">✏️</button> <button class="btn-action btn-delete" onclick="deleteItem(this)">🗑️</button></div></div>`;
                 hitungUlangPerangkat();
             }
         }
-        function uploadGalleryImage(input) {
-            if (input.files && input.files[0]) {
-                const r = new FileReader();
-                r.onload = function(e) {
-                    document.getElementById('gallery-container').insertAdjacentHTML('beforeend', `<div class="gallery-item-wrapper"><img src="${e.target.result}" class="gallery-item" onclick="window.open(this.src)"><button class="btn-del-img" onclick="this.closest('.gallery-item-wrapper').remove()">X</button></div>`);
-                };
-                r.readAsDataURL(input.files[0]);
+        function addManualItem() {
+            const n = prompt("Nama dokumen:");
+            if(n) {
+                document.getElementById('perangkat-list').innerHTML += `<div class="list-item"><div class="item-content"><a class="item-link item-text">📄 ${n}</a></div><div class="actions"><button class="btn-action btn-edit" onclick="editItem(this)">✏️</button> <button class="btn-action btn-delete" onclick="deleteItem(this)">🗑️</button></div></div>`;
+                hitungUlangPerangkat();
             }
-        }
-        function filterSiswaTable() {
-            const filter = document.getElementById('searchSiswaInput').value.toLowerCase();
-            const trs = document.getElementById('tbody-siswa').getElementsByTagName('tr');
-            for (let i = 0; i < trs.length; i++) {
-                const td = trs[i].querySelector('.s-nama');
-                if (td) trs[i].style.display = td.innerText.toLowerCase().indexOf(filter) > -1 ? "" : "none";
-            }
-        }
-        let currentRow = null;
-        function openEditModal(btn) {
-            currentRow = btn.closest('tr');
-            document.getElementById('edit-nis').value = currentRow.querySelector('.s-nis').innerText;
-            document.getElementById('edit-nama').value = currentRow.querySelector('.s-nama').innerText;
-            document.getElementById('edit-jk').value = currentRow.querySelector('.s-jk').innerText;
-            document.getElementById('edit-kelas').value = currentRow.querySelector('.s-kelas').innerText;
-            document.getElementById('edit-alamat').value = currentRow.querySelector('.s-alamat').innerText;
-            document.getElementById('modalEdit').style.display = 'block';
-            document.getElementById('modalOverlay').style.display = 'block';
-        }
-        function saveEditSiswa() {
-            if(!currentRow) return;
-            currentRow.querySelector('.s-nis').innerText = document.getElementById('edit-nis').value;
-            currentRow.querySelector('.s-nama').innerText = document.getElementById('edit-nama').value;
-            currentRow.querySelector('.s-jk').innerText = document.getElementById('edit-jk').value;
-            currentRow.querySelector('.s-kelas').innerText = document.getElementById('edit-kelas').value;
-            currentRow.querySelector('.s-alamat').innerText = document.getElementById('edit-alamat').value;
-            const imgIn = document.getElementById('edit-foto');
-            if(imgIn.files && imgIn.files[0]) {
-                const r = new FileReader(); r.onload = function(e) { currentRow.querySelector('.avatar-mini').src = e.target.result; }; r.readAsDataURL(imgIn.files[0]);
-            }
-            closeAllModals(); perbaruiAngkaMukaSiswa();
         }
         function openAddSiswaForm() {
-            const tbody = document.getElementById('tbody-siswa');
-            const tr = document.createElement('tr');
-            const id = 'row-siswa-' + Date.now();
-            tr.id = id;
-            tr.innerHTML = `<td class="left-align"><img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/200svg' width='40' height='40'><circle cx='20' cy='20' r='20' fill='%23DB7093'/></svg>" class="avatar-mini"></td><td class="s-nis left-align">1999001${Math.floor(100+Math.random()*900)}</td><td class="s-nama left-align" style="font-weight:bold; color:#DB7093;">Siswa Baru</td><td class="s-jk">Laki-laki</td><td class="s-kelas">6A</td><td class="s-alamat">-</td><td><button class="btn-action btn-edit" onclick="openEditModal(this)">✏️</button> <button class="btn-action btn-delete" onclick="deleteRow(this)">🗑️</button></td>`;
-            tbody.appendChild(tr); perbaruiAngkaMukaSiswa(); openEditModal(tr.querySelector('.btn-edit'));
+            const n = prompt("Nama Lengkap Siswa Baru:");
+            if(n) {
+                const nis = "19990" + (Math.floor(Math.random() * 80) + 15);
+                document.getElementById('tbody-siswa').innerHTML += `<tr><td class="left-align"><img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/200svg' width='40' height='40'><circle cx='20' cy='20' r='20' fill='%23FFB6C1'/></svg>" class="avatar-mini"></td><td class="s-nis left-align">${nis}</td><td class="s-nama left-align" style="font-weight: bold; color: #DB7093;">${n}</td><td class="s-jk">Laki-laki</td><td class="s-kelas">6A</td><td class="s-alamat">-</td><td><button class="btn-action btn-edit" onclick="openEditModal(this)">✏️</button> <button class="btn-action btn-delete" onclick="deleteRow(this)">🗑️</button></td></tr>`;
+                refreshSiswaCounters(); syncAbsensiSiswa(); renderStrukturTabelAsesmen();
+            }
         }
-        function deleteRow(btn) { if(confirm("Hapus siswa ini?")) { btn.closest('tr').remove(); perbaruiAngkaMukaSiswa(); } }
+        function deleteRow(btn) { btn.closest('tr').remove(); refreshSiswaCounters(); syncAbsensiSiswa(); renderStrukturTabelAsesmen(); }
     </script>
 </body>
 </html>
