@@ -161,7 +161,7 @@
         }
 
         /* Profil Guru */
-        .profile-container { display: flex; gap: 20px; align-items: center; }
+        .profile-container { display: flex; gap: 20px; align-items: center; position: relative; }
         .profile-img { width: 100px; height: 100px; border-radius: 50%; background-color: #FFE4E1; border: 3px solid #FFB6C1; object-fit: cover; }
         .profile-details table { width: 100%; font-size: 14px; }
         .profile-details td { padding: 4px 8px; }
@@ -169,7 +169,7 @@
         /* Quick Access */
         .quick-access-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 12px;
         }
 
@@ -372,7 +372,7 @@
 
         .btn-delete-col { background-color: #FFC1C1; color: #8B2323; font-size: 10px; padding: 2px 6px; border-radius: 4px; border: none; cursor: pointer; margin-top: 4px; display: block; margin-left: auto; margin-right: auto; }
 
-        /* --- MODAL EDIT DATA SISWA --- */
+        /* --- MODALS GENERAL --- */
         .modal-edit {
             display: none;
             position: fixed;
@@ -408,7 +408,8 @@
 </head>
 <body>
 
-    <div class="modal-overlay" id="modalOverlay" onclick="closeModal()"></div>
+    <div class="modal-overlay" id="modalOverlay" onclick="closeAllModals()"></div>
+
     <div class="modal-edit" id="modalEdit">
         <h3 style="color:#FF69B4; margin-bottom:15px; text-align:center;">✏️ Edit Data Siswa</h3>
         <div class="form-group"><label>Ganti Foto Profil</label><input type="file" id="edit-foto" accept="image/*"></div>
@@ -427,8 +428,21 @@
         <div class="form-group"><label>Nama Ibu</label><input type="text" id="edit-ibu"></div>
         <div class="form-group"><label>Nomor Telepon Aktif</label><input type="text" id="edit-telp"></div>
         <div class="modal-actions">
-            <button class="btn-siswa btn-white" onclick="closeModal()">Batal</button>
+            <button class="btn-siswa btn-white" onclick="closeAllModals()">Batal</button>
             <button class="btn-siswa btn-pink-primary" onclick="saveEditSiswa()">Simpan Perubahan</button>
+        </div>
+    </div>
+
+    <div class="modal-edit" id="modalEditProfilGuru">
+        <h3 style="color:#FF69B4; margin-bottom:15px; text-align:center;">✏️ Edit Profil Guru</h3>
+        <div class="form-group"><label>Foto Profil Baru</label><input type="file" id="edit-guru-foto" accept="image/*"></div>
+        <div class="form-group"><label>Nama Guru</label><input type="text" id="edit-guru-nama"></div>
+        <div class="form-group"><label>NIP</label><input type="text" id="edit-guru-nip"></div>
+        <div class="form-group"><label>Jabatan</label><input type="text" id="edit-guru-jabatan"></div>
+        <div class="form-group"><label>Email</label><input type="email" id="edit-guru-email"></div>
+        <div class="modal-actions">
+            <button class="btn-siswa btn-white" onclick="closeAllModals()">Batal</button>
+            <button class="btn-siswa btn-pink-primary" onclick="saveProfilGuru()">Simpan Profil</button>
         </div>
     </div>
 
@@ -443,7 +457,6 @@
         <div onclick="switchPage('absensi')" id="menu-absensi" class="menu-item">📅 Absensi Siswa</div>
         <div onclick="switchPage('asesmen')" id="menu-asesmen" class="menu-item">📊 Asesmen</div>
         <div onclick="switchPage('jurnal')" id="menu-jurnal" class="menu-item">📖 Jurnal Mengajar</div>
-        <div onclick="switchPage('modul')" id="menu-modul" class="menu-item">📝 Modul Ajar</div>
         <div onclick="switchPage('perangkat')" id="menu-perangkat" class="menu-item">📁 Perangkat Ajar</div>
     </div>
 
@@ -464,15 +477,18 @@
             <div class="dashboard-grid">
                 <div>
                     <div class="card">
-                        <div class="card-title">PROFIL GURU</div>
+                        <div class="card-title">
+                            <span>PROFIL GURU</span>
+                            <button class="btn-action btn-edit" style="font-weight:normal;" onclick="openEditProfilGuruModal()">✏️ Edit Profil</button>
+                        </div>
                         <div class="profile-container">
-                            <img src="Profil.jpeg" alt="Foto Profil" class="profile-img">
+                            <img src="Profil.jpeg" alt="Foto Profil" class="profile-img" id="guru-display-foto">
                             <div class="profile-details">
                                 <table>
-                                    <tr><td><strong>Nama</strong></td><td>: Guru Hebat</td></tr>
-                                    <tr><td><strong>NIP</strong></td><td>: 19900101 201503 2 002</td></tr>
-                                    <tr><td><strong>Jabatan</strong></td><td>: Guru Kelas 6</td></tr>
-                                    <tr><td><strong>Email</strong></td><td>: guruhebat@sekolah.id</td></tr>
+                                    <tr><td><strong>Nama</strong></td><td>: <span id="guru-display-nama">Guru Hebat</span></td></tr>
+                                    <tr><td><strong>NIP</strong></td><td>: <span id="guru-display-nip">19900101 201503 2 002</span></td></tr>
+                                    <tr><td><strong>Jabatan</strong></td><td>: <span id="guru-display-jabatan">Guru Kelas 6</span></td></tr>
+                                    <tr><td><strong>Email</strong></td><td>: <span id="guru-display-email">guruhebat@sekolah.id</span></td></tr>
                                 </table>
                             </div>
                         </div>
@@ -483,7 +499,6 @@
                             <div class="quick-btn" onclick="switchPage('data-siswa')">🎒 <div>Data Siswa</div></div>
                             <div class="quick-btn" onclick="switchPage('absensi')">📝 <div>Absensi</div></div>
                             <div class="quick-btn" onclick="switchPage('asesmen')">📊 <div>Asesmen</div></div>
-                            <div class="quick-btn" onclick="switchPage('perangkat')">📁 <div>Perangkat</div></div>
                         </div>
                     </div>
                 </div>
@@ -630,7 +645,6 @@
         </div>
 
         <div id="page-jurnal" class="page-content"><div class="placeholder-page"><h1>📖 JURNAL MENGAJAR KELAS</h1></div></div>
-        <div id="page-modul" class="page-content"><div class="placeholder-page"><h1>📝 MODUL AJAR KURIKULUM</h1></div></div>
         <div id="page-perangkat" class="page-content"><div class="placeholder-page"><h1>📁 PERANGKAT AJAR UTAMA</h1></div></div>
     </div>
 
@@ -669,6 +683,34 @@
         function hitungUlangPerangkat() {
             const totalPerangkat = document.getElementById('perangkat-list').getElementsByClassName('list-item').length;
             document.getElementById('dash-perangkat-count').innerText = `${totalPerangkat} Dokumen`;
+        }
+
+        // --- MANAJEMEN EDIT PROFIL GURU ---
+        function openEditProfilGuruModal() {
+            document.getElementById('edit-guru-nama').value = document.getElementById('guru-display-nama').innerText;
+            document.getElementById('edit-guru-nip').value = document.getElementById('guru-display-nip').innerText;
+            document.getElementById('edit-guru-jabatan').value = document.getElementById('guru-display-jabatan').innerText;
+            document.getElementById('edit-guru-email').value = document.getElementById('guru-display-email').innerText;
+            
+            document.getElementById('modalEditProfilGuru').style.display = 'block';
+            document.getElementById('modalOverlay').style.display = 'block';
+        }
+
+        function saveProfilGuru() {
+            document.getElementById('guru-display-nama').innerText = document.getElementById('edit-guru-nama').value;
+            document.getElementById('guru-display-nip').innerText = document.getElementById('edit-guru-nip').value;
+            document.getElementById('guru-display-jabatan').innerText = document.getElementById('edit-guru-jabatan').value;
+            document.getElementById('guru-display-email').innerText = document.getElementById('edit-guru-email').value;
+            
+            const fileInput = document.getElementById('edit-guru-foto');
+            if(fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('guru-display-foto').src = e.target.result;
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            }
+            closeAllModals();
         }
 
         // --- MANAJEMEN HALAMAN ABSENSI ---
@@ -811,6 +853,11 @@
         }
 
         // --- CORE PERANGKAT AJAR & DATA SISWA ACTIONS ---
+        function closeAllModals() {
+            document.getElementById('modalEdit').style.display = 'none'; 
+            document.getElementById('modalEditProfilGuru').style.display = 'none';
+            document.getElementById('modalOverlay').style.display = 'none'; 
+        }
         function deleteItem(btn) { if (confirm("Hapus berkas?")) { btn.closest('.list-item').remove(); hitungUlangPerangkat(); } }
         function editItem(btn) {
             const span = btn.closest('.list-item').querySelector('.item-text');
@@ -866,7 +913,6 @@
             document.getElementById('modalEdit').style.display = 'block';
             document.getElementById('modalOverlay').style.display = 'block';
         }
-        function closeModal() { document.getElementById('modalEdit').style.display = 'none'; document.getElementById('modalOverlay').style.display = 'none'; }
         function saveEditSiswa() {
             if(!currentRow) return;
             currentRow.querySelector('.s-nis').innerText = document.getElementById('edit-nis').value;
@@ -878,7 +924,7 @@
             if(imgIn.files && imgIn.files[0]) {
                 const r = new FileReader(); r.onload = function(e) { currentRow.querySelector('.avatar-mini').src = e.target.result; }; r.readAsDataURL(imgIn.files[0]);
             }
-            closeModal(); perbaruiAngkaMukaSiswa();
+            closeAllModals(); perbaruiAngkaMukaSiswa();
         }
         function openAddSiswaForm() {
             const tbody = document.getElementById('tbody-siswa');
