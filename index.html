@@ -169,7 +169,7 @@
         /* Quick Access */
         .quick-access-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(4, 1fr);
             gap: 12px;
         }
 
@@ -499,6 +499,7 @@
                             <div class="quick-btn" onclick="switchPage('data-siswa')">🎒 <div>Data Siswa</div></div>
                             <div class="quick-btn" onclick="switchPage('absensi')">📝 <div>Absensi</div></div>
                             <div class="quick-btn" onclick="switchPage('asesmen')">📊 <div>Asesmen</div></div>
+                            <div class="quick-btn" onclick="switchPage('jurnal')">📖 <div>Jurnal</div></div>
                         </div>
                     </div>
                 </div>
@@ -644,8 +645,55 @@
             </div>
         </div>
 
-        <div id="page-jurnal" class="page-content"><div class="placeholder-page"><h1>📖 JURNAL MENGAJAR KELAS</h1></div></div>
-        <div id="page-perangkat" class="page-content"><div class="placeholder-page"><h1>📁 PERANGKAT AJAR UTAMA</h1></div></div>
+        <div id="page-jurnal" class="page-content">
+            <div class="card">
+                <div class="card-title" style="font-size: 22px; color: #FF69B4; border-bottom: none;">📖 JURNAL MENGAJAR GURU</div>
+                
+                <div class="manage-section" style="flex-direction: column; align-items: stretch; background-color: white; border: 1px solid #FFC0CB; gap: 15px; padding: 20px;">
+                    <h4 style="color:#D87093; font-size:14px; border-bottom:1px dashed #FFE4E1; padding-bottom:5px;">➕ Tambah Riwayat Jurnal Mengajar Hari Ini</h4>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;">
+                        <div class="form-group"><label>Tanggal</label><input type="date" id="jur-tanggal" value="2026-06-22"></div>
+                        <div class="form-group"><label>Jam Ke-</label><input type="text" id="jur-jam" placeholder="Contoh: 1 - 3"></div>
+                        <div class="form-group"><label>Mata Pelajaran</label><input type="text" id="jur-mapel" placeholder="Contoh: Matematika"></div>
+                        <div class="form-group"><label>Ketercapaian</label>
+                            <select id="jur-status">
+                                <option value="Tercapai 🟢">Tercapai 🟢</option>
+                                <option value="Tersampaikan Sebagian 🟡">Tersampaikan Sebagian 🟡</option>
+                                <option value="Tertunda 🔴">Tertunda 🔴</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group"><label>Materi Pokok / Pembahasan Pembelajaran</label><input type="text" id="jur-materi" placeholder="Masukkan ringkasan kompetensi dasar atau bab materi..."></div>
+                    <div style="text-align: right;"><button class="btn-siswa btn-pink-primary" onclick="simpanJurnalMengajarBaru()">➕ Masukkan ke Tabel Jurnal</button></div>
+                </div>
+
+                <div class="table-responsive" style="margin-top: 20px;">
+                    <table class="table-siswa">
+                        <thead>
+                            <tr>
+                                <th style="width:120px;">Tanggal</th><th>Jam Ke-</th><th>Mata Pelajaran</th><th>Materi Pembelajaran</th><th>Status Evaluasi</th><th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody-jurnal-mengajar">
+                            <tr>
+                                <td>22 Juni 2026</td><td>1 - 2</td><td style="font-weight:bold; color:#DB7093;">Bahasa Indonesia</td><td>Membaca puisi dan menentukan unsur intrinsik cerita pendek</td><td>Tercapai 🟢</td>
+                                <td><button class="btn-action btn-delete" onclick="this.closest('tr').remove()">🗑️</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="page-perangkat" class="page-content">
+            <div class="card">
+                <div class="card-title" style="font-size: 22px; color: #FF69B4; border-bottom: none;">📁 PERANGKAT AJAR UTAMA</div>
+                <p style="font-size:13px; color:#8B658B; margin-bottom:15px;">Manajemen berkas perangkat mengajar otomatis tersambung dengan tabel perangkat di Dashboard.</p>
+                <div id="perangkat-mirror-notice" style="background:#FFF5F5; padding:15px; border-radius:10px; border:1px solid #FFC0CB; text-align:center; font-weight:bold; color:#DB7093; cursor:pointer;" onclick="switchPage('dashboard')">
+                    💡 Modul ini terintegrasi penuh. Gunakan widget unggah dan edit berkas langsung pada box di halaman utama "Dashboard". Klik di sini untuk kembali ke Dashboard.
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -683,6 +731,38 @@
         function hitungUlangPerangkat() {
             const totalPerangkat = document.getElementById('perangkat-list').getElementsByClassName('list-item').length;
             document.getElementById('dash-perangkat-count').innerText = `${totalPerangkat} Dokumen`;
+        }
+
+        // --- MANAJEMEN INPUT JURNAL MENGAJAR ---
+        function simpanJurnalMengajarBaru() {
+            const tglVal = document.getElementById('jur-tanggal').value;
+            const jam = document.getElementById('jur-jam').value;
+            const mapel = document.getElementById('jur-mapel').value;
+            const materi = document.getElementById('jur-materi').value;
+            const status = document.getElementById('jur-status').value;
+
+            if(!jam || !mapel || !materi) return alert("Mohon lengkapi seluruh kolom input jurnal terlebih dahulu!");
+
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            const tglIndo = new Date(tglVal).toLocaleDateString('id-ID', options);
+
+            const tbody = document.getElementById('tbody-jurnal-mengajar');
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${tglIndo}</td>
+                <td>${jam}</td>
+                <td style="font-weight:bold; color:#DB7093;">${mapel}</td>
+                <td>${materi}</td>
+                <td>${status}</td>
+                <td><button class="btn-action btn-delete" onclick="this.closest('tr').remove()">🗑️</button></td>
+            `;
+            tbody.insertBefore(tr, tbody.firstChild);
+
+            // Reset Form Input
+            document.getElementById('jur-jam').value = "";
+            document.getElementById('jur-mapel').value = "";
+            document.getElementById('jur-materi').value = "";
+            alert("Jurnal mengajar berhasil ditambahkan ke tabel!");
         }
 
         // --- MANAJEMEN EDIT PROFIL GURU ---
