@@ -191,7 +191,7 @@
 
         .quick-btn div { font-size: 12px; font-weight: bold; color: #DB7093; margin-top: 5px; }
 
-        /* --- GENERAL ACTION STYLE --- */
+        /* --- GENERAL STYLE --- */
         .list-container { display: flex; flex-direction: column; }
         .list-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #FFF0F5; font-size: 14px; }
         .item-content { display: flex; flex-direction: column; gap: 2px; }
@@ -203,11 +203,7 @@
         .btn-edit { background-color: #FFE4B5; color: #8B5A2B; }
         .btn-delete { background-color: #FFC1C1; color: #8B2323; }
 
-        .manage-section { margin-top: 15px; display: flex; gap: 10px; justify-content: center; background-color: #FFF5F5; padding: 12px; border: 1px dashed #FFB6C1; border-radius: 12px; }
-        .file-input-label { padding: 6px 12px; background-color: #FFB6C1; color: white; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: bold; }
-        .file-input { display: none; }
-
-        /* --- DATA SISWA & GENERAL TABLE STYLING --- */
+        /* --- DATA SISWA TABLE STYLING --- */
         .toolbar-siswa {
             display: flex;
             justify-content: space-between;
@@ -280,7 +276,7 @@
             border: 1px solid #FFB6C1;
         }
 
-        /* --- STYLING KHAS HALAMAN ABSENSI (SESUAI GAMBAR) --- */
+        /* --- STYLING HALAMAN ABSENSI --- */
         .absensi-layout {
             display: grid;
             grid-template-columns: 320px 1fr;
@@ -426,7 +422,7 @@
             </div>
 
             <div class="stats-grid">
-                <div class="stat-card" onclick="switchPage('data-siswa')"><span class="stat-icon">👥</span><div class="stat-info"><h3>Jumlah Siswa</h3><p>128 Aktif</p></div></div>
+                <div class="stat-card" onclick="switchPage('data-siswa')"><span class="stat-icon">👥</span><div class="stat-info"><h3>Jumlah Siswa</h3><p id="dash-siswa-count">2 Aktif</p></div></div>
                 <div class="stat-card" onclick="switchPage('perangkat')"><span class="stat-icon">📁</span><div class="stat-info"><h3>Perangkat Ajar</h3><p>52 Dokumen</p></div></div>
                 <div class="stat-card" onclick="switchPage('absensi')"><span class="stat-icon">📝</span><div class="stat-info"><h3>Absensi Hari Ini</h3><p id="dash-absensi-count">2 Hadir</p></div></div>
                 <div class="stat-card"><span class="stat-icon">⏳</span><div class="stat-info"><h3>Tugas Hari Ini</h3><p>6 Antrean</p></div></div>
@@ -554,7 +550,7 @@
                     <div class="card" style="margin-bottom: 0; padding: 15px;">
                         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
                             <h3 id="absensi-current-title" style="color:#FF69B4; font-size:16px;">Absensi Kelas - 22 Juni 2026</h3>
-                            <button class="btn-siswa btn-pink-primary" style="padding:6px 12px; font-size:12px;" onclick="hitungUlangAbsensi()">💾 Simpan Absensi</button>
+                            <button class="btn-siswa btn-pink-primary" style="padding:6px 12px; font-size:12px;" onclick="hitungUlangAbsensi(); alert('Data absensi hari ini berhasil disimpan ke sistem!')">💾 Simpan Absensi</button>
                         </div>
 
                         <div class="table-responsive">
@@ -575,7 +571,6 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
 
@@ -583,10 +578,14 @@
         <div id="page-modul" class="page-content"><div class="placeholder-page"><h1>📝 MODUL AJAR</h1></div></div>
         <div id="page-asesmen" class="page-content"><div class="placeholder-page"><h1>📊 ASESMEN KELAS</h1></div></div>
         <div id="page-perangkat" class="page-content"><div class="placeholder-page"><h1>📁 PERANGKAT AJAR</h1></div></div>
-
     </div>
 
     <script>
+        // Jalankan update hitungan awal saat aplikasi dibuka
+        window.onload = function() {
+            perbaruiAngkaMukaSiswa();
+        };
+
         // Pindah Halaman SPA
         function switchPage(pageId) {
             document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active-page'));
@@ -596,6 +595,17 @@
 
             if(pageId === 'absensi') {
                 sinkronisasiDataKeAbsensi();
+            }
+            if(pageId === 'dashboard') {
+                perbaruiAngkaMukaSiswa();
+            }
+        }
+
+        function perbaruiAngkaMukaSiswa() {
+            const barisSiswa = document.getElementById('tbody-siswa').getElementsByTagName('tr').length;
+            const dashSiswa = document.getElementById('dash-siswa-count');
+            if(dashSiswa) {
+                dashSiswa.innerText = `${barisSiswa} Aktif`;
             }
         }
 
@@ -652,6 +662,7 @@
                 currentRow.querySelector('.avatar-mini').src = URL.createObjectURL(fotoInput.files[0]);
             }
             closeModal();
+            perbaruiAngkaMukaSiswa();
         }
 
         function openAddSiswaForm() {
@@ -672,12 +683,18 @@
                 </td>
             `;
             tbody.appendChild(newRow);
+            perbaruiAngkaMukaSiswa();
             openEditModal(newRow.querySelector('.btn-edit'));
         }
 
-        function deleteRow(button) { if (confirm("Hapus siswa ini?")) button.closest('tr').remove(); }
+        function deleteRow(button) { 
+            if (confirm("Hapus siswa ini?")) {
+                button.closest('tr').remove(); 
+                perbaruiAngkaMukaSiswa();
+            }
+        }
 
-        // --- Logika Halaman Absensi Siswa Baru ---
+        // --- Logika Halaman Absensi Siswa ---
         function updateAbsensiTitle() {
             const dateVal = document.getElementById('absensi-date').value;
             const options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -711,9 +728,9 @@
                     <td>
                         <div class="status-radio-group">
                             <label class="status-radio-label" style="color:#2E7D32;"><input type="radio" name="status-${rowId}" value="Hadir" checked onchange="hitungUlangAbsensi()"> 🟢 Hadir</label>
-                            <label class="status-radio-label" style="color:#EF6C00;"><input type="radio" name="status-${rowId}" value="Sakit"> 🟡 Sakit</label>
-                            <label class="status-radio-label" style="color:#0288D1;"><input type="radio" name="status-${rowId}" value="Izin"> 🔵 Izin</label>
-                            <label class="status-radio-label" style="color:#C62828;"><input type="radio" name="status-${rowId}" value="Alfa"> 🔴 Alfa</label>
+                            <label class="status-radio-label" style="color:#EF6C00;"><input type="radio" name="status-${rowId}" value="Sakit" onchange="hitungUlangAbsensi()"> 🟡 Sakit</label>
+                            <label class="status-radio-label" style="color:#0288D1;"><input type="radio" name="status-${rowId}" value="Izin" onchange="hitungUlangAbsensi()"> 🔵 Izin</label>
+                            <label class="status-radio-label" style="color:#C62828;"><input type="radio" name="status-${rowId}" value="Alfa" onchange="hitungUlangAbsensi()"> 🔴 Alfa</label>
                         </div>
                     </td>
                     <td><input type="text" class="catatan-input" placeholder="Tambahkan catatan..."></td>
@@ -750,6 +767,12 @@
             document.getElementById('abs-hadir').innerText = hadir;
             document.getElementById('abs-alfa').innerText = alfa;
             document.getElementById('abs-sakit-izin').innerText = sakitIzin;
+            
+            // Otomatis sinkron data angka ke Dashboard atas secara Real-time
+            const dashSiswa = document.getElementById('dash-siswa-count');
+            if(dashSiswa) {
+                dashSiswa.innerText = `${total} Aktif`;
+            }
             document.getElementById('dash-absensi-count').innerText = `${hadir} Hadir`;
         }
     </script>
