@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Devisi Kelas Buel - Dashboard</title>
+    <title>Devisi Kelas Buel - Dashboard & Data Siswa</title>
     <style>
         * {
             margin: 0;
@@ -61,6 +61,7 @@
             border: 1px solid #FFC0CB;
             transition: all 0.3s;
             display: block;
+            cursor: pointer;
         }
 
         .menu-item:hover, .menu-item.active {
@@ -68,11 +69,19 @@
             color: white;
         }
 
-        /* --- MAIN CONTENT --- */
+        /* --- MAIN CONTENT & PAGES MANAGER --- */
         .main-content {
             flex: 1;
             padding: 25px;
             overflow-y: auto;
+        }
+
+        .page-content {
+            display: none;
+        }
+
+        .page-content.active-page {
+            display: block;
         }
 
         .header {
@@ -92,7 +101,7 @@
             margin-top: 5px;
         }
 
-        /* --- TOP STATS --- */
+        /* --- STATS GRID --- */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -109,7 +118,7 @@
             align-items: center;
             gap: 15px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.02);
-            text-decoration: none;
+            cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
         }
 
@@ -119,20 +128,9 @@
             background-color: #FFF5F5;
         }
 
-        .stat-icon {
-            font-size: 30px;
-        }
-
-        .stat-info h3 {
-            font-size: 12px;
-            color: #A9A9A9;
-        }
-
-        .stat-info p {
-            font-size: 20px;
-            font-weight: bold;
-            color: #DB7093;
-        }
+        .stat-icon { font-size: 30px; }
+        .stat-info h3 { font-size: 12px; color: #A9A9A9; }
+        .stat-info p { font-size: 20px; font-weight: bold; color: #DB7093; }
 
         /* --- DASHBOARD GRID --- */
         .dashboard-grid {
@@ -162,30 +160,11 @@
             align-items: center;
         }
 
-        /* Profil Guru Style */
-        .profile-container {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-        }
-
-        .profile-img {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background-color: #FFE4E1;
-            border: 3px solid #FFB6C1;
-            object-fit: cover;
-        }
-
-        .profile-details table {
-            width: 100%;
-            font-size: 14px;
-        }
-
-        .profile-details td {
-            padding: 4px 8px;
-        }
+        /* Profil Guru */
+        .profile-container { display: flex; gap: 20px; align-items: center; }
+        .profile-img { width: 100px; height: 100px; border-radius: 50%; background-color: #FFE4E1; border: 3px solid #FFB6C1; object-fit: cover; }
+        .profile-details table { width: 100%; font-size: 14px; }
+        .profile-details td { padding: 4px 8px; }
 
         /* --- QUICK ACCESS GRID --- */
         .quick-access-grid {
@@ -200,8 +179,6 @@
             padding: 15px;
             border-radius: 12px;
             text-align: center;
-            text-decoration: none;
-            display: block;
             cursor: pointer;
             transition: transform 0.2s, background-color 0.2s;
         }
@@ -212,143 +189,122 @@
             border-color: #FFB6C1;
         }
 
-        .quick-btn div {
-            font-size: 12px;
-            font-weight: bold;
-            color: #DB7093;
-            margin-top: 5px;
-        }
+        .quick-btn div { font-size: 12px; font-weight: bold; color: #DB7093; margin-top: 5px; }
 
-        /* --- LIST ITEMS & ACTION BUTTONS --- */
-        .list-container {
-            display: flex;
-            flex-direction: column;
-        }
+        /* --- LISTS & ACTIONS --- */
+        .list-container { display: flex; flex-direction: column; }
+        .list-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #FFF0F5; font-size: 14px; }
+        .item-content { display: flex; flex-direction: column; gap: 2px; }
+        .item-link { color: #4A4A4A; text-decoration: none; font-weight: 500; }
+        .item-link:hover { color: #FF69B4; text-decoration: underline; }
+        .actions { display: flex; gap: 5px; }
 
-        .list-item {
+        .btn-action { padding: 4px 8px; font-size: 12px; border: none; border-radius: 6px; cursor: pointer; }
+        .btn-add-manual { background-color: #E0F2FE; color: #0369A1; padding: 4px 10px; font-size: 12px; border-radius: 6px; border: none; cursor: pointer; }
+        .btn-edit { background-color: #FFE4B5; color: #8B5A2B; }
+        .btn-delete { background-color: #FFC1C1; color: #8B2323; }
+
+        .manage-section { margin-top: 15px; display: flex; gap: 10px; justify-content: center; background-color: #FFF5F5; padding: 12px; border: 1px dashed #FFB6C1; border-radius: 12px; }
+        .file-input-label { padding: 6px 12px; background-color: #FFB6C1; color: white; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: bold; }
+        .file-input { display: none; }
+
+        /* Gallery */
+        .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
+        .gallery-item { width: 100%; height: 80px; border-radius: 8px; object-fit: cover; border: 1px solid #FFC0CB; cursor: pointer; transition: transform 0.2s; }
+
+        /* --- STYLING HALAMAN DATA SISWA (BARU) --- */
+        .toolbar-siswa {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid #FFF0F5;
-            font-size: 14px;
-        }
-
-        .item-content {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-
-        .item-link {
-            color: #4A4A4A;
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .item-link:hover {
-            color: #FF69B4;
-            text-decoration: underline;
-        }
-
-        .date {
-            color: #C71585;
-            font-weight: bold;
-            font-size: 12px;
-        }
-
-        .actions {
-            display: flex;
-            gap: 5px;
-        }
-
-        .btn-action {
-            padding: 4px 8px;
-            font-size: 12px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-
-        .btn-add-manual {
-            background-color: #E0F2FE;
-            color: #0369A1;
-            padding: 4px 10px;
-            font-size: 12px;
-            border-radius: 6px;
-            border: none;
-            cursor: pointer;
-        }
-
-        .btn-edit {
-            background-color: #FFE4B5;
-            color: #8B5A2B;
-        }
-
-        .btn-edit:hover {
-            background-color: #FFD39B;
-        }
-
-        .btn-delete {
-            background-color: #FFC1C1;
-            color: #8B2323;
-        }
-
-        .btn-delete:hover {
-            background-color: #FFA6A6;
-        }
-
-        /* --- AREA INPUT / MANAGE --- */
-        .manage-section {
-            margin-top: 15px;
-            display: flex;
+            flex-wrap: wrap;
             gap: 10px;
-            justify-content: center;
-            background-color: #FFF5F5;
-            padding: 12px;
-            border: 1px dashed #FFB6C1;
-            border-radius: 12px;
+            margin-bottom: 15px;
         }
 
-        .file-input-label {
-            padding: 6px 12px;
-            background-color: #FFB6C1;
-            color: white;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        .file-input-label:hover {
-            background-color: #FF69B4;
-        }
-
-        .file-input {
-            display: none;
-        }
-
-        /* --- GALERI FOTO MEDIA --- */
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
+        .btn-group-siswa {
+            display: flex;
             gap: 8px;
-            margin-top: 10px;
         }
 
-        .gallery-item {
-            width: 100%;
-            height: 80px;
+        .btn-siswa {
+            padding: 8px 14px;
+            font-size: 13px;
+            font-weight: bold;
             border-radius: 8px;
-            object-fit: cover;
             border: 1px solid #FFC0CB;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: all 0.2s;
         }
 
-        .gallery-item:hover {
-            transform: scale(1.05);
+        .btn-pink-primary { background-color: #FF69B4; color: white; border-color: #FF69B4; }
+        .btn-pink-primary:hover { background-color: #E05297; }
+        .btn-white { background-color: white; color: #DB7093; }
+        .btn-white:hover { background-color: #FFF0F5; }
+
+        .search-box-siswa {
+            padding: 8px 12px;
+            border: 1px solid #FFC0CB;
+            border-radius: 8px;
+            font-size: 13px;
+            width: 200px;
+            outline: none;
+        }
+
+        .search-box-siswa:focus {
+            border-color: #FF69B4;
+            box-shadow: 0 0 4px rgba(255, 105, 180, 0.3);
+        }
+
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            background: white;
+            border-radius: 15px;
+            border: 1px solid #FFC0CB;
+        }
+
+        .table-siswa {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            text-align: left;
+            min-width: 900px;
+        }
+
+        .table-siswa th {
+            background-color: #FFE4E1;
+            color: #D87093;
+            padding: 12px 10px;
+            font-weight: bold;
+            border-bottom: 2px solid #FFB6C1;
+        }
+
+        .table-siswa td {
+            padding: 10px;
+            border-bottom: 1px solid #FFF0F5;
+            vertical-align: middle;
+        }
+
+        .table-siswa tr:hover {
+            background-color: #FFF5F5;
+        }
+
+        .avatar-mini {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid #FFB6C1;
+            background-color: #FFE4E1;
+        }
+
+        .placeholder-page {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid #FFC0CB;
+            text-align: center;
         }
     </style>
 </head>
@@ -360,236 +316,274 @@
             <h2>Kelas Buel</h2>
             <small style="color: #DB7093;">SD Islam Al Falah</small>
         </div>
-        <a href="#dashboard" class="menu-item active">🌸 Dashboard</a>
-        <a href="#data-guru" class="menu-item" onclick="triggerMenu('Data Guru')">👩‍🏫 Data Guru</a>
-        <a href="#data-siswa" class="menu-item" onclick="triggerMenu('Data Siswa')">🎒 Data Siswa</a>
-        <a href="#absensi" class="menu-item" onclick="triggerMenu('Absensi Siswa')">📅 Absensi Siswa</a>
-        <a href="#jurnal" class="menu-item" onclick="triggerMenu('Jurnal Mengajar')">📖 Jurnal Mengajar</a>
-        <a href="#modul" class="menu-item" onclick="triggerMenu('Modul Ajar')">📝 Modul Ajar</a>
-        <a href="#asesmen" class="menu-item" onclick="triggerMenu('Asesmen')">📊 Asesmen</a>
-        <a href="#perangkat" class="menu-item" onclick="triggerMenu('Perangkat Ajar')">📁 Perangkat Ajar</a>
-        <a href="#pengaturan" class="menu-item" onclick="triggerMenu('Pengaturan')">⚙️ Pengaturan</a>
+        <div onclick="switchPage('dashboard')" id="menu-dashboard" class="menu-item active">🌸 Dashboard</div>
+        <div onclick="switchPage('data-siswa')" id="menu-data-siswa" class="menu-item">🎒 Data Siswa</div>
+        <div onclick="switchPage('absensi')" id="menu-absensi" class="menu-item">📅 Absensi Siswa</div>
+        <div onclick="switchPage('jurnal')" id="menu-jurnal" class="menu-item">📖 Jurnal Mengajar</div>
+        <div onclick="switchPage('modul')" id="menu-modul" class="menu-item">📝 Modul Ajar</div>
+        <div onclick="switchPage('asesmen')" id="menu-asesmen" class="menu-item">📊 Asesmen</div>
+        <div onclick="switchPage('perangkat')" id="menu-perangkat" class="menu-item">📁 Perangkat Ajar</div>
     </div>
 
     <div class="main-content">
         
-        <div class="header">
-            <h1>DEVISI KELAS BUEL</h1>
-            <p>" Satu Aplikasi, Semua Administrasi Guru Jadi Mudah & Menyenangkan "</p>
+        <div id="page-dashboard" class="page-content active-page">
+            <div class="header">
+                <h1>DEVISI KELAS BUEL</h1>
+                <p>" Satu Aplikasi, Semua Administrasi Guru Jadi Mudah & Menyenangkan "</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card" onclick="switchPage('data-siswa')">
+                    <span class="stat-icon">👥</span>
+                    <div class="stat-info">
+                        <h3>Jumlah Siswa</h3>
+                        <p>128 Aktif</p>
+                    </div>
+                </div>
+                <div class="stat-card" onclick="switchPage('perangkat')">
+                    <span class="stat-icon">📁</span>
+                    <div class="stat-info">
+                        <h3>Perangkat Ajar</h3>
+                        <p>52 Dokumen</p>
+                    </div>
+                </div>
+                <div class="stat-card" onclick="switchPage('absensi')">
+                    <span class="stat-icon">📝</span>
+                    <div class="stat-info">
+                        <h3>Absensi Hari Ini</h3>
+                        <p>28 Hadir</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-icon">⏳</span>
+                    <div class="stat-info">
+                        <h3>Tugas Hari Ini</h3>
+                        <p>6 Antrean</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-grid">
+                <div>
+                    <div class="card">
+                        <div class="card-title">PROFIL GURU</div>
+                        <div class="profile-container">
+                            <img src="Profil.jpeg" alt="Foto Profil" class="profile-img">
+                            <div class="profile-details">
+                                <table>
+                                    <tr><td><strong>Nama</strong></td><td>: Guru Hebat</td></tr>
+                                    <tr><td><strong>NIP</strong></td><td>: 19900101 201503 2 002</td></tr>
+                                    <tr><td><strong>Jabatan</strong></td><td>: Guru Kelas 6</td></tr>
+                                    <tr><td><strong>Email</strong></td><td>: guruhebat@sekolah.id</td></tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">AKSES CEPAT</div>
+                        <div class="quick-access-grid">
+                            <div class="quick-btn" onclick="switchPage('data-siswa')">🎒 <div>Data Siswa</div></div>
+                            <div class="quick-btn" onclick="switchPage('absensi')">📝 <div>Absensi</div></div>
+                            <div class="quick-btn" onclick="switchPage('jurnal')">📖 <div>Jurnal</div></div>
+                            <div class="quick-btn" onclick="switchPage('perangkat')">📁 <div>Perangkat</div></div>
+                            <div class="quick-btn" onclick="switchPage('modul')">📝 <div>Modul Ajar</div></div>
+                            <div class="quick-btn" onclick="switchPage('asesmen')">📊 <div>Asesmen</div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="card">
+                        <div class="card-title">📁 DOKUMEN BARU</div>
+                        <div class="list-container" id="perangkat-list">
+                            <div class="list-item">
+                                <div class="item-content">
+                                    <a href="#" target="_blank" class="item-link item-text">📄 Contoh_Silabus.pdf</a>
+                                </div>
+                                <div class="actions">
+                                    <button class="btn-action btn-edit" onclick="editItem(this)">✏️</button>
+                                    <button class="btn-action btn-delete" onclick="deleteItem(this)">🗑️</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="manage-section">
+                            <label for="file-upload" class="file-input-label">📁 Import File</label>
+                            <input type="file" id="file-upload" class="file-input" accept=".pdf, .doc, .docx, .xls, .xlsx" onchange="importFile(this)">
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">📷 GALERI MEDIA</div>
+                        <div class="gallery-grid" id="gallery-container"></div>
+                        <div class="manage-section">
+                            <label for="image-upload" class="file-input-label">📸 Tambah Foto</label>
+                            <input type="file" id="image-upload" class="file-input" accept="image/*" onchange="uploadImage(this)">
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="stats-grid">
-            <div class="stat-card" onclick="triggerMenu('Data Siswa')">
-                <span class="stat-icon">👥</span>
-                <div class="stat-info">
-                    <h3>Jumlah Siswa</h3>
-                    <p>128 Aktif</p>
+        <div id="page-data-siswa" class="page-content">
+            <div class="card">
+                <div class="card-title" style="font-size: 22px; color: #FF69B4; border-bottom: none;">🎒 DATA SISWA</div>
+                
+                <div class="toolbar-siswa">
+                    <div class="btn-group-siswa">
+                        <button class="btn-siswa btn-pink-primary" onclick="addSiswaBaru()">➕ Tambah Siswa Baru</button>
+                        <button class="btn-siswa btn-white" onclick="alert('Mengekspor data ke Excel/PDF...')">📄 Ekspor (Excel/PDF)</button>
+                        <button class="btn-siswa btn-white">⏳ Filter</button>
+                    </div>
+                    <input type="text" class="search-box-siswa" placeholder="🔍 Search nama siswa...">
                 </div>
-            </div>
-            <div class="stat-card" onclick="triggerMenu('Perangkat Ajar')">
-                <span class="stat-icon">📁</span>
-                <div class="stat-info">
-                    <h3>Perangkat Ajar</h3>
-                    <p id="total-dokumen">52 Dokumen</p>
+
+                <div class="table-responsive">
+                    <table class="table-siswa">
+                        <thead>
+                            <tr>
+                                <th style="width: 40px;"><input type="checkbox"></th>
+                                <th>Foto</th>
+                                <th>NIS</th>
+                                <th>Nama Lengkap</th>
+                                <th>L/P</th>
+                                <th>Tempat & Tgl Lahir</th>
+                                <th>Kelas</th>
+                                <th>Alamat</th>
+                                <th>Nama Orang Tua</th>
+                                <th>No. Telp</th>
+                                <th style="text-align: center;">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody-siswa">
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td><div class="avatar-mini" style="background: #FFB6C1; text-align:center; line-height:35px; color:white; font-size:12px; border-radius:50%">👦</div></td>
+                                <td>S3013</td>
+                                <td class="nama-murid" style="font-weight: bold; color: #DB7093;">Nama Lengkap</td>
+                                <td>Male</td>
+                                <td>Jakarta, 15 Jul 2012</td>
+                                <td>6B</td>
+                                <td>Jl. Melati 12</td>
+                                <td>Budi Santoso (Ayah)</td>
+                                <td>08123456789</td>
+                                <td style="text-align: center;">
+                                    <button class="btn-action btn-edit" onclick="editSiswa(this)">✏️</button>
+                                    <button class="btn-action btn-delete" onclick="deleteRow(this)">🗑️</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td><div class="avatar-mini" style="background: #FFC0CB; text-align:center; line-height:35px; color:white; font-size:12px; border-radius:50%">👧</div></td>
+                                <td>S3014</td>
+                                <td class="nama-murid" style="font-weight: bold; color: #DB7093;">Nama B</td>
+                                <td>Female</td>
+                                <td>Bandung, 22 Aug 2012</td>
+                                <td>6B</td>
+                                <td>Jl. Rose 4</td>
+                                <td>Dewi Asturi (Ibu)</td>
+                                <td>08915555553</td>
+                                <td style="text-align: center;">
+                                    <button class="btn-action btn-edit" onclick="editSiswa(this)">✏️</button>
+                                    <button class="btn-action btn-delete" onclick="deleteRow(this)">🗑️</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-            </div>
-            <div class="stat-card" onclick="triggerMenu('Absensi')">
-                <span class="stat-icon">📝</span>
-                <div class="stat-info">
-                    <h3>Absensi Hari Ini</h3>
-                    <p>28 Hadir</p>
-                </div>
-            </div>
-            <div class="stat-card" onclick="triggerMenu('Tugas')">
-                <span class="stat-icon">⏳</span>
-                <div class="stat-info">
-                    <h3>Tugas Hari Ini</h3>
-                    <p>6 Antrean</p>
-                </div>
+
             </div>
         </div>
 
-        <div class="dashboard-grid">
-            
-            <div>
-                <div class="card">
-                    <div class="card-title">PROFIL GURU</div>
-                    <div class="profile-container">
-                        <img src="Profil.jpeg" alt="Foto Profil" class="profile-img">
-                        <div class="profile-details">
-                            <table>
-                                <tr><td><strong>Nama</strong></td><td>: Guru Hebat</td></tr>
-                                <tr><td><strong>NIP</strong></td><td>: 19900101 201503 2 002</td></tr>
-                                <tr><td><strong>Jabatan</strong></td><td>: Guru Kelas 6</td></tr>
-                                <tr><td><strong>Email</strong></td><td>: guruhebat@sekolah.id</td></tr>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+        <div id="page-absensi" class="page-content"><div class="placeholder-page"><h1>📅 HALAMAN ABSENSI</h1></div></div>
+        <div id="page-jurnal" class="page-content"><div class="placeholder-page"><h1>📖 JURNAL MENGAJAR</h1></div></div>
+        <div id="page-modul" class="page-content"><div class="placeholder-page"><h1>📝 MODUL AJAR</h1></div></div>
+        <div id="page-asesmen" class="page-content"><div class="placeholder-page"><h1>📊 ASESMEN KELAS</h1></div></div>
+        <div id="page-perangkat" class="page-content"><div class="placeholder-page"><h1>📁 PERANGKAT AJAR</h1></div></div>
 
-                <div class="card">
-                    <div class="card-title">
-                        <span>📁 PERANGKAT AJAR</span>
-                        <button class="btn-add-manual" onclick="addManual('perangkat-list', '📄')">➕ Tambah Teks</button>
-                    </div>
-                    
-                    <div class="list-container" id="perangkat-list">
-                        <div class="list-item">
-                            <div class="item-content">
-                                <a href="#" target="_blank" class="item-link item-text">📄 Contoh_Silabus.pdf (Klik untuk buka)</a>
-                            </div>
-                            <div class="actions">
-                                <button class="btn-action btn-edit" onclick="editItem(this)">✏️ Edit</button>
-                                <button class="btn-action btn-delete" onclick="deleteItem(this)">🗑️ Hapus</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="manage-section">
-                        <label for="file-upload" class="file-input-label">📁 Import File Dokumen</label>
-                        <input type="file" id="file-upload" class="file-input" accept=".pdf, .doc, .docx, .xls, .xlsx" onchange="importFile(this)">
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-title">AKSES CEPAT</div>
-                    <div class="quick-access-grid">
-                        <div class="quick-btn" onclick="triggerMenu('Data Siswa')">🎒 <div>Data Siswa</div></div>
-                        <div class="quick-btn" onclick="triggerMenu('Absensi')">📝 <div>Absensi</div></div>
-                        <div class="quick-btn" onclick="triggerMenu('Jurnal Mengajar')">📖 <div>Jurnal</div></div>
-                        <div class="quick-btn" onclick="triggerMenu('Perangkat Ajar')">📁 <div>Perangkat</div></div>
-                        <div class="quick-btn" onclick="triggerMenu('Asesmen')">📊 <div>Asesmen</div></div>
-                        <div class="quick-btn" onclick="triggerMenu('Galeri Media')">📷 <div>Galeri</div></div>
-                        <div class="quick-btn" onclick="triggerMenu('Catatan')">✍️ <div>Catatan</div></div>
-                        <div class="quick-btn" onclick="triggerMenu('Laporan')">📈 <div>Laporan</div></div>
-                    </div>
-                </div>
-            </div>
-
-            <div>
-                <div class="card">
-                    <div class="card-title">
-                        <span>📌 PENGUMUMAN</span>
-                        <button class="btn-add-manual" onclick="addManual('pengumuman-list', '')">➕ Tambah</button>
-                    </div>
-                    <div class="list-container" id="pengumuman-list">
-                        <div class="list-item">
-                            <div class="item-content">
-                                <span class="item-text">Rapat Guru Bulanan</span>
-                                <span class="date">20 Juni 2026</span>
-                            </div>
-                            <div class="actions">
-                                <button class="btn-action btn-edit" onclick="editItem(this)">✏️</button>
-                                <button class="btn-action btn-delete" onclick="deleteItem(this)">🗑️</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-title">📷 GALERI MEDIA KELAS</div>
-                    <div class="gallery-grid" id="gallery-container">
-                        </div>
-                    <div class="manage-section" style="margin-top:12px;">
-                        <label for="image-upload" class="file-input-label">📸 Tambah Foto Device</label>
-                        <input type="file" id="image-upload" class="file-input" accept="image/*" onchange="uploadImage(this)">
-                    </div>
-                </div>
-            </div>
-
-        </div>
     </div>
 
     <script>
-        // Fungsi Umum Menghapus Data
-        function deleteItem(button) {
-            if (confirm("Apakah Anda yakin ingin menghapus data ini?")) {
-                button.closest('.list-item').remove();
+        function switchPage(pageId) {
+            const pages = document.querySelectorAll('.page-content');
+            pages.forEach(page => page.classList.remove('active-page'));
+
+            const menuItems = document.querySelectorAll('.menu-item');
+            menuItems.forEach(item => item.classList.remove('active'));
+
+            document.getElementById('page-' + pageId).classList.add('active-page');
+
+            const activeMenu = document.getElementById('menu-' + pageId);
+            if(activeMenu) activeMenu.classList.add('active');
+        }
+
+        // Fungsi Tambah Siswa Baru via Prompt
+        function addSiswaBaru() {
+            const nama = prompt("Masukkan Nama Lengkap Siswa:");
+            if (!nama) return;
+            const nis = prompt("Masukkan NIS:", "S" + Math.floor(1000 + Math.random() * 9000));
+            const kelas = prompt("Masukkan Kelas:", "6B");
+
+            const tbody = document.getElementById('tbody-siswa');
+            const newRow = `
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td><div class="avatar-mini" style="background: #DB7093; text-align:center; line-height:35px; color:white; font-size:12px; border-radius:50%">✨</div></td>
+                    <td>${nis}</td>
+                    <td class="nama-murid" style="font-weight: bold; color: #DB7093;">${nama}</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>${kelas}</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td style="text-align: center;">
+                        <button class="btn-action btn-edit" onclick="editSiswa(this)">✏️</button>
+                        <button class="btn-action btn-delete" onclick="deleteRow(this)">🗑️</button>
+                    </td>
+                </tr>
+            `;
+            tbody.insertAdjacentHTML('beforeend', newRow);
+        }
+
+        // Fungsi Edit Nama Siswa di Tabel
+        function editSiswa(button) {
+            const row = button.closest('tr');
+            const targetNama = row.querySelector('.nama-murid');
+            const namaBaru = prompt("Ubah Nama Siswa:", targetNama.innerText);
+            if (namaBaru) targetNama.innerText = namaBaru;
+        }
+
+        // Fungsi Hapus Baris Siswa
+        function deleteRow(button) {
+            if (confirm("Hapus baris data siswa ini?")) {
+                button.closest('tr').remove();
             }
         }
 
-        // Fungsi Umum Mengubah/Edit Nama Data
+        // --- Logika Dasbor Dokumen & Gambar Kelolaan Sebelumnya ---
+        function deleteItem(button) { if (confirm("Hapus data ini?")) button.closest('.list-item').remove(); }
         function editItem(button) {
-            const listItem = button.closest('.list-item');
-            const textSpan = listItem.querySelector('.item-text');
-            const currentText = textSpan.innerText;
-            
-            const newText = prompt("Ubah teks/data:", currentText);
-            if (newText !== null && newText.trim() !== "") {
-                textSpan.innerText = newText;
-            }
+            const textSpan = button.closest('.list-item').querySelector('.item-text');
+            const newText = prompt("Ubah data:", textSpan.innerText);
+            if (newText) textSpan.innerText = newText;
         }
-
-        // Fungsi Tambah Data Manual Lewat Klik Tombol
-        function addManual(targetId, icon = '') {
-            const container = document.getElementById(targetId);
-            const inputUser = prompt("Masukkan data baru:");
-            
-            if (inputUser !== null && inputUser.trim() !== "") {
-                const newItem = document.createElement('div');
-                newItem.className = 'list-item';
-                newItem.innerHTML = `
-                    <div class="item-content">
-                        <span class="item-text">${icon} ${inputUser}</span>
-                    </div>
-                    <div class="actions">
-                        <button class="btn-action btn-edit" onclick="editItem(this)">✏️ Edit</button>
-                        <button class="btn-action btn-delete" onclick="deleteItem(this)">🗑️ Hapus</button>
-                    </div>
-                `;
-                container.appendChild(newItem);
-            }
-        }
-
-        // Fungsi Unggah Perangkat Ajar & Mengaktifkan Link Buka File
         function importFile(input) {
             if (input.files.length > 0) {
-                const file = input.files[0];
-                const container = document.getElementById('perangkat-list');
-                
-                // Membuat URL Objek lokal sementara agar file bisa dibuka/di-klik setelah di-upload
-                const fileURL = URL.createObjectURL(file);
-
-                const newItem = document.createElement('div');
-                newItem.className = 'list-item';
-                newItem.innerHTML = `
-                    <div class="item-content">
-                        <a href="${fileURL}" target="_blank" class="item-link item-text">📄 ${file.name} (Buka File)</a>
-                    </div>
-                    <div class="actions">
-                        <button class="btn-action btn-edit" onclick="editItem(this)">✏️ Edit</button>
-                        <button class="btn-action btn-delete" onclick="deleteItem(this)">🗑️ Hapus</button>
-                    </div>
-                `;
-                container.appendChild(newItem);
-                input.value = ''; // Reset input
+                const fileURL = URL.createObjectURL(input.files[0]);
+                document.getElementById('perangkat-list').insertAdjacentHTML('beforeend', `
+                    <div class="list-item">
+                        <div class="item-content"><a href="${fileURL}" target="_blank" class="item-link item-text">📄 ${input.files[0].name} (Buka)</a></div>
+                        <div class="actions"><button class="btn-action btn-edit" onclick="editItem(this)">✏️</button><button class="btn-action btn-delete" onclick="deleteItem(this)">🗑️</button></div>
+                    </div>`);
             }
         }
-
-        // Fungsi Unggah Foto Dari Perangkat Pengguna dan Membuka Gambar tersebut
         function uploadImage(input) {
             if (input.files.length > 0) {
-                const file = input.files[0];
-                const container = document.getElementById('gallery-container');
-                const imgURL = URL.createObjectURL(file);
-
-                const newImg = document.createElement('img');
-                newImg.src = imgURL;
-                newImg.className = 'gallery-item';
-                newImg.alt = 'Foto Kelas';
-                // Membuat foto langsung bisa dibuka di tab baru saat di klik
-                newImg.onclick = function() {
-                    window.open(imgURL, '_blank');
-                };
-
-                container.appendChild(newImg);
-                input.value = ''; // Reset input
+                const imgURL = URL.createObjectURL(input.files[0]);
+                document.getElementById('gallery-container').insertAdjacentHTML('beforeend', `<img src="${imgURL}" class="gallery-item" onclick="window.open('${imgURL}', '_blank')">`);
             }
-        }
-
-        // Fungsi Respon ketika Menu Akses Cepat atau Sidebar diklik
-        function triggerMenu(namaMenu) {
-            alert(`Anda mengklik dan masuk menuju halaman: [${namaMenu}]`);
         }
     </script>
 </body>
