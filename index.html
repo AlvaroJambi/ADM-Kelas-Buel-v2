@@ -13,7 +13,7 @@
         }
 
         body {
-            background-color: #FFF0F5; /* LavenderBlush / Light Pink */
+            background-color: #FFF0F5; /* LavenderBlush */
             color: #4A4A4A;
             display: flex;
             min-height: 100vh;
@@ -35,6 +35,15 @@
             margin-bottom: 20px;
         }
 
+        .logo-img {
+            width: 90px;
+            height: auto;
+            margin-bottom: 10px;
+            border-radius: 50%;
+            border: 2px solid #FFB6C1;
+            background-color: white;
+        }
+
         .logo-section h2 {
             color: #D87093;
             font-size: 22px;
@@ -51,6 +60,7 @@
             font-size: 14px;
             border: 1px solid #FFC0CB;
             transition: all 0.3s;
+            display: block;
         }
 
         .menu-item:hover, .menu-item.active {
@@ -82,7 +92,7 @@
             margin-top: 5px;
         }
 
-        /* --- TOP WIDGETS (INFO BOX) --- */
+        /* --- TOP STATS --- */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -99,6 +109,14 @@
             align-items: center;
             gap: 15px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(255, 182, 193, 0.4);
+            background-color: #FFF5F5;
         }
 
         .stat-icon {
@@ -182,13 +200,15 @@
             padding: 15px;
             border-radius: 12px;
             text-align: center;
-            cursor: pointer;
-            transition: transform 0.2s;
+            text-decoration: none;
+            display: block;
+            transition: transform 0.2s, background-color 0.2s;
         }
 
         .quick-btn:hover {
             transform: translateY(-3px);
             background: #FFE4E1;
+            border-color: #FFB6C1;
         }
 
         .quick-btn div {
@@ -198,18 +218,97 @@
             margin-top: 5px;
         }
 
-        /* List Items styling */
+        /* --- LIST ITEMS & ACTION BUTTONS --- */
+        .list-container {
+            display: flex;
+            flex-direction: column;
+        }
+
         .list-item {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             padding: 10px 0;
             border-bottom: 1px solid #FFF0F5;
             font-size: 14px;
         }
 
-        .list-item span.date {
+        .item-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .item-text {
+            font-weight: 500;
+        }
+
+        .date {
             color: #C71585;
             font-weight: bold;
+            font-size: 12px;
+        }
+
+        .actions {
+            display: flex;
+            gap: 5px;
+        }
+
+        .btn-action {
+            padding: 4px 8px;
+            font-size: 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-edit {
+            background-color: #FFE4B5; /* Moccasin / Orange-yellow pastel */
+            color: #8B5A2B;
+        }
+
+        .btn-edit:hover {
+            background-color: #FFD39B;
+        }
+
+        .btn-delete {
+            background-color: #FFC1C1; /* Light Red Pastel */
+            color: #8B2323;
+        }
+
+        .btn-delete:hover {
+            background-color: #FFA6A6;
+        }
+
+        /* --- IMPORT FILE COMPONENT --- */
+        .import-section {
+            margin-top: 10px;
+            padding: 12px;
+            background-color: #FFF5F5;
+            border: 1px dashed #FFB6C1;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .file-input-label {
+            display: inline-block;
+            padding: 6px 12px;
+            background-color: #FFB6C1;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+
+        .file-input-label:hover {
+            background-color: #FF69B4;
+        }
+
+        .file-input {
+            display: none; /* Menyembunyikan input default bawaan browser */
         }
 
     </style>
@@ -218,56 +317,57 @@
 
     <div class="sidebar">
         <div class="logo-section">
+            <img src="Logo Kelas Buel.jpeg" alt="Logo Kelas Buel" class="logo-img">
             <h2>Kelas Buel</h2>
             <small style="color: #DB7093;">SD Islam Al Falah</small>
         </div>
-        <a href="#" class="menu-item active">🌸 Dashboard</a>
-        <a href="#" class="menu-item">👩‍🏫 Data Guru</a>
-        <a href="#" class="menu-item">🎒 Data Siswa</a>
-        <a href="#" class="menu-item">📅 Absensi Siswa</a>
-        <a href="#" class="menu-item">📖 Jurnal Mengajar</a>
-        <a href="#" class="menu-item">📝 Modul Ajar</a>
-        <a href="#" class="menu-item">📊 Asesmen</a>
-        <a href="#" class="menu-item">📁 Perangkat Ajar</a>
-        <a href="#" class="menu-item">⚙️ Pengaturan</a>
+        <a href="#dashboard" class="menu-item active">🌸 Dashboard</a>
+        <a href="#data-guru" class="menu-item">👩‍🏫 Data Guru</a>
+        <a href="#data-siswa" class="menu-item">🎒 Data Siswa</a>
+        <a href="#absensi" class="menu-item">📅 Absensi Siswa</a>
+        <a href="#jurnal" class="menu-item">📖 Jurnal Mengajar</a>
+        <a href="#modul" class="menu-item">📝 Modul Ajar</a>
+        <a href="#asesmen" class="menu-item">📊 Asesmen</a>
+        <a href="#perangkat" class="menu-item">📁 Perangkat Ajar</a>
+        <a href="#pengaturan" class="menu-item">⚙️ Pengaturan</a>
     </div>
 
     <div class="main-content">
         
         <div class="header">
-            <h1>DEVISI KAS BUEL</h1>
-            <p>Sistem Administrasi Guru Super Lengkap — Satu Aplikasi, Semua Administrasi Guru Jadi Mudah & Menyenangkan</p>
+            <h1>DEVISI KELAS BUEL</h1>
+            <p>" Satu Aplikasi, Semua Administrasi Guru Jadi Mudah & Menyenangkan "</p>
         </div>
 
         <div class="stats-grid">
-            <div class="stat-card">
+            <a href="#data-siswa" class="stat-card">
                 <span class="stat-icon">👥</span>
                 <div class="stat-info">
                     <h3>Jumlah Siswa</h3>
-                    <p>128</p>
+                    <p>128 Aktif</p>
                 </div>
-            </div>
-            <div class="stat-card">
+            </a>
+            <a href="#perangkat" class="stat-card">
                 <span class="stat-icon">📁</span>
                 <div class="stat-info">
                     <h3>Perangkat Ajar</h3>
-                    <p>52</p>
+                    <p id="total-dokumen">52 Dokumen</p>
                 </div>
-            </div>
-            <div class="stat-card">
+            </a>
+            <a href="#absensi" class="stat-card">
                 <span class="stat-icon">📝</span>
                 <div class="stat-info">
                     <h3>Absensi Hari Ini</h3>
-                    <p>28</p>
+                    <p>28 Hadir</p>
                 </div>
-            </div>
-            <div class="stat-card">
+            </a>
+            <a href="#tugas" class="stat-card">
                 <span class="stat-icon">⏳</span>
                 <div class="stat-info">
                     <h3>Tugas Hari Ini</h3>
-                    <p>6</p>
+                    <p>6 Belum Selesai</p>
                 </div>
-            </div>
+            </a>
         </div>
 
         <div class="dashboard-grid">
@@ -289,16 +389,48 @@
                 </div>
 
                 <div class="card">
+                    <div class="card-title">📁 PERANGKAT AJAR</div>
+                    
+                    <div class="list-container" id="perangkat-list">
+                        <div class="list-item">
+                            <div class="item-content">
+                                <span class="item-text">📄 RPP IPA Kelas 6.pdf</span>
+                            </div>
+                            <div class="actions">
+                                <button class="btn-action btn-edit" onclick="editItem(this)">✏️ Edit</button>
+                                <button class="btn-action btn-delete" onclick="deleteItem(this)">🗑️ Hapus</button>
+                            </div>
+                        </div>
+                        <div class="list-item">
+                            <div class="item-content">
+                                <span class="item-text">📊 Nilai Semester 1.xlsx</span>
+                            </div>
+                            <div class="actions">
+                                <button class="btn-action btn-edit" onclick="editItem(this)">✏️ Edit</button>
+                                <button class="btn-action btn-delete" onclick="deleteItem(this)">🗑️ Hapus</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="import-section">
+                        <label for="file-upload" class="file-input-label">
+                            ➕ Import File (PDF, Word, Excel)
+                        </label>
+                        <input type="file" id="file-upload" class="file-input" accept=".pdf, .doc, .docx, .xls, .xlsx" onchange="importFile(this)">
+                    </div>
+                </div>
+
+                <div class="card">
                     <div class="card-title">AKSES CEPAT</div>
                     <div class="quick-access-grid">
-                        <div class="quick-btn">🎒 <div>Data Siswa</div></div>
-                        <div class="quick-btn">📝 <div>Absensi</div></div>
-                        <div class="quick-btn">📖 <div>Jurnal</div></div>
-                        <div class="quick-btn">📁 <div>Perangkat</div></div>
-                        <div class="quick-btn">📊 <div>Asesmen</div></div>
-                        <div class="quick-btn">📷 <div>Galeri</div></div>
-                        <div class="quick-btn">✍️ <div>Catatan</div></div>
-                        <div class="quick-btn">📈 <div>Laporan</div></div>
+                        <a href="#data-siswa" class="quick-btn">🎒 <div>Data Siswa</div></a>
+                        <a href="#absensi" class="quick-btn">📝 <div>Absensi</div></a>
+                        <a href="#jurnal" class="quick-btn">📖 <div>Jurnal</div></a>
+                        <a href="#perangkat" class="quick-btn">📁 <div>Perangkat</div></a>
+                        <a href="#asesmen" class="quick-btn">📊 <div>Asesmen</div></a>
+                        <a href="#galeri" class="quick-btn">📷 <div>Galeri</div></a>
+                        <a href="#catatan" class="quick-btn">✍️ <div>Catatan</div></a>
+                        <a href="#laporan" class="quick-btn">📈 <div>Laporan</div></a>
                     </div>
                 </div>
             </div>
@@ -306,30 +438,32 @@
             <div>
                 <div class="card">
                     <div class="card-title">PENGUMUMAN</div>
-                    <div class="list-item">
-                        <span>Rapat Guru Bulanan</span>
-                        <span class="date">20 Juni 2025</span>
-                    </div>
-                    <div class="list-item">
-                        <span>Pengumpulan Perangkat Ajar</span>
-                        <span class="date">25 Juni 2025</span>
-                    </div>
-                    <div class="list-item">
-                        <span>Penilaian Akhir Semester</span>
-                        <span class="date">01 Juli 2025</span>
+                    <div class="list-container" id="pengumuman-list">
+                        <div class="list-item">
+                            <div class="item-content">
+                                <span class="item-text">Rapat Guru Bulanan</span>
+                                <span class="date">20 Juni 2025</span>
+                            </div>
+                            <div class="actions">
+                                <button class="btn-action btn-edit" onclick="editItem(this)">✏️</button>
+                                <button class="btn-action btn-delete" onclick="deleteItem(this)">🗑️</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <div class="card">
                     <div class="card-title">PENGINGAT TUGAS</div>
-                    <div class="list-item">
-                        <span>✅ Upload Modul Ajar</span>
-                    </div>
-                    <div class="list-item">
-                        <span>✅ Isi Jurnal Mengajar</span>
-                    </div>
-                    <div class="list-item">
-                        <span>✅ Rekap Absensi Mingguan</span>
+                    <div class="list-container" id="tugas-list">
+                        <div class="list-item">
+                            <div class="item-content">
+                                <span class="item-text">✅ Upload Modul Ajar</span>
+                            </div>
+                            <div class="actions">
+                                <button class="btn-action btn-edit" onclick="editItem(this)">✏️</button>
+                                <button class="btn-action btn-delete" onclick="deleteItem(this)">🗑️</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -338,5 +472,56 @@
 
     </div>
 
+    <script>
+        // Fungsi Hapus Data
+        function deleteItem(button) {
+            if (confirm("Apakah Anda yakin ingin menghapus data ini?")) {
+                const listItem = button.closest('.list-item');
+                listItem.remove();
+            }
+        }
+
+        // Fungsi Edit Nama Data
+        function editItem(button) {
+            const listItem = button.closest('.list-item');
+            const textSpan = listItem.querySelector('.item-text');
+            const namaLama = textSpan.innerText;
+            
+            const namaBaru = prompt("Ubah nama data:", namaLama);
+            if (namaBaru !== null && namaBaru.trim() !== "") {
+                textSpan.innerText = namaBaru;
+            }
+        }
+
+        // Fungsi Import File Dokumen Pengguna
+        function importFile(input) {
+            const fileList = input.files;
+            if (fileList.length > 0) {
+                const file = fileList[0];
+                const container = document.getElementById('perangkat-list');
+
+                // Membuat elemen list baru secara dinamis
+                const newItem = document.createElement('div');
+                newItem.className = 'list-item';
+                newItem.innerHTML = `
+                    <div class="item-content">
+                        <span class="item-text">📄 ${file.name}</span>
+                    </div>
+                    <div class="actions">
+                        <button class="btn-action btn-edit" onclick="editItem(this)">✏️ Edit</button>
+                        <button class="btn-action btn-delete" onclick="deleteItem(this)">🗑️ Hapus</button>
+                    </div>
+                `;
+
+                // Memasukkan file baru ke dalam list perangkat ajar
+                container.appendChild(newItem);
+                
+                alert(`Berhasil mengimpor file: ${file.name}`);
+                
+                // Reset form input file agar bisa memilih file yang sama lagi jika dibutuhkan
+                input.value = '';
+            }
+        }
+    </script>
 </body>
 </html>
