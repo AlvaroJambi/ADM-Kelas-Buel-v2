@@ -15,11 +15,95 @@
         body {
             background-color: #FFF0F5;
             color: #4A4A4A;
-            display: flex;
             min-height: 100vh;
         }
 
-        /* --- SIDEBAR --- */
+        /* --- SCREEN LOGIN & LOADING --- */
+        #auth-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #FFF0F5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .login-card {
+            background: white;
+            padding: 35px;
+            border-radius: 25px;
+            border: 2px solid #FFB6C1;
+            box-shadow: 0 10px 25px rgba(216, 112, 147, 0.2);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .login-card img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 3px solid #FFB6C1;
+            margin-bottom: 15px;
+        }
+
+        .login-card h2 {
+            color: #D87093;
+            margin-bottom: 5px;
+            font-size: 24px;
+        }
+
+        .login-card p {
+            font-size: 13px;
+            color: #8B658B;
+            margin-bottom: 25px;
+        }
+
+        .input-login {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #FFC0CB;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            outline: none;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+
+        .input-login:focus {
+            border-color: #FF69B4;
+            background-color: #FFF5F5;
+        }
+
+        /* Loading Spinner */
+        .loading-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #FFE4E1;
+            border-top: 5px solid #FF69B4;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* --- APP WRAPPER LAYOUT --- */
+        #app-interface {
+            display: none; /* Muncul setelah login & loading sukses */
+            min-height: 100vh;
+        }
+
         .sidebar {
             width: 260px;
             background-color: #FFE4E1;
@@ -70,7 +154,6 @@
             color: white;
         }
 
-        /* --- MAIN CONTENT & PAGES MANAGER --- */
         .main-content {
             flex: 1;
             padding: 25px;
@@ -161,13 +244,11 @@
             align-items: center;
         }
 
-        /* Profil Guru */
-        .profile-container { display: flex; gap: 20px; align-items: center; position: relative; }
+        .profile-container { display: flex; gap: 20px; align-items: center; }
         .profile-img { width: 100px; height: 100px; border-radius: 50%; background-color: #FFE4E1; border: 3px solid #FFB6C1; object-fit: cover; }
         .profile-details table { width: 100%; font-size: 14px; }
         .profile-details td { padding: 4px 8px; }
 
-        /* Quick Access */
         .quick-access-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -192,7 +273,6 @@
 
         .quick-btn div { font-size: 12px; font-weight: bold; color: #DB7093; margin-top: 5px; }
 
-        /* --- MANAGEMENT SECTION GENERAL --- */
         .list-container { display: flex; flex-direction: column; }
         .list-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #FFF0F5; font-size: 14px; }
         .item-content { display: flex; flex-direction: column; gap: 2px; width: 70%; overflow: hidden; }
@@ -209,13 +289,6 @@
         .file-input { display: none; }
         .btn-add-manual { background-color: #E0F2FE; color: #0369A1; padding: 6px 12px; font-size: 12px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; }
 
-        /* Galeri */
-        .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
-        .gallery-item-wrapper { position: relative; width: 100%; height: 80px; border-radius: 8px; overflow: hidden; border: 1px solid #FFC0CB; }
-        .gallery-item { width: 100%; height: 100%; object-fit: cover; cursor: pointer; transition: transform 0.2s; }
-        .gallery-item:hover { transform: scale(1.05); }
-        .btn-del-img { position: absolute; top: 2px; right: 2px; background: rgba(255,255,255,0.8); border: none; border-radius: 4px; padding: 2px 4px; font-size: 9px; cursor: pointer; color: red; font-weight: bold; }
-
         /* --- TABLES GENERAL --- */
         .toolbar-siswa {
             display: flex;
@@ -226,7 +299,6 @@
             margin-bottom: 15px;
         }
 
-        .btn-group-siswa { display: flex; gap: 8px; flex-wrap: wrap; }
         .btn-siswa {
             padding: 8px 14px;
             font-size: 13px;
@@ -240,7 +312,6 @@
         .btn-pink-primary { background-color: #FF69B4; color: white; border-color: #FF69B4; }
         .btn-pink-primary:hover { background-color: #E05297; }
         .btn-white { background-color: white; color: #DB7093; }
-        .btn-white:hover { background-color: #FFF0F5; }
 
         .search-box-siswa {
             padding: 8px 12px;
@@ -273,18 +344,13 @@
             font-weight: bold;
             border-bottom: 2px solid #FFB6C1;
             text-align: center;
+            white-space: nowrap;
         }
 
-        .table-siswa th.left-align, .table-siswa td.left-align { text-align: left; }
         .table-siswa td { padding: 10px; border-bottom: 1px solid #FFF0F5; vertical-align: middle; text-align: center; }
+        .table-siswa th.left-align, .table-siswa td.left-align { text-align: left; }
 
-        .avatar-mini {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 1px solid #FFB6C1;
-        }
+        .avatar-mini { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 1px solid #FFB6C1; }
 
         /* --- ABSENSI SPECIFIC --- */
         .absensi-layout { display: grid; grid-template-columns: 320px 1fr; gap: 20px; align-items: start; }
@@ -293,14 +359,12 @@
         .date-input-pink { width: 100%; padding: 10px; border: 1px solid #FFC0CB; border-radius: 10px; color: #DB7093; font-weight: bold; outline: none; font-size: 15px; text-align: center; }
         .status-radio-group { display: flex; flex-direction: column; gap: 5px; text-align: left; }
         .status-radio-label { display: flex; align-items: center; gap: 6px; font-size: 12px; cursor: pointer; font-weight: 500; }
-        .catatan-input { width: 100%; padding: 6px 10px; border: 1px solid #FFC0CB; border-radius: 6px; outline: none; font-size: 12px; }
 
         /* --- ASESMEN SPECIFIC --- */
-        .input-nilai { width: 60px; padding: 6px; border: 1px solid #FFC0CB; border-radius: 6px; text-align: center; font-weight: bold; color: #4A4A4A; }
-        .input-nilai:focus { border-color: #FF69B4; outline: none; background-color: #FFF5F5; }
-        .btn-delete-col { background-color: #FFC1C1; color: #8B2323; font-size: 10px; padding: 2px 6px; border-radius: 4px; border: none; cursor: pointer; margin-top: 4px; display: block; margin-left: auto; margin-right: auto; }
+        .input-nilai { width: 60px; padding: 6px; border: 1px solid #FFC0CB; border-radius: 6px; text-align: center; font-weight: bold; }
+        .btn-delete-col { background-color: #FFC1C1; color: #8B2323; font-size: 10px; padding: 2px 6px; border-radius: 4px; border: none; cursor: pointer; }
 
-        /* --- MODALS GENERAL --- */
+        /* --- MODALS --- */
         .modal-edit {
             display: none;
             position: fixed;
@@ -325,7 +389,11 @@
             z-index: 999;
         }
 
-        /* --- TOGGLE ALARM SWITCH --- */
+        .form-group { margin-bottom: 12px; text-align: left; }
+        .form-group label { display: block; font-size: 12px; font-weight: bold; color: #DB7093; margin-bottom: 4px; }
+        .form-group input, .form-group select { width: 100%; padding: 8px; border: 1px solid #FFC0CB; border-radius: 8px; outline: none; }
+
+        /* Switch */
         .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
         .switch input { opacity: 0; width: 0; height: 0; }
         .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 24px; }
@@ -336,37 +404,43 @@
 </head>
 <body>
 
+    <div id="auth-screen">
+        <div class="login-card" id="login-form-box">
+            <img src="Logo Kelas Buel.jpeg" alt="Logo">
+            <h2>Masuk Kelas Buel</h2>
+            <p>Silakan isi kredensial administrasi Anda</p>
+            <input type="text" id="login-username" class="input-login" placeholder="Username">
+            <input type="password" id="login-password" class="input-login" placeholder="Password">
+            <button class="btn-siswa btn-pink-primary" style="width:100%; padding:12px;" onclick="prosesValidasiLogin()">Masuk Aplikasi</button>
+        </div>
+        
+        <div class="loading-container" id="loading-box">
+            <div class="spinner"></div>
+            <h3 style="color:#D87093; font-weight:600;">Memuat Dashboard...</h3>
+            <p style="color:#8B658B; font-size:12px; font-style:italic;">Sinkronisasi Jurnal Mengajar & Engine Alarm</p>
+        </div>
+    </div>
+
     <div class="modal-overlay" id="modalOverlay" onclick="closeAllModals()"></div>
 
-    <div class="modal-edit" id="modalEdit">
-        <h3 style="color:#FF69B4; margin-bottom:15px; text-align:center;">✏️ Edit Data Siswa</h3>
-        <div class="form-group"><label>Ganti Foto Profil</label><input type="file" id="edit-foto" accept="image/*"></div>
-        <div class="form-group"><label>NIS</label><input type="text" id="edit-nis"></div>
-        <div class="form-group"><label>Nama Lengkap</label><input type="text" id="edit-nama"></div>
-        <div class="form-group"><label>Jenis Kelamin</label>
-            <select id="edit-jk">
+    <div class="modal-edit" id="modalSiswa">
+        <h3 id="modal-siswa-title" style="color:#FF69B4; margin-bottom:15px; text-align:center;">🎒 Formulir Data Siswa</h3>
+        <input type="hidden" id="siswa-edit-index">
+        <div class="form-group"><label>NISN</label><input type="text" id="s-input-nisn"></div>
+        <div class="form-group"><label>Nama Lengkap</label><input type="text" id="s-input-nama"></div>
+        <div class="form-group"><label>L / P</label>
+            <select id="s-input-jk">
                 <option value="Laki-laki">Laki-laki</option>
                 <option value="Perempuan">Perempuan</option>
             </select>
         </div>
-        <div class="form-group"><label>Tempat & Tanggal Lahir</label><input type="text" id="edit-ttl"></div>
-        <div class="form-group"><label>Kelas</label><input type="text" id="edit-kelas"></div>
-        <div class="form-group"><label>Alamat</label><input type="text" id="edit-alamat"></div>
-        <div class="modal-actions" style="display:flex; justify-content:flex-end; gap:10px;">
+        <div class="form-group"><label>Nama Ayah</label><input type="text" id="s-input-ayah"></div>
+        <div class="form-group"><label>Nama Ibu</label><input type="text" id="s-input-ibu"></div>
+        <div class="form-group"><label>Nomor Telepon Aktif</label><input type="text" id="s-input-telp"></div>
+        <div class="form-group"><label>Alamat</label><input type="text" id="s-input-alamat"></div>
+        <div class="modal-actions" style="display:flex; justify-content:flex-end; gap:10px; margin-top:15px;">
             <button class="btn-siswa btn-white" onclick="closeAllModals()">Batal</button>
-            <button class="btn-siswa btn-pink-primary" onclick="saveEditSiswa()">Simpan</button>
-        </div>
-    </div>
-
-    <div class="modal-edit" id="modalEditProfilGuru">
-        <h3 style="color:#FF69B4; margin-bottom:15px; text-align:center;">✏️ Edit Profil Guru</h3>
-        <div class="form-group"><label>Nama Guru</label><input type="text" id="edit-guru-nama"></div>
-        <div class="form-group"><label>NIP</label><input type="text" id="edit-guru-nip"></div>
-        <div class="form-group"><label>Jabatan</label><input type="text" id="edit-guru-jabatan"></div>
-        <div class="form-group"><label>Email</label><input type="email" id="edit-guru-email"></div>
-        <div class="modal-actions" style="display:flex; justify-content:flex-end; gap:10px;">
-            <button class="btn-siswa btn-white" onclick="closeAllModals()">Batal</button>
-            <button class="btn-siswa btn-pink-primary" onclick="saveProfilGuru()">Simpan</button>
+            <button class="btn-siswa btn-pink-primary" onclick="simpanDataSiswa()">Simpan Data</button>
         </div>
     </div>
 
@@ -402,265 +476,234 @@
     </div>
 
 
-    <div class="sidebar">
-        <div class="logo-section">
-            <img src="Logo Kelas Buel.jpeg" alt="Logo Kelas Buel" class="logo-img">
-            <h2>Kelas Buel</h2>
-            <small style="color: #DB7093;">SD Islam Al Falah</small>
+    <div id="app-interface" style="display: none;">
+        <div class="sidebar">
+            <div class="logo-section">
+                <img src="Logo Kelas Buel.jpeg" alt="Logo Kelas Buel" class="logo-img">
+                <h2>Kelas Buel</h2>
+                <small style="color: #DB7093;">SD Islam Al Falah</small>
+            </div>
+            <div onclick="switchPage('dashboard')" id="menu-dashboard" class="menu-item active">🌸 Dashboard</div>
+            <div onclick="switchPage('data-siswa')" id="menu-data-siswa" class="menu-item">🎒 Data Siswa</div>
+            <div onclick="switchPage('absensi')" id="menu-absensi" class="menu-item">📅 Absensi Siswa</div>
+            <div onclick="switchPage('asesmen')" id="menu-asesmen" class="menu-item">📊 Asesmen</div>
+            <div onclick="switchPage('jurnal')" id="menu-jurnal" class="menu-item">📖 Jurnal Mengajar</div>
+            <div onclick="switchPage('pengingat')" id="menu-pengingat" class="menu-item">🔔 Pengingat Tugas</div>
         </div>
-        <div onclick="switchPage('dashboard')" id="menu-dashboard" class="menu-item active">🌸 Dashboard</div>
-        <div onclick="switchPage('data-siswa')" id="menu-data-siswa" class="menu-item">🎒 Data Siswa</div>
-        <div onclick="switchPage('absensi')" id="menu-absensi" class="menu-item">📅 Absensi Siswa</div>
-        <div onclick="switchPage('asesmen')" id="menu-asesmen" class="menu-item">📊 Asesmen</div>
-        <div onclick="switchPage('jurnal')" id="menu-jurnal" class="menu-item">📖 Jurnal Mengajar</div>
-        <div onclick="switchPage('pengingat')" id="menu-pengingat" class="menu-item">🔔 Pengingat Tugas</div>
-        <div onclick="switchPage('perangkat')" id="menu-perangkat" class="menu-item">📁 Perangkat Ajar</div>
-    </div>
 
-    <div class="main-content">
-        
-        <div id="page-dashboard" class="page-content active-page">
-            <div class="header">
-                <h1>DEVISI KELAS BUEL</h1>
-                <p>" Satu Aplikasi, Semua Administrasi Guru Jadi Mudah & Menyenangkan "</p>
-            </div>
-            <div class="stats-grid">
-                <div class="stat-card" onclick="switchPage('data-siswa')"><span class="stat-icon">👥</span><div class="stat-info"><h3>Jumlah Siswa</h3><p id="dash-siswa-count">3 Aktif</p></div></div>
-                <div class="stat-card" onclick="switchPage('perangkat')"><span class="stat-icon">📁</span><div class="stat-info"><h3>Perangkat Ajar</h3><p id="dash-perangkat-count">1 Dokumen</p></div></div>
-                <div class="stat-card" onclick="switchPage('absensi')"><span class="stat-icon">📝</span><div class="stat-info"><h3>Absensi Hari Ini</h3><p id="dash-absensi-count">3 Hadir</p></div></div>
-                <div class="stat-card" onclick="switchPage('asesmen')"><span class="stat-icon">📊</span><div class="stat-info"><h3>Rata-Rata Asesmen</h3><p id="dash-asesmen-avg">82.5</p></div></div>
-            </div>
+        <div class="main-content">
+            
+            <div id="page-dashboard" class="page-content active-page">
+                <div class="header">
+                    <h1>DEVISI KELAS BUEL</h1>
+                    <p>" Satu Aplikasi, Semua Administrasi Guru Jadi Mudah & Menyenangkan "</p>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card" onclick="switchPage('data-siswa')"><span class="stat-icon">👥</span><div class="stat-info"><h3>Jumlah Siswa</h3><p id="dash-siswa-count">2 Aktif</p></div></div>
+                    <div class="stat-card" onclick="switchPage('absensi')"><span class="stat-icon">📝</span><div class="stat-info"><h3>Absensi Hari Ini</h3><p id="dash-absensi-count">2 Hadir</p></div></div>
+                </div>
 
-            <div class="dashboard-grid">
-                <div>
+                <div class="dashboard-grid">
                     <div class="card">
-                        <div class="card-title">
-                            <span>PROFIL GURU</span>
-                            <button class="btn-action btn-edit" onclick="openEditProfilGuruModal()">✏️ Edit Profil</button>
-                        </div>
+                        <div class="card-title">PROFIL UTAMA INSTANSI</div>
                         <div class="profile-container">
-                            <img src="Profil.jpeg" alt="Foto Profil" class="profile-img" id="guru-display-foto">
+                            <img src="Profil.jpeg" alt="Foto Profil" class="profile-img">
                             <div class="profile-details">
                                 <table>
-                                    <tr><td><strong>Nama</strong></td><td>: <span id="guru-display-nama">Guru Hebat</span></td></tr>
-                                    <tr><td><strong>NIP</strong></td><td>: <span id="guru-display-nip">19900101 201503 2 002</span></td></tr>
-                                    <tr><td><strong>Jabatan</strong></td><td>: <span id="guru-display-jabatan">Guru Kelas 6</span></td></tr>
-                                    <tr><td><strong>Email</strong></td><td>: <span id="guru-display-email">guruhebat@sekolah.id</span></td></tr>
+                                    <tr><td><strong>Grup Wali</strong></td><td>: Kelas Buel B</td></tr>
+                                    <tr><td><strong>Sekolah</strong></td><td>: SD Islam Al Falah</td></tr>
+                                    <tr><td><strong>Status Perangkat</strong></td><td>: Sinkron Terenkripsi</td></tr>
                                 </table>
                             </div>
                         </div>
                     </div>
                     <div class="card">
-                        <div class="card-title">AKSES CEPAT SYNC</div>
+                        <div class="card-title">AKSES CEPAT NAVIGASI</div>
                         <div class="quick-access-grid">
-                            <div class="quick-btn" onclick="switchPage('data-siswa')">🎒 <div>Data Siswa</div></div>
-                            <div class="quick-btn" onclick="switchPage('absensi')">📝 <div>Absensi</div></div>
-                            <div class="quick-btn" onclick="switchPage('jurnal')">📖 <div>Jurnal</div></div>
-                            <div class="quick-btn" onclick="switchPage('pengingat')">⏰ <div>Alarm</div></div>
+                            <div class="quick-btn" onclick="switchPage('data-siswa')">🎒<div>Siswa</div></div>
+                            <div class="quick-btn" onclick="switchPage('absensi')">📝<div>Absen</div></div>
+                            <div class="quick-btn" onclick="switchPage('jurnal')">📖<div>Jurnal</div></div>
+                            <div class="quick-btn" onclick="switchPage('pengingat')">⏰<div>Alarm</div></div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div>
-                    <div class="card">
-                        <div class="card-title">📁 PERANGKAT AJAR (DOKUMEN)</div>
-                        <div class="list-container" id="perangkat-list">
-                            <div class="list-item">
-                                <div class="item-content"><a onclick="alert('Berkas template sistem')" class="item-link item-text">📄 Contoh_Silabus.pdf</a></div>
-                                <div class="actions">
-                                    <button class="btn-action btn-edit" onclick="editItem(this)">✏️</button>
-                                    <button class="btn-action btn-delete" onclick="deleteItem(this)">🗑️</button>
-                                </div>
+            <div id="page-data-siswa" class="page-content">
+                <div class="card">
+                    <div class="card-title" style="font-size: 22px; color: #FF69B4; border-bottom: none;">
+                        <span>🎒 REKAP DATA DATA SISWA UTAMA</span>
+                        <button class="btn-siswa btn-pink-primary" onclick="openSiswaModal(false)">➕ Tambah Siswa Baru</button>
+                    </div>
+                    <div class="toolbar-siswa">
+                        <input type="text" id="searchSiswaInput" class="search-box-siswa" placeholder="🔍 Cari nama siswa..." onkeyup="filterTabelSiswa()">
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table-siswa">
+                            <thead>
+                                <tr>
+                                    <th class="left-align">Foto</th>
+                                    <th>NISN</th>
+                                    <th class="left-align">Nama Lengkap</th>
+                                    <th>L/P</th>
+                                    <th>Nama Ayah</th>
+                                    <th>Nama Ibu</th>
+                                    <th>Nomor Telepon Aktif</th>
+                                    <th class="left-align">Alamat</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody-siswa">
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="page-absensi" class="page-content">
+                <div class="card">
+                    <div class="card-title" style="font-size: 22px; color: #FF69B4;">📅 ABSENSI SISWA HARIAN</div>
+                    <div class="absensi-layout">
+                        <div>
+                            <div class="absensi-summary-box">
+                                <h4 style="color:#D87093; margin-bottom:8px;">📊 Ringkasan</h4>
+                                <p>👥 Total Siswa: <strong id="abs-total">0</strong></p>
+                                <p style="color:#2E7D32;">🟢 Hadir: <strong id="abs-hadir">0</strong></p>
+                                <p style="color:#C62828;">🔴 Alfa: <strong id="abs-alfa">0</strong></p>
+                            </div>
+                            <div class="date-picker-card">
+                                <input type="date" id="absensi-date" class="date-input-pink" value="2026-06-22" onchange="hitungUlangAbsensi()">
                             </div>
                         </div>
-                        <div class="manage-section">
-                            <label for="file-upload" class="file-input-label">📂 Upload</label>
-                            <input type="file" id="file-upload" class="file-input" accept=".pdf, .doc, .docx" onchange="importFile(this)">
-                            <button class="btn-add-manual" onclick="addManualItem()">➕ Manual</button>
+                        <div class="card" style="padding: 15px; width: 100%;">
+                            <h3 style="color:#FF69B4; font-size:16px; margin-bottom: 10px;">Daftar Lembar Absensi Kehadiran</h3>
+                            <div class="table-responsive">
+                                <table class="table-siswa">
+                                    <thead>
+                                        <tr><th>Nama Siswa</th><th>NISN</th><th>Status Kehadiran</th></tr>
+                                    </thead>
+                                    <tbody id="tbody-absensi-isi"></tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div id="page-data-siswa" class="page-content">
-            <div class="card">
-                <div class="card-title" style="font-size: 22px; color: #FF69B4; border-bottom: none;">🎒 DATA SISWA UTAMA</div>
-                <div class="toolbar-siswa">
-                    <button class="btn-siswa btn-pink-primary" onclick="openAddSiswaForm()">➕ Tambah Siswa Baru</button>
-                    <input type="text" id="searchSiswaInput" class="search-box-siswa" placeholder="🔍 Cari nama..." onkeyup="filterSiswaTable()">
-                </div>
-                <div class="table-responsive">
-                    <table class="table-siswa">
-                        <thead>
-                            <tr>
-                                <th class="left-align">Foto</th><th class="left-align">NIS</th><th class="left-align">Nama Lengkap</th><th>L/P</th><th>Kelas</th><th>Alamat</th><th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tbody-siswa">
-                            <tr id="row-siswa-1">
-                                <td class="left-align"><img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/200svg' width='40' height='40'><circle cx='20' cy='20' r='20' fill='%23FFB6C1'/></svg>" class="avatar-mini"></td>
-                                <td class="s-nis left-align">1999011</td><td class="s-nama left-align" style="font-weight: bold; color: #DB7093;">Anisa</td><td class="s-jk">Perempuan</td><td class="s-kelas">6A</td><td class="s-alamat">Jl. Melati 12</td>
-                                <td><button class="btn-action btn-edit" onclick="openEditModal(this)">✏️</button> <button class="btn-action btn-delete" onclick="deleteRow(this)">🗑️</button></td>
-                            </tr>
-                            <tr id="row-siswa-2">
-                                <td class="left-align"><img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/200svg' width='40' height='40'><circle cx='20' cy='20' r='20' fill='%23FFC0CB'/></svg>" class="avatar-mini"></td>
-                                <td class="s-nis left-align">1999012</td><td class="s-nama left-align" style="font-weight: bold; color: #DB7093;">Budi</td><td class="s-jk">Laki-laki</td><td class="s-kelas">6A</td><td class="s-alamat">Jl. Rose 4</td>
-                                <td><button class="btn-action btn-edit" onclick="openEditModal(this)">✏️</button> <button class="btn-action btn-delete" onclick="deleteRow(this)">🗑️</button></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <div id="page-absensi" class="page-content">
-            <div class="card">
-                <div class="card-title" style="font-size: 22px; color: #FF69B4;">📅 ABSENSI SISWA HARIAN</div>
-                <div class="absensi-layout">
-                    <div>
-                        <div class="absensi-summary-box">
-                            <h4 style="color:#D87093; margin-bottom:8px;">📊 Ringkasan</h4>
-                            <p>👥 Total Siswa: <strong id="abs-total">2</strong></p>
-                            <p style="color:#2E7D32;">🟢 Hadir: <strong id="abs-hadir">2</strong></p>
-                            <p style="color:#C62828;">🔴 Alfa: <strong id="abs-alfa">0</strong></p>
-                        </div>
-                        <div class="date-picker-card">
-                            <input type="date" id="absensi-date" class="date-input-pink" value="2026-06-22" onchange="updateAbsensiTitle()">
-                        </div>
+            <div id="page-asesmen" class="page-content">
+                <div class="card">
+                    <div class="card-title" style="font-size: 22px; color: #FF69B4;">📊 ASESMEN HARIAN SISWA</div>
+                    <div class="toolbar-siswa">
+                        <button class="btn-siswa btn-pink-primary" onclick="tambahParameterNilai()">➕ Tambah Parameter Nilai</button>
                     </div>
-                    <div class="card" style="margin-bottom: 0; padding: 15px; width: 100%;">
-                        <h3 id="absensi-current-title" style="color:#FF69B4; font-size:16px; margin-bottom: 10px;">Absensi Kelas - 22 Juni 2026</h3>
-                        <div class="table-responsive">
-                            <table class="table-siswa">
-                                <thead>
-                                    <tr><th>Nama Siswa</th><th>NIS</th><th>Status Kehadiran</th></tr>
-                                </thead>
-                                <tbody id="tbody-absensi-isi"></tbody>
-                            </table>
-                        </div>
+                    <div class="table-responsive">
+                        <table class="table-siswa" id="table-penilaian">
+                            <thead>
+                                <tr id="thead-row-asesmen">
+                                    <th class="left-align">NISN</th><th class="left-align">Nama Siswa</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody-asesmen"></tbody>
+                        </table>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div id="page-asesmen" class="page-content">
-            <div class="card">
-                <div class="card-title" style="font-size: 22px; color: #FF69B4;">📊 ASESMEN SISWA HARIAN</div>
-                <div class="toolbar-siswa">
-                    <button class="btn-siswa btn-pink-primary" onclick="tambahKategoriNilaiBaru()">➕ Tambah Parameter Nilai</button>
-                </div>
-                <div class="table-responsive">
-                    <table class="table-siswa" id="table-penilaian">
-                        <thead>
-                            <tr id="thead-row-asesmen">
-                                <th class="left-align">NIS</th><th class="left-align">Nama Siswa</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tbody-asesmen"></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <div id="page-jurnal" class="page-content">
-            <div class="card">
-                <div class="card-title" style="font-size: 22px; color: #FF69B4;">📖 JURNAL MENGAJAR GURU</div>
-                <div class="manage-section" style="flex-direction: column; align-items: stretch; background-color: white; border: 1px solid #FFC0CB; padding: 20px;">
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;">
-                        <div class="form-group"><label>Mata Pelajaran</label><input type="text" id="jur-mapel" placeholder="Matematika"></div>
-                        <div class="form-group"><label>Materi Pembelajaran / Rencana Tugas</label><input type="text" id="jur-materi" placeholder="Siapkan Materi Aljabar (NIS: Anisa)"></div>
+            <div id="page-jurnal" class="page-content">
+                <div class="card">
+                    <div class="card-title" style="font-size: 22px; color: #FF69B4;">📖 JURNAL MENGAJAR GURU</div>
+                    <div class="manage-section" style="flex-direction: column; align-items: stretch; background-color: white; border: 1px solid #FFC0CB; padding: 20px;">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;">
+                            <div class="form-group"><label>Mata Pelajaran</label><input type="text" id="jur-mapel" placeholder="Contoh: Matematika"></div>
+                            <div class="form-group"><label>Materi Pembelajaran / Rencana Tugas</label><input type="text" id="jur-materi" placeholder="Siapkan Materi Aljabar (NISN: Anisa)"></div>
+                        </div>
+                        <div style="text-align: right;"><button class="btn-siswa btn-pink-primary" onclick="simpanJurnalBaru()">➕ Simpan & Sinkronkan</button></div>
                     </div>
-                    <div style="text-align: right;"><button class="btn-siswa btn-pink-primary" onclick="simpanJurnalMengajarBaru()">➕ Simpan & Sinkronkan</button></div>
-                </div>
-
-                <div class="table-responsive" style="margin-top: 20px;">
-                    <table class="table-siswa">
-                        <thead>
-                            <tr><th>Mata Pelajaran</th><th>Materi / Catatan Tugas</th><th>Aksi</th></tr>
-                        </thead>
-                        <tbody id="tbody-jurnal-mengajar">
-                            <tr>
-                                <td style="font-weight:bold; color:#DB7093;">Matematika</td>
-                                <td>Siapkan Materi Matematika (NIS: Anisa)</td>
-                                <td><button class="btn-action btn-delete" onclick="hapusBarisJurnal(this)">🗑️</button></td>
-                            </tr>
-                            <tr>
-                                <td style="font-weight:bold; color:#DB7093;">IPA</td>
-                                <td>Koreksi Tugas IPA (Budi)</td>
-                                <td><button class="btn-action btn-delete" onclick="hapusBarisJurnal(this)">🗑️</button></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <div id="page-pengingat" class="page-content">
-            <div class="card">
-                <div class="card-title" style="font-size: 22px; color: #FF69B4; border-bottom: none;">
-                    <span>🔔 Alarm Pengingat Tugas: Konfigurasi</span>
-                    <button class="btn-siswa btn-pink-primary" onclick="openAlarmModal(false)">➕ Tambah Alarm Baru</button>
-                </div>
-                <div style="background-color: #FFF5F5; padding: 12px; border-radius: 10px; border: 1px dashed #FFB6C1; margin-bottom: 15px; font-size:13px;">
-                    💡 <strong>Tips Latar Belakang:</strong> Izinkan akses browser saat sistem meminta perizinan "Notification API" agar alarm berdering saat tab ditutup.
-                </div>
-                <div class="table-responsive">
-                    <table class="table-siswa">
-                        <thead>
-                            <tr>
-                                <th style="width: 70px;">Ikon</th>
-                                <th>Waktu Alarm</th>
-                                <th>Tipe Aktivitas</th>
-                                <th class="left-align">Nama Tugas</th>
-                                <th>Status</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tbody-alarm">
+                    <div class="table-responsive" style="margin-top: 20px;">
+                        <table class="table-siswa">
+                            <thead>
+                                <tr><th>Mata Pelajaran</th><th>Materi / Catatan Tugas</th><th>Aksi</th></tr>
+                            </thead>
+                            <tbody id="tbody-jurnal-mengajar">
+                                <tr>
+                                    <td style="font-weight:bold; color:#DB7093;">Matematika</td>
+                                    <td>Siapkan Materi Matematika (NISN: Anisa)</td>
+                                    <td><button class="btn-action btn-delete" onclick="this.closest('tr').remove(); updateDropdownPilihanTugasJurnal();">🗑️</button></td>
+                                </tr>
                             </tbody>
-                    </table>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div id="page-perangkat" class="page-content">
-            <div class="card">
-                <div class="card-title" style="font-size: 22px; color: #FF69B4;">📁 PERANGKAT AJAR UTAMA</div>
-                <div style="background:#FFF5F5; padding:15px; border-radius:10px; text-align:center; font-weight:bold; color:#DB7093; cursor:pointer;" onclick="switchPage('dashboard')">
-                    💡 Modul Terintegrasi. Kelola, unggah berkas, dan hapus langsung dari widget "Perangkat Ajar" di halaman Dashboard utama. Klik di sini untuk kembali.
+            <div id="page-pengingat" class="page-content">
+                <div class="card">
+                    <div class="card-title" style="font-size: 22px; color: #FF69B4; border-bottom: none;">
+                        <span>🔔 Alarm Pengingat Tugas: Konfigurasi</span>
+                        <button class="btn-siswa btn-pink-primary" onclick="openAlarmModal(false)">➕ Tambah Alarm Baru</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table-siswa">
+                            <thead>
+                                <tr>
+                                    <th style="width: 70px;">Ikon</th>
+                                    <th>Waktu Alarm</th>
+                                    <th>Tipe Aktivitas</th>
+                                    <th class="left-align">Nama Tugas</th>
+                                    <th>Status</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody-alarm"></tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
 
+        </div>
     </div>
 
     <audio id="alarm-sound-media" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-500.wav" loop></audio>
 
     <script>
-        let listKategoriNilai = ["Ulangan Harian 1", "Tugas Mandiri 1"];
-        let databaseNilai = {
-            "1999011": {"Ulangan Harian 1": 85, "Tugas Mandiri 1": 90},
-            "1999012": {"Ulangan Harian 1": 80, "Tugas Mandiri 1": 90}
-        };
-
-        // Database Array Alarm (Default data sesuai visual gambar mockup)
-        let databaseAlarm = [
-            { ikon: '🏫', waktu: '07:30', tipe: 'Persiapan Kelas', nama: 'Siapkan Materi Matematika (NIS: Anisa)', aktif: true },
-            { ikon: '📝', waktu: '09:45', tipe: 'Tugas Remedial', nama: 'Koreksi Tugas IPA (Budi)', aktif: true },
-            { ikon: '📊', waktu: '13:00', tipe: 'Pengiriman Nilai', nama: 'Kirim Nilai PTS', aktif: false }
+        // Data Awal Siswa Lengkap sesuai parameter request Anda
+        let databaseSiswa = [
+            { nisn: "0123456781", nama: "Anisa", jk: "Perempuan", ayah: "Bambang", ibu: "Siti", telp: "081234567890", alamat: "Jl. Melati No. 12" },
+            { nisn: "0123456782", nama: "Budi", jk: "Laki-laki", ayah: "Supardi", ibu: "Sri", telp: "089876543210", alamat: "Jl. Rose No. 4" }
         ];
 
-        window.onload = function() {
-            refreshSiswaCounters();
-            syncAbsensiSiswa();
-            renderStrukturTabelAsesmen();
-            renderTabelAlarm();
-            if ("Notification" in window) { Notification.requestPermission(); }
-            
-            // Jalankan background processor alarm tiap 15 detik
-            setInterval(engineCekAlarmWaktu, 15000);
-        };
+        let listKategoriNilai = ["Ulangan Harian 1", "Tugas Mandiri 1"];
+        let databaseAlarm = [
+            { ikon: '🏫', waktu: '07:30', tipe: 'Persiapan Kelas', nama: 'Siapkan Materi Matematika (NISN: Anisa)', aktif: true },
+            { ikon: '📝', waktu: '09:45', tipe: 'Tugas Remedial', nama: 'Koreksi Tugas IPA (Budi)', aktif: true }
+        ];
+
+        // --- VALIDASI AKSES LOGIN & SCREEN LOADING ---
+        function prosesValidasiLogin() {
+            const user = document.getElementById('login-username').value;
+            const pass = document.getElementById('login-password').value;
+
+            if (user === "Kelas Buel" && pass === "222228") {
+                // Sembunyikan form login, tampilkan animasi loading
+                document.getElementById('login-form-box').style.display = 'none';
+                document.getElementById('loading-box').style.display = 'flex';
+
+                // Simulasi waktu loading selama 2 detik sebelum masuk dashboard
+                setTimeout(() => {
+                    document.getElementById('auth-screen').style.display = 'none';
+                    document.getElementById('app-interface').style.display = 'flex';
+                    
+                    // Inisialisasi data aplikasi
+                    renderTabelSiswa();
+                    renderTabelAlarm();
+                    if ("Notification" in window) { Notification.requestPermission(); }
+                    setInterval(engineCekAlarmWaktu, 15000);
+                }, 2000);
+
+            } else {
+                alert("Username atau Password salah! Periksa kembali kredensial Anda.");
+            }
+        }
 
         function switchPage(pageId) {
             document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active-page'));
@@ -669,84 +712,148 @@
             if(document.getElementById('menu-' + pageId)) document.getElementById('menu-' + pageId).classList.add('active');
 
             if(pageId === 'pengingat') { updateDropdownPilihanTugasJurnal(); renderTabelAlarm(); }
-            if(pageId === 'asesmen') renderStrukturTabelAsesmen();
             if(pageId === 'absensi') syncAbsensiSiswa();
+            if(pageId === 'asesmen') renderStrukturTabelAsesmen();
         }
 
         function closeAllModals() {
-            document.getElementById('modalEdit').style.display = 'none';
-            document.getElementById('modalEditProfilGuru').style.display = 'none';
+            document.getElementById('modalSiswa').style.display = 'none';
             document.getElementById('modalAlarm').style.display = 'none';
             document.getElementById('modalOverlay').style.display = 'none';
         }
 
-        // --- ENGINE REKAP JURNAL & SYNC KE ALARM ---
-        function simpanJurnalMengajarBaru() {
-            const mapel = document.getElementById('jur-mapel').value;
-            const materi = document.getElementById('jur-materi').value;
-            if(!mapel || !materi) return alert("Mohon lengkapi isi mata pelajaran dan materi!");
-
-            const tbody = document.getElementById('tbody-jurnal-mengajar');
-            const tr = document.createElement('tr');
-            tr.innerHTML = `<td style="font-weight:bold; color:#DB7093;">${mapel}</td><td>${materi}</td><td><button class="btn-action btn-delete" onclick="hapusBarisJurnal(this)">🗑️</button></td>`;
-            tbody.appendChild(tr);
-
-            document.getElementById('jur-mapel').value = "";
-            document.getElementById('jur-materi').value = "";
-            alert("Jurnal tersimpan! Tugas ini sekarang otomatis dapat dihubungkan di menu Alarm.");
+        // --- LOGIKA UTAMA DATA SISWA (CRUD) ---
+        function renderTabelSiswa() {
+            const tbody = document.getElementById('tbody-siswa');
+            tbody.innerHTML = '';
+            databaseSiswa.forEach((siswa, index) => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td><img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/200svg' width='40' height='40'><circle cx='20' cy='20' r='20' fill='%23FFB6C1'/></svg>" class="avatar-mini"></td>
+                        <td style="font-weight:bold;">${siswa.nisn}</td>
+                        <td class="left-align" style="color:#DB7093; font-weight:bold;">${siswa.nama}</td>
+                        <td>${siswa.jk}</td>
+                        <td>${siswa.ayah}</td>
+                        <td>${siswa.ibu}</td>
+                        <td>${siswa.telp}</td>
+                        <td class="left-align">${siswa.alamat}</td>
+                        <td>
+                            <button class="btn-action btn-edit" onclick="openSiswaModal(true, ${index})">✏️</button>
+                            <button class="btn-action btn-delete" onclick="hapusSiswa(${index})">🗑️</button>
+                        </td>
+                    </tr>
+                `;
+            });
+            document.getElementById('dash-siswa-count').innerText = `${databaseSiswa.length} Aktif`;
         }
 
-        function hapusBarisJurnal(btn) {
-            btn.closest('tr').remove();
-            updateDropdownPilihanTugasJurnal();
+        function openSiswaModal(isEdit, index = null) {
+            document.getElementById('modalOverlay').style.display = 'block';
+            document.getElementById('modalSiswa').style.display = 'block';
+            if(isEdit) {
+                document.getElementById('modal-siswa-title').innerText = "✏️ Edit Data Siswa";
+                document.getElementById('siswa-edit-index').value = index;
+                document.getElementById('s-input-nisn').value = databaseSiswa[index].nisn;
+                document.getElementById('s-input-nama').value = databaseSiswa[index].nama;
+                document.getElementById('s-input-jk').value = databaseSiswa[index].jk;
+                document.getElementById('s-input-ayah').value = databaseSiswa[index].ayah;
+                document.getElementById('s-input-ibu').value = databaseSiswa[index].ibu;
+                document.getElementById('s-input-telp').value = databaseSiswa[index].telp;
+                document.getElementById('s-input-alamat').value = databaseSiswa[index].alamat;
+            } else {
+                document.getElementById('modal-siswa-title').innerText = "🎒 Tambah Siswa Baru";
+                document.getElementById('siswa-edit-index').value = "-1";
+                document.getElementById('s-input-nisn').value = "";
+                document.getElementById('s-input-nama').value = "";
+                document.getElementById('s-input-ayah').value = "";
+                document.getElementById('s-input-ibu').value = "";
+                document.getElementById('s-input-telp').value = "";
+                document.getElementById('s-input-alamat').value = "";
+            }
+        }
+
+        function simpanDataSiswa() {
+            const idx = parseInt(document.getElementById('siswa-edit-index').value);
+            const data = {
+                nisn: document.getElementById('s-input-nisn').value,
+                nama: document.getElementById('s-input-nama').value,
+                jk: document.getElementById('s-input-jk').value,
+                ayah: document.getElementById('s-input-ayah').value,
+                ibu: document.getElementById('s-input-ibu').value,
+                telp: document.getElementById('s-input-telp').value,
+                alamat: document.getElementById('s-input-alamat').value
+            };
+
+            if(!data.nisn || !data.nama) return alert("NISN dan Nama lengkap wajib diisi!");
+
+            if(idx === -1) databaseSiswa.push(data);
+            else databaseSiswa[idx] = data;
+
+            closeAllModals();
+            renderTabelSiswa();
+        }
+
+        function hapusSiswa(index) {
+            if(confirm("Hapus data siswa ini?")) { databaseSiswa.splice(index, 1); renderTabelSiswa(); }
+        }
+
+        function filterTabelSiswa() {
+            const val = document.getElementById('searchSiswaInput').value.toLowerCase();
+            const rows = document.getElementById('tbody-siswa').getElementsByTagName('tr');
+            for(let i=0; i<rows.length; i++) {
+                const nama = rows[i].getElementsByTagName('td')[2].innerText.toLowerCase();
+                rows[i].style.display = nama.includes(val) ? '' : 'none';
+            }
+        }
+
+        // --- LOGIKA JURNAL & SINKRONISASI ALARM ---
+        function simpanJurnalBaru() {
+            const mapel = document.getElementById('jur-mapel').value;
+            const materi = document.getElementById('jur-materi').value;
+            if(!mapel || !materi) return alert("Mohon lengkapi isi jurnal!");
+
+            const tr = document.createElement('tr');
+            tr.innerHTML = `<td style="font-weight:bold; color:#DB7093;">${mapel}</td><td>${materi}</td><td><button class="btn-action btn-delete" onclick="this.closest('tr').remove(); updateDropdownPilihanTugasJurnal();">🗑️</button></td>`;
+            document.getElementById('tbody-jurnal-mengajar').appendChild(tr);
+            document.getElementById('jur-mapel').value = "";
+            document.getElementById('jur-materi').value = "";
+            alert("Jurnal ditambahkan!");
         }
 
         function updateDropdownPilihanTugasJurnal() {
             const select = document.getElementById('alarm-task-link');
             if(!select) return;
-            select.innerHTML = '<option value="">-- Ketik Kustom / Mandiri --</option>';
-            
+            select.innerHTML = '<option value="">-- Ketik Kustom Manual --</option>';
             const rows = document.getElementById('tbody-jurnal-mengajar').getElementsByTagName('tr');
             for(let i=0; i<rows.length; i++) {
-                const mapel = rows[i].getElementsByTagName('td')[0].innerText;
                 const materi = rows[i].getElementsByTagName('td')[1].innerText;
-                const gabungText = `${mapel}: ${materi}`;
-                select.innerHTML += `<option value="${materi}">${gabungText}</option>`;
+                select.innerHTML += `<option value="${materi}">${materi}</option>`;
             }
         }
 
         function autoFillAlarmText() {
             const select = document.getElementById('alarm-task-link');
-            if(select.value !== "") {
-                document.getElementById('alarm-nama-input').value = select.value;
-            }
+            if(select.value !== "") document.getElementById('alarm-nama-input').value = select.value;
         }
 
-        // --- ALARM CRUD OPERATIONS ---
+        // --- LOGIKA ALARM BACKGROUND PROCESSOR ---
         function renderTabelAlarm() {
             const tbody = document.getElementById('tbody-alarm');
-            if(!tbody) return;
-            tbody.innerHTML = '';
-
+            if(!tbody) return; tbody.innerHTML = '';
             databaseAlarm.forEach((alarm, index) => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td style="font-size:18px;">${alarm.ikon}</td>
-                    <td style="font-weight:bold; color:#FF69B4; font-size:15px;">${alarm.waktu}</td>
-                    <td><span style="background:#FFE4E1; padding:3px 8px; border-radius:6px; font-size:12px;">${alarm.tipe}</span></td>
-                    <td class="left-align" style="font-weight:500;">${alarm.nama}</td>
-                    <td>
-                        <label class="switch">
-                            <input type="checkbox" ${alarm.aktif ? 'checked' : ''} onchange="statusAlarmSwitchChanged(${index}, this.checked)">
-                            <span class="slider"></span>
-                        </label>
-                    </td>
-                    <td>
-                        <button class="btn-action btn-edit" onclick="openAlarmModal(true, ${index})">✏️</button>
-                        <button class="btn-action btn-delete" onclick="hapusDataAlarm(${index})">🗑️</button>
-                    </td>
+                tbody.innerHTML += `
+                    <tr>
+                        <td style="font-size:18px;">${alarm.ikon}</td>
+                        <td style="font-weight:bold; color:#FF69B4; font-size:15px;">${alarm.waktu}</td>
+                        <td><span style="background:#FFE4E1; padding:3px 8px; border-radius:6px; font-size:12px;">${alarm.tipe}</span></td>
+                        <td class="left-align" style="font-weight:500;">${alarm.nama}</td>
+                        <td><label class="switch"><input type="checkbox" ${alarm.aktif ? 'checked' : ''} onchange="databaseAlarm[${index}].aktif=this.checked"><span class="slider"></span></label></td>
+                        <td>
+                            <button class="btn-action btn-edit" onclick="openAlarmModal(true, ${index})">✏️</button>
+                            <button class="btn-action btn-delete" onclick="databaseAlarm.splice(${index},1); renderTabelAlarm();">🗑️</button>
+                        </td>
+                    </tr>
                 `;
-                tbody.appendChild(tr);
             });
         }
 
@@ -754,7 +861,6 @@
             updateDropdownPilihanTugasJurnal();
             document.getElementById('modalOverlay').style.display = 'block';
             document.getElementById('modalAlarm').style.display = 'block';
-
             if(isEdit) {
                 document.getElementById('modal-alarm-title').innerText = "✏️ Edit Konfigurasi Alarm";
                 document.getElementById('alarm-index-id').value = index;
@@ -762,7 +868,7 @@
                 document.getElementById('alarm-waktu-input').value = databaseAlarm[index].waktu;
                 document.getElementById('alarm-tipe-input').value = databaseAlarm[index].tipe;
             } else {
-                document.getElementById('modal-alarm-title').innerText = "⏰ Tambah Alarm Pengingat Baru";
+                document.getElementById('modal-alarm-title').innerText = "⏰ Tambah Alarm Baru";
                 document.getElementById('alarm-index-id').value = "-1";
                 document.getElementById('alarm-nama-input').value = "";
                 document.getElementById('alarm-waktu-input').value = "";
@@ -775,110 +881,67 @@
             const waktu = document.getElementById('alarm-waktu-input').value;
             const tipe = document.getElementById('alarm-tipe-input').value;
 
-            if(!nama || !waktu) return alert("Waktu jam alarm dan Nama aktivitas wajib diisi!");
+            if(!nama || !waktu) return alert("Isi nama dan waktu alarm!");
 
             let ikon = "🔔";
             if(tipe.includes("Kelas")) ikon = "🏫";
             else if(tipe.includes("Remedial")) ikon = "📝";
-            else if(tipe.includes("Nilai")) ikon = "📊";
-            else if(tipe.includes("Pertemuan")) ikon = "🤝";
 
-            if(idx === -1) {
-                databaseAlarm.push({ ikon, waktu, tipe, nama, aktif: true });
-            } else {
-                databaseAlarm[idx] = { ikon, waktu, tipe, nama, aktif: databaseAlarm[idx].aktif };
-            }
+            if(idx === -1) databaseAlarm.push({ ikon, waktu, tipe, nama, aktif: true });
+            else databaseAlarm[idx] = { ikon, waktu, tipe, nama, aktif: databaseAlarm[idx].aktif };
 
             closeAllModals();
             renderTabelAlarm();
         }
 
-        function statusAlarmSwitchChanged(idx, checkedState) {
-            databaseAlarm[idx].aktif = checkedState;
-        }
-
-        function hapusDataAlarm(idx) {
-            if(confirm("Hapus alarm pengingat ini?")) {
-                databaseAlarm.splice(idx, 1);
-                renderTabelAlarm();
-            }
-        }
-
-        // --- BACKGROUND ALARM PROCESSOR ENGINE ---
         function engineCekAlarmWaktu() {
             const skrg = new Date();
-            const formatWaktuSistem = `${String(skrg.getHours()).padStart(2, '0')}:${String(skrg.getMinutes()).padStart(2, '0')}`;
-
+            const jamMenit = `${String(skrg.getHours()).padStart(2, '0')}:${String(skrg.getMinutes()).padStart(2, '0')}`;
             databaseAlarm.forEach((alarm) => {
-                if(alarm.aktif && alarm.waktu === formatWaktuSistem) {
-                    alarm.aktif = false; // Hindari looping berulang pada menit yang sama
-                    triggerSuaraDanNotifikasiSistemOS(alarm.nama, alarm.tipe);
+                if(alarm.aktif && alarm.waktu === jamMenit) {
+                    alarm.aktif = false;
+                    const audio = document.getElementById('alarm-sound-media');
+                    audio.play().catch(() => {});
+                    
+                    if ("Notification" in window && Notification.permission === "granted") {
+                        const n = new Notification(`⏰ Alarm Kelas Buel: ${alarm.tipe}`, { body: alarm.nama, requireInteraction: true });
+                        n.onclick = function() { window.focus(); audio.pause(); audio.currentTime = 0; };
+                    } else {
+                        alert(`⏰ ALARM: ${alarm.nama}`);
+                        audio.pause(); audio.currentTime = 0;
+                    }
                     renderTabelAlarm();
                 }
             });
         }
 
-        function triggerSuaraDanNotifikasiSistemOS(namaTugas, tipe) {
-            // Bunyikan Audio HTML5
-            const audio = document.getElementById('alarm-sound-media');
-            audio.play().catch(() => console.log("Menunggu interaksi browser untuk memutar musik"));
-
-            // Kirim Push Notification ke OS Desktop / HP Android
-            if ("Notification" in window && Notification.permission === "granted") {
-                const opsiNotif = new Notification(`⏰ Pengingat Kelas Buel: ${tipe}`, {
-                    body: `Tugas Saat Ini: ${namaTugas}`,
-                    requireInteraction: true // Notifikasi menetap sebelum ditutup manual oleh guru
-                });
-
-                opsiNotif.onclick = function() {
-                    window.focus();
-                    audio.pause();
-                    audio.currentTime = 0;
-                };
-            } else {
-                alert(`⏰ ALARM BERBUNYI! (${tipe})\nTugas: ${namaTugas}`);
-                audio.pause();
-                audio.currentTime = 0;
-            }
-        }
-
-        // --- REKAP DATA SISWA, ABSENSI & ASESMEN ---
-        function refreshSiswaCounters() {
-            const count = document.getElementById('tbody-siswa').getElementsByTagName('tr').length;
-            document.getElementById('dash-siswa-count').innerText = `${count} Aktif`;
-            document.getElementById('abs-total').innerText = count;
-        }
-
+        // --- REKAP ABSENSI & ASESMEN SYNC ---
         function syncAbsensiSiswa() {
-            const rows = document.getElementById('tbody-siswa').getElementsByTagName('tr');
-            const tbody = document.getElementById('tbody-absensi-isi');
-            tbody.innerHTML = '';
-            for(let i=0; i<rows.length; i++) {
-                const nis = rows[i].querySelector('.s-nis').innerText;
-                const nama = rows[i].querySelector('.s-nama').innerText;
+            const tbody = document.getElementById('tbody-absensi-isi'); tbody.innerHTML = '';
+            databaseSiswa.forEach(s => {
                 tbody.innerHTML += `
                     <tr>
-                        <td class="left-align" style="font-weight:bold; color:#DB7093;">${nama}</td>
-                        <td>${nis}</td>
+                        <td class="left-align" style="font-weight:bold; color:#DB7093;">${s.nama}</td>
+                        <td>${s.nisn}</td>
                         <td>
                             <div class="status-radio-group">
-                                <label class="status-radio-label"><input type="radio" name="abs-${nis}" value="Hadir" checked onchange="hitungUlangAbsensi()"> 🟢 Hadir</label>
-                                <label class="status-radio-label"><input type="radio" name="abs-${nis}" value="Alfa" onchange="hitungUlangAbsensi()"> 🔴 Alfa</label>
+                                <label class="status-radio-label"><input type="radio" name="abs-${s.nisn}" value="Hadir" checked onchange="hitungUlangAbsensi()"> 🟢 Hadir</label>
+                                <label class="status-radio-label"><input type="radio" name="abs-${s.nisn}" value="Alfa" onchange="hitungUlangAbsensi()"> 🔴 Alfa</label>
                             </div>
                         </td>
                     </tr>
                 `;
-            }
+            });
             hitungUlangAbsensi();
         }
 
         function hitungUlangAbsensi() {
-            const rows = document.getElementById('tbody-absensi-isi').getElementsByTagName('tr');
             let hadir = 0, alfa = 0;
-            for(let i=0; i<rows.length; i++) {
-                const chk = rows[i].querySelector('input[type="radio"]:checked');
-                if(chk && chk.value === 'Hadir') hadir++; else alfa++;
-            }
+            databaseSiswa.forEach(s => {
+                const el = document.querySelector(`input[name="abs-${s.nisn}"]:checked`);
+                if(el && el.value === "Hadir") hadir++; else alfa++;
+            });
+            document.getElementById('abs-total').innerText = databaseSiswa.length;
             document.getElementById('abs-hadir').innerText = hadir;
             document.getElementById('abs-alfa').innerText = alfa;
             document.getElementById('dash-absensi-count').innerText = `${hadir} Hadir`;
@@ -887,82 +950,21 @@
         function renderStrukturTabelAsesmen() {
             const head = document.getElementById('thead-row-asesmen');
             const tbody = document.getElementById('tbody-asesmen');
-            const siswa = document.getElementById('tbody-siswa').getElementsByTagName('tr');
-
-            head.innerHTML = '<th class="left-align">NIS</th><th class="left-align">Nama Siswa</th>';
-            listKategoriNilai.forEach((k, idx) => {
-                head.innerHTML += `<th>${k} <button class="btn-delete-col" onclick="hapusKolomAsesmen(${idx})">🗑️</button></th>`;
-            });
-
+            head.innerHTML = '<th class="left-align">NISN</th><th class="left-align">Nama Siswa</th>';
+            listKategoriNilai.forEach((k, i) => head.innerHTML += `<th>${k} <button class="btn-delete-col" onclick="listKategoriNilai.splice(${i},1); renderStrukturTabelAsesmen();">🗑️</button></th>`);
+            
             tbody.innerHTML = '';
-            for(let i=0; i<siswa.length; i++) {
-                const nis = siswa[i].querySelector('.s-nis').innerText;
-                const nama = siswa[i].querySelector('.s-nama').innerText;
-                let html = `<td class="left-align">${nis}</td><td class="left-align" style="font-weight:bold; color:#DB7093;">${nama}</td>`;
-                listKategoriNilai.forEach(k => {
-                    if(!databaseNilai[nis]) databaseNilai[nis] = {};
-                    const val = databaseNilai[nis][k] || 0;
-                    html += `<td><input type="number" class="input-nilai" value="${val}" onchange="databaseNilai['${nis}']['${k}']=parseInt(this.value)||0"></td>`;
-                });
+            databaseSiswa.forEach(s => {
+                let html = `<td class="left-align">${s.nisn}</td><td class="left-align" style="font-weight:bold; color:#DB7093;">${s.nama}</td>`;
+                listKategoriNilai.forEach(() => html += `<td><input type="number" class="input-nilai" value="80"></td>`);
                 tbody.innerHTML += `<tr>${html}</tr>`;
-            }
+            });
         }
 
-        function tambahKategoriNilaiBaru() {
-            const p = prompt("Nama Penilaian:");
+        function tambahParameterNilai() {
+            const p = prompt("Nama Penilaian Baru:");
             if(p) { listKategoriNilai.push(p); renderStrukturTabelAsesmen(); }
         }
-        function hapusKolomAsesmen(idx) {
-            listKategoriNilai.splice(idx,1); renderStrukturTabelAsesmen();
-        }
-
-        // --- PROFILE GURU & CORE PERANGKAT FILE FUNCTIONS ---
-        function openEditProfilGuruModal() {
-            document.getElementById('edit-guru-nama').value = document.getElementById('guru-display-nama').innerText;
-            document.getElementById('edit-guru-nip').value = document.getElementById('guru-display-nip').innerText;
-            document.getElementById('edit-guru-jabatan').value = document.getElementById('guru-display-jabatan').innerText;
-            document.getElementById('edit-guru-email').value = document.getElementById('guru-display-email').innerText;
-            document.getElementById('modalEditProfilGuru').style.display = 'block';
-            document.getElementById('modalOverlay').style.display = 'block';
-        }
-        function saveProfilGuru() {
-            document.getElementById('guru-display-nama').innerText = document.getElementById('edit-guru-nama').value;
-            document.getElementById('guru-display-nip').innerText = document.getElementById('edit-guru-nip').value;
-            document.getElementById('guru-display-jabatan').innerText = document.getElementById('edit-guru-jabatan').value;
-            document.getElementById('guru-display-email').innerText = document.getElementById('edit-guru-email').value;
-            closeAllModals();
-        }
-        function hitungUlangPerangkat() {
-            document.getElementById('dash-perangkat-count').innerText = `${document.getElementById('perangkat-list').getElementsByClassName('list-item').length} Dokumen`;
-        }
-        function deleteItem(btn) { btn.closest('.list-item').remove(); hitungUlangPerangkat(); }
-        function editItem(btn) {
-            const span = btn.closest('.list-item').querySelector('.item-text');
-            const txt = prompt("Ubah nama berkas:", span.innerText.replace('📄 ', ''));
-            if(txt) span.innerText = `📄 ${txt}`;
-        }
-        function importFile(input) {
-            if(input.files.length > 0) {
-                document.getElementById('perangkat-list').innerHTML += `<div class="list-item"><div class="item-content"><a class="item-link item-text">📄 ${input.files[0].name}</a></div><div class="actions"><button class="btn-action btn-edit" onclick="editItem(this)">✏️</button> <button class="btn-action btn-delete" onclick="deleteItem(this)">🗑️</button></div></div>`;
-                hitungUlangPerangkat();
-            }
-        }
-        function addManualItem() {
-            const n = prompt("Nama dokumen:");
-            if(n) {
-                document.getElementById('perangkat-list').innerHTML += `<div class="list-item"><div class="item-content"><a class="item-link item-text">📄 ${n}</a></div><div class="actions"><button class="btn-action btn-edit" onclick="editItem(this)">✏️</button> <button class="btn-action btn-delete" onclick="deleteItem(this)">🗑️</button></div></div>`;
-                hitungUlangPerangkat();
-            }
-        }
-        function openAddSiswaForm() {
-            const n = prompt("Nama Lengkap Siswa Baru:");
-            if(n) {
-                const nis = "19990" + (Math.floor(Math.random() * 80) + 15);
-                document.getElementById('tbody-siswa').innerHTML += `<tr><td class="left-align"><img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/200svg' width='40' height='40'><circle cx='20' cy='20' r='20' fill='%23FFB6C1'/></svg>" class="avatar-mini"></td><td class="s-nis left-align">${nis}</td><td class="s-nama left-align" style="font-weight: bold; color: #DB7093;">${n}</td><td class="s-jk">Laki-laki</td><td class="s-kelas">6A</td><td class="s-alamat">-</td><td><button class="btn-action btn-edit" onclick="openEditModal(this)">✏️</button> <button class="btn-action btn-delete" onclick="deleteRow(this)">🗑️</button></td></tr>`;
-                refreshSiswaCounters(); syncAbsensiSiswa(); renderStrukturTabelAsesmen();
-            }
-        }
-        function deleteRow(btn) { btn.closest('tr').remove(); refreshSiswaCounters(); syncAbsensiSiswa(); renderStrukturTabelAsesmen(); }
     </script>
 </body>
 </html>
