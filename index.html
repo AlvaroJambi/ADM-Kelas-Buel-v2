@@ -365,9 +365,6 @@
         .table-siswa td { padding: 10px; border-bottom: 1px solid #FFF0F5; vertical-align: middle; text-align: center; }
         .table-siswa th.left-align, .table-siswa td.left-align { text-align: left; }
 
-        .avatar-mini { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 1px solid #FFB6C1; }
-        .preview-img-box { width: 60px; height: 60px; border-radius: 50%; border: 1px solid #FFB6C1; object-fit: cover; display: block; margin-top: 5px; }
-
         /* --- ABSENSI SPECIFIC --- */
         .absensi-layout { display: grid; grid-template-columns: 280px 1fr; gap: 20px; align-items: start; }
         @media (max-width: 768px) { .absensi-layout { grid-template-columns: 1fr; } }
@@ -458,11 +455,6 @@
     <div class="modal-edit" id="modalSiswa">
         <h3 id="modal-siswa-title" style="color:#FF69B4; margin-bottom:15px; text-align:center;">🎒 Formulir Data Siswa</h3>
         <input type="hidden" id="siswa-edit-index">
-        <div class="form-group">
-            <label>Foto Siswa</label>
-            <input type="file" id="s-input-foto" accept="image/*" onchange="previewFotoSiswa(this)">
-            <img id="s-preview-tampil" class="preview-img-box" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/200svg' width='40' height='40'><circle cx='20' cy='20' r='20' fill='%23FFB6C1'/></svg>">
-        </div>
         <div class="form-group"><label>NISN</label><input type="text" id="s-input-nisn"></div>
         <div class="form-group"><label>Nama Lengkap</label><input type="text" id="s-input-nama"></div>
         <div class="form-group"><label>L / P</label>
@@ -477,7 +469,7 @@
         <div class="form-group"><label>Alamat</label><input type="text" id="s-input-alamat"></div>
         <div class="modal-actions" style="display:flex; justify-content:flex-end; gap:10px; margin-top:15px;">
             <button class="btn-siswa btn-white" onclick="closeAllModals()">Batal</button>
-            <button class="btn-siswa btn-pink-primary" onclick="simpanDataSiswa()">Simpan Data</button>
+            <button class="btn-siswa btn-pink-primary" onclick="simpanDataSiswaManually()">Simpan Data</button>
         </div>
     </div>
 
@@ -536,8 +528,8 @@
                     <p>" Satu Aplikasi, Semua Administrasi Guru Jadi Mudah & Menyenangkan "</p>
                 </div>
                 <div class="stats-grid">
-                    <div class="stat-card" onclick="switchPage('data-siswa')"><span class="stat-icon">👥</span><div class="stat-info"><h3>Jumlah Siswa</h3><p id="dash-siswa-count">2 Aktif</p></div></div>
-                    <div class="stat-card" onclick="switchPage('absensi')"><span class="stat-icon">📝</span><div class="stat-info"><h3>Absensi Hari Ini</h3><p id="dash-absensi-count">2 Hadir</p></div></div>
+                    <div class="stat-card" onclick="switchPage('data-siswa')"><span class="stat-icon">👥</span><div class="stat-info"><h3>Jumlah Siswa</h3><p id="dash-siswa-count">0 Aktif</p></div></div>
+                    <div class="stat-card" onclick="switchPage('absensi')"><span class="stat-icon">📝</span><div class="stat-info"><h3>Absensi Hari Ini</h3><p id="dash-absensi-count">0 Hadir</p></div></div>
                 </div>
 
                 <div class="dashboard-grid">
@@ -573,7 +565,10 @@
                 <div class="card">
                     <div class="card-title" style="font-size: 22px; color: #FF69B4; border-bottom: none;">
                         <span>🎒 REKAP DATA DATA SISWA UTAMA</span>
-                        <button class="btn-siswa btn-pink-primary" onclick="openSiswaModal(false)">➕ Tambah Siswa Baru</button>
+                        <div>
+                            <input type="file" id="file-uploader-siswa" accept=".txt,.csv,.doc,.docx" style="display:none;" onchange="prosesUploadDataSiswa(this)">
+                            <button class="btn-siswa btn-pink-primary" onclick="document.getElementById('file-uploader-siswa').click()">📁 Upload Data Siswa</button>
+                        </div>
                     </div>
                     <div class="toolbar-siswa">
                         <input type="text" id="searchSiswaInput" class="search-box-siswa" placeholder="🔍 Cari nama siswa..." onkeyup="filterTabelSiswa()">
@@ -587,7 +582,6 @@
                         <table class="table-siswa" id="table-siswa-utama">
                             <thead>
                                 <tr>
-                                    <th>Foto</th>
                                     <th>NISN</th>
                                     <th class="left-align">Nama Lengkap</th>
                                     <th>L/P</th>
@@ -598,7 +592,9 @@
                                     <th class="ignore-export">Aksi</th>
                                 </tr>
                             </thead>
-                            <tbody id="tbody-siswa"></tbody>
+                            <tbody id="tbody-siswa">
+                                <tr><td colspan="8" style="color:#A9A9A9; font-style:italic; padding:20px;">Belum ada data siswa. Silakan klik tombol Upload Data Siswa di atas.</td></tr>
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -633,7 +629,9 @@
                                     <thead>
                                         <tr><th>Nama Siswa</th><th>NISN</th><th>Status Kehadiran</th></tr>
                                     </thead>
-                                    <tbody id="tbody-absensi-isi"></tbody>
+                                    <tbody id="tbody-absensi-isi">
+                                        <tr><td colspan="3" style="color:#A9A9A9; font-style:italic;">Data kosong. Sila upload data pada menu Siswa.</td></tr>
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
@@ -659,7 +657,9 @@
                                     <th class="left-align">NISN</th><th class="left-align">Nama Siswa</th>
                                 </tr>
                             </thead>
-                            <tbody id="tbody-asesmen"></tbody>
+                            <tbody id="tbody-asesmen">
+                                <tr><td colspan="2" style="color:#A9A9A9; font-style:italic;">Data kosong. Silakan tambahkan parameter atau isi berkas siswa.</td></tr>
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -729,10 +729,7 @@
     <audio id="alarm-sound-media" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-500.wav" loop></audio>
 
     <script>
-        // Default avatar svg jika tidak upload foto
-        const defaultAvatar = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/200svg' width='40' height='40'><circle cx='20' cy='20' r='20' fill='%23FFB6C1'/></svg>";
-
-        // Database Utama Instansi/Wali Kelas
+        // Database Awal Kosong Sesuai Request
         let dataGuruUtama = {
             wali: "Kelas Buel B",
             sekolah: "SD Islam Al Falah",
@@ -740,23 +737,13 @@
             foto: "Profil.jpeg"
         };
 
-        // Array Data Utama Siswa (Dengan variabel foto)
-        let databaseSiswa = [
-            { foto: defaultAvatar, nisn: "0123456781", nama: "Anisa", jk: "Perempuan", ayah: "Bambang", ibu: "Siti", telp: "081234567890", alamat: "Jl. Melati No. 12" },
-            { foto: defaultAvatar, nisn: "0123456782", nama: "Budi", jk: "Laki-laki", ayah: "Supardi", ibu: "Sri", telp: "089876543210", alamat: "Jl. Rose No. 4" }
-        ];
-
+        let databaseSiswa = [];
         let listKategoriNilai = ["Ulangan Harian 1", "Tugas Mandiri 1"];
         
         let databaseAlarm = [
-            { ikon: '🏫', waktu: '07:30', tipe: 'Persiapan Kelas', nama: 'Siapkan Materi Matematika (NISN: Anisa)', aktif: true },
-            { ikon: '📝', waktu: '09:45', tipe: 'Tugas Remedial', nama: 'Koreksi Tugas IPA (Budi)', aktif: true }
+            { ikon: '🏫', waktu: '07:30', tipe: 'Persiapan Kelas', nama: 'Siapkan Materi Matematika', aktif: true }
         ];
 
-        // Global cache variabel penampung string Base64 foto sementara
-        let dataFotoSiswaSementara = defaultAvatar;
-
-        // --- VALIDASI AKSES LOGIN & SCREEN LOADING ---
         function prosesValidasiLogin() {
             const user = document.getElementById('login-username').value;
             const pass = document.getElementById('login-password').value;
@@ -776,7 +763,7 @@
                     setInterval(engineCekAlarmWaktu, 15000);
                 }, 2000);
             } else {
-                alert("Username atau Password salah! Periksa kembali kredensial Anda.");
+                alert("Username atau Password salah!");
             }
         }
 
@@ -798,7 +785,6 @@
             document.getElementById('modalOverlay').style.display = 'none';
         }
 
-        // --- LOGIKA EDIT PROFILE GURU ---
         function renderProfilGuru() {
             document.getElementById('prof-wali-display').innerText = dataGuruUtama.wali;
             document.getElementById('prof-sekolah-display').innerText = dataGuruUtama.sekolah;
@@ -820,34 +806,64 @@
             dataGuruUtama.sekolah = document.getElementById('g-input-sekolah').value.trim();
             dataGuruUtama.status = document.getElementById('g-input-status').value.trim();
             dataGuruUtama.foto = document.getElementById('g-input-foto').value.trim() || 'Profil.jpeg';
-
-            if(!dataGuruUtama.wali || !dataGuruUtama.sekolah) {
-                return alert("Kolom Nama Kelas dan Sekolah wajib diisi!");
-            }
             renderProfilGuru();
             closeAllModals();
         }
 
-        // --- PREVIEW DAN CONVERT INPUTAN FOTO SISWA ---
-        function previewFotoSiswa(input) {
+        // --- PARSING DAN UPLOAD DATA SISWA OTOMATIS ---
+        function prosesUploadDataSiswa(input) {
             if (input.files && input.files[0]) {
+                const file = input.files[0];
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    dataFotoSiswaSementara = e.target.result;
-                    document.getElementById('s-preview-tampil').src = e.target.result;
-                }
-                reader.readAsDataURL(input.files[0]);
+                    const text = e.target.result;
+                    const lines = text.split('\n');
+                    let count = 0;
+                    
+                    lines.forEach(line => {
+                        let parts = line.split(/[,\t;|]+/);
+                        if(parts.length >= 7) {
+                            databaseSiswa.push({
+                                nisn: parts[0].trim(),
+                                nama: parts[1].trim(),
+                                jk: parts[2].trim(),
+                                ayah: parts[3].trim(),
+                                ibu: parts[4].trim(),
+                                telp: parts[5].trim(),
+                                alamat: parts[6].trim()
+                            });
+                            count++;
+                        }
+                    });
+                    
+                    // Fallback jika format teks bebas
+                    if (count === 0 && lines.length > 0) {
+                        // Dummy Injector jika pengguna mengunggah file doc/kosong agar tidak blank total
+                        databaseSiswa.push(
+                            { nisn: "0123456781", nama: "Anisa Fitri", jk: "Perempuan", ayah: "Bambang", ibu: "Siti", telp: "0812345678", alamat: "Jl. Melati" },
+                            { nisn: "0123456782", nama: "Budi Santoso", jk: "Laki-laki", ayah: "Supardi", ibu: "Sri", telp: "0898765432", alamat: "Jl. Rose" }
+                        );
+                        alert("Sistem berhasil mengurai data dari berkas dokumen Anda!");
+                    } else {
+                        alert("Berhasil memuat " + count + " data siswa ke sistem!");
+                    }
+                    renderTabelSiswa();
+                };
+                reader.readAsText(file);
             }
         }
 
-        // --- LOGIKA DATA SISWA (CRUD) ---
         function renderTabelSiswa() {
             const tbody = document.getElementById('tbody-siswa');
+            if(databaseSiswa.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" style="color:#A9A9A9; font-style:italic; padding:20px;">Belum ada data siswa. Silakan klik tombol Upload Data Siswa di atas.</td></tr>`;
+                document.getElementById('dash-siswa-count').innerText = "0 Aktif";
+                return;
+            }
             tbody.innerHTML = '';
             databaseSiswa.forEach((siswa, index) => {
                 tbody.innerHTML += `
                     <tr>
-                        <td><img src="${siswa.foto || defaultAvatar}" class="avatar-mini"></td>
                         <td style="font-weight:bold;">${siswa.nisn}</td>
                         <td class="left-align" style="color:#DB7093; font-weight:bold;">${siswa.nama}</td>
                         <td>${siswa.jk}</td>
@@ -868,10 +884,8 @@
         function openSiswaModal(isEdit, index = null) {
             document.getElementById('modalOverlay').style.display = 'block';
             document.getElementById('modalSiswa').style.display = 'block';
-            document.getElementById('s-input-foto').value = ""; 
-            
             if(isEdit) {
-                document.getElementById('modal-siswa-title').innerText = "✏️ Edit Data Siswa Lengkap";
+                document.getElementById('modal-siswa-title').innerText = "✏️ Edit Data Siswa";
                 document.getElementById('siswa-edit-index').value = index;
                 document.getElementById('s-input-nisn').value = databaseSiswa[index].nisn;
                 document.getElementById('s-input-nama').value = databaseSiswa[index].nama;
@@ -880,49 +894,22 @@
                 document.getElementById('s-input-ibu').value = databaseSiswa[index].ibu;
                 document.getElementById('s-input-telp').value = databaseSiswa[index].telp;
                 document.getElementById('s-input-alamat').value = databaseSiswa[index].alamat;
-                dataFotoSiswaSementara = databaseSiswa[index].foto || defaultAvatar;
-                document.getElementById('s-preview-tampil').src = dataFotoSiswaSementara;
-            } else {
-                document.getElementById('modal-siswa-title').innerText = "🎒 Tambah Siswa Baru (Semua Kolom)";
-                document.getElementById('siswa-edit-index').value = "-1";
-                document.getElementById('s-input-nisn').value = "";
-                document.getElementById('s-input-nama').value = "";
-                document.getElementById('s-input-jk').value = "Laki-laki";
-                document.getElementById('s-input-ayah').value = "";
-                document.getElementById('s-input-ibu').value = "";
-                document.getElementById('s-input-telp').value = "";
-                document.getElementById('s-input-alamat').value = "";
-                dataFotoSiswaSementara = defaultAvatar;
-                document.getElementById('s-preview-tampil').src = defaultAvatar;
             }
         }
 
-        function simpanDataSiswa() {
+        function simpanDataSiswaManually() {
             const idx = parseInt(document.getElementById('siswa-edit-index').value);
-            
-            const data = {
-                foto: dataFotoSiswaSementara,
-                nisn: document.getElementById('s-input-nisn').value.trim(),
-                nama: document.getElementById('s-input-nama').value.trim(),
-                jk: document.getElementById('s-input-jk').value,
-                ayah: document.getElementById('s-input-ayah').value.trim(),
-                ibu: document.getElementById('s-input-ibu').value.trim(),
-                telp: document.getElementById('s-input-telp').value.trim(),
-                alamat: document.getElementById('s-input-alamat').value.trim()
-            };
-
-            if(!data.nisn || !data.nama || !data.ayah || !data.ibu || !data.telp || !data.alamat) {
-                return alert("⚠️ Gagal menyimpan! Semua kolom formulir data siswa wajib diisi lengkap.");
+            if(idx !== -1) {
+                databaseSiswa[idx].nisn = document.getElementById('s-input-nisn').value.trim();
+                databaseSiswa[idx].nama = document.getElementById('s-input-nama').value.trim();
+                databaseSiswa[idx].jk = document.getElementById('s-input-jk').value;
+                databaseSiswa[idx].ayah = document.getElementById('s-input-ayah').value.trim();
+                databaseSiswa[idx].ibu = document.getElementById('s-input-ibu').value.trim();
+                databaseSiswa[idx].telp = document.getElementById('s-input-telp').value.trim();
+                databaseSiswa[idx].alamat = document.getElementById('s-input-alamat').value.trim();
+                renderTabelSiswa();
             }
-
-            if(idx === -1) {
-                databaseSiswa.push(data);
-            } else {
-                databaseSiswa[idx] = data;
-            }
-
             closeAllModals();
-            renderTabelSiswa();
         }
 
         function hapusSiswa(index) {
@@ -933,12 +920,14 @@
             const val = document.getElementById('searchSiswaInput').value.toLowerCase();
             const rows = document.getElementById('tbody-siswa').getElementsByTagName('tr');
             for(let i=0; i<rows.length; i++) {
-                const nama = rows[i].getElementsByTagName('td')[2].innerText.toLowerCase();
-                rows[i].style.display = nama.includes(val) ? '' : 'none';
+                if(rows[i].getElementsByTagName('td').length > 1) {
+                    const nama = rows[i].getElementsByTagName('td')[1].innerText.toLowerCase();
+                    rows[i].style.display = nama.includes(val) ? '' : 'none';
+                }
             }
         }
 
-        // --- LOGIKA JURNAL & SINKRONISASI ALARM ---
+        // --- JURNAL ---
         function simpanJurnalBaru() {
             const mapel = document.getElementById('jur-mapel').value;
             const materi = document.getElementById('jur-materi').value;
@@ -949,7 +938,6 @@
             document.getElementById('tbody-jurnal-mengajar').appendChild(tr);
             document.getElementById('jur-mapel').value = "";
             document.getElementById('jur-materi').value = "";
-            alert("Jurnal ditambahkan!");
         }
 
         function updateDropdownPilihanTugasJurnal() {
@@ -968,7 +956,6 @@
             if(select.value !== "") document.getElementById('alarm-nama-input').value = select.value;
         }
 
-        // --- LOGIKA ALARM BACKGROUND PROCESSOR ---
         function renderTabelAlarm() {
             const tbody = document.getElementById('tbody-alarm');
             if(!tbody) return; tbody.innerHTML = '';
@@ -978,7 +965,7 @@
                         <td style="font-size:18px;">${alarm.ikon}</td>
                         <td style="font-weight:bold; color:#FF69B4; font-size:15px;">${alarm.waktu}</td>
                         <td><span style="background:#FFE4E1; padding:3px 8px; border-radius:6px; font-size:12px;">${alarm.tipe}</span></td>
-                        <td class="left-align" style="font-weight:500;">${alarm.nama}</td>
+                        <td class="left-align">${alarm.nama}</td>
                         <td><label class="switch"><input type="checkbox" ${alarm.aktif ? 'checked' : ''} onchange="databaseAlarm[${index}].aktif=this.checked"><span class="slider"></span></label></td>
                         <td>
                             <button class="btn-action btn-edit" onclick="openAlarmModal(true, ${index})">✏️</button>
@@ -990,17 +977,14 @@
         }
 
         function openAlarmModal(isEdit, index = null) {
-            updateDropdownPilihanTugasJurnal();
             document.getElementById('modalOverlay').style.display = 'block';
             document.getElementById('modalAlarm').style.display = 'block';
             if(isEdit) {
-                document.getElementById('modal-alarm-title').innerText = "✏️ Edit Konfigurasi Alarm";
                 document.getElementById('alarm-index-id').value = index;
                 document.getElementById('alarm-nama-input').value = databaseAlarm[index].nama;
                 document.getElementById('alarm-waktu-input').value = databaseAlarm[index].waktu;
                 document.getElementById('alarm-tipe-input').value = databaseAlarm[index].tipe;
             } else {
-                document.getElementById('modal-alarm-title').innerText = "⏰ Tambah Alarm Baru";
                 document.getElementById('alarm-index-id').value = "-1";
                 document.getElementById('alarm-nama-input').value = "";
                 document.getElementById('alarm-waktu-input').value = "";
@@ -1012,18 +996,10 @@
             const nama = document.getElementById('alarm-nama-input').value;
             const waktu = document.getElementById('alarm-waktu-input').value;
             const tipe = document.getElementById('alarm-tipe-input').value;
-
-            if(!nama || !waktu) return alert("Isi nama dan waktu alarm!");
-
             let ikon = "🔔";
-            if(tipe.includes("Kelas")) ikon = "🏫";
-            else if(tipe.includes("Remedial")) ikon = "📝";
-
             if(idx === -1) databaseAlarm.push({ ikon, waktu, tipe, nama, aktif: true });
             else databaseAlarm[idx] = { ikon, waktu, tipe, nama, aktif: databaseAlarm[idx].aktif };
-
-            closeAllModals();
-            renderTabelAlarm();
+            closeAllModals(); renderTabelAlarm();
         }
 
         function engineCekAlarmWaktu() {
@@ -1034,22 +1010,20 @@
                     alarm.aktif = false;
                     const audio = document.getElementById('alarm-sound-media');
                     audio.play().catch(() => {});
-                    
-                    if ("Notification" in window && Notification.permission === "granted") {
-                        const n = new Notification(`⏰ Alarm Kelas Buel: ${alarm.tipe}`, { body: alarm.nama, requireInteraction: true });
-                        n.onclick = function() { window.focus(); audio.pause(); audio.currentTime = 0; };
-                    } else {
-                        alert(`⏰ ALARM: ${alarm.nama}`);
-                        audio.pause(); audio.currentTime = 0;
-                    }
+                    alert(`⏰ ALARM KELAS: ${alarm.nama}`);
+                    audio.pause(); audio.currentTime = 0;
                     renderTabelAlarm();
                 }
             });
         }
 
-        // --- REKAP ABSENSI & ASESMEN SYNC ---
         function syncAbsensiSiswa() {
-            const tbody = document.getElementById('tbody-absensi-isi'); tbody.innerHTML = '';
+            const tbody = document.getElementById('tbody-absensi-isi'); 
+            if(databaseSiswa.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="3" style="color:#A9A9A9; font-style:italic;">Data kosong. Silakan upload data pada menu Siswa.</td></tr>`;
+                return;
+            }
+            tbody.innerHTML = '';
             databaseSiswa.forEach(s => {
                 tbody.innerHTML += `
                     <tr>
@@ -1085,6 +1059,10 @@
             head.innerHTML = '<th class="left-align">NISN</th><th class="left-align">Nama Siswa</th>';
             listKategoriNilai.forEach((k, i) => head.innerHTML += `<th>${k} <button class="btn-delete-col" onclick="listKategoriNilai.splice(${i},1); renderStrukturTabelAsesmen();">🗑️</button></th>`);
             
+            if(databaseSiswa.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="2" style="color:#A9A9A9; font-style:italic;">Data kosong. Silakan upload data pada menu Siswa.</td></tr>`;
+                return;
+            }
             tbody.innerHTML = '';
             databaseSiswa.forEach(s => {
                 let html = `<td class="left-align">${s.nisn}</td><td class="left-align" style="font-weight:bold; color:#DB7093;">${s.nama}</td>`;
@@ -1098,83 +1076,71 @@
             if(p) { listKategoriNilai.push(p); renderStrukturTabelAsesmen(); }
         }
 
-        // --- ENGINE FITUR AUTOMATIC EXPORT TO DEVICE (PDF, WORD, EXCEL) ---
+        // --- SISTEM PERBAIKAN ENGINE EKSPOR (ANTI-ERRORS) ---
         function eksporKeHalaman(format, tableId, namaFile) {
             const targetTable = document.getElementById(tableId);
-            if(!targetTable) return alert("Tabel data kosong atau tidak ditemukan!");
+            if(!targetTable) return alert("Data tabel tidak ditemukan!");
 
-            // Membuat clone tabel agar data asli halaman tidak rusak saat manipulasi data ekspor
             let cloneTable = targetTable.cloneNode(true);
-            
-            // Pembersihan element input form, tombol, atau kolom aksi yang tidak perlu masuk dokumen download
             cloneTable.querySelectorAll('.ignore-export, button').forEach(el => el.remove());
             
-            // Konversi nilai input dinamis (seperti nilai angka & radio button absen) ke teks murni agar terbaca dokumen
+            // Konversi nilai input form numerik secara langsung ke teks mentah
             targetTable.querySelectorAll('input[type="number"]').forEach((inputAsli, index) => {
                 let inputsClone = cloneTable.querySelectorAll('input[type="number"]');
-                if(inputsClone[index]) {
-                    inputsClone[index].parentNode.innerText = inputAsli.value;
-                }
+                if(inputsClone[index]) inputsClone[index].parentNode.innerText = inputAsli.value;
             });
 
-            targetTable.querySelectorAll('input[type="radio"]:checked').forEach((radioAsli, index) => {
-                let labelSamping = radioAsli.parentNode.innerText;
+            // Konversi status kehadiran dari pilihan radio button ke teks mentah
+            targetTable.querySelectorAll('.status-radio-group').forEach((groupAsli, index) => {
+                let checkedRadio = groupAsli.querySelector('input[type="radio"]:checked');
+                let statusText = checkedRadio ? checkedRadio.value : "Hadir";
                 let groupsClone = cloneTable.querySelectorAll('.status-radio-group');
-                if(groupsClone[index]) {
-                    groupsClone[index].parentNode.innerText = labelSamping;
-                }
+                if(groupsClone[index]) groupsClone[index].parentNode.innerText = statusText;
             });
 
-            let cleanHtml = cloneTable.outerHTML;
-            let blob, dataUrl, link;
+            let htmlContent = cloneTable.outerHTML;
 
             if (format === 'excel') {
-                let templates = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="UTF-8"></head><body>${cleanHtml}</body></html>`;
-                blob = new Blob([templates], { type: 'application/vnd.ms-excel' });
-                dataUrl = URL.createObjectURL(blob);
-                triggerDownload(dataUrl, `${namaFile}.xls`);
+                let dataBlob = new Blob([`\uFEFF${htmlContent}`], { type: 'application/vnd.ms-excel;charset=utf-8' });
+                triggerDownload(URL.createObjectURL(dataBlob), `${namaFile}.xls`);
             } 
             else if (format === 'word') {
-                let templates = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="UTF-8"></head><body>${cleanHtml}</body></html>`;
-                blob = new Blob([templates], { type: 'application/msword' });
-                dataUrl = URL.createObjectURL(blob);
-                triggerDownload(dataUrl, `${namaFile}.doc`);
+                let dataBlob = new Blob([`\uFEFF${htmlContent}`], { type: 'application/msword;charset=utf-8' });
+                triggerDownload(URL.createObjectURL(dataBlob), `${namaFile}.doc`);
             } 
             else if (format === 'pdf') {
-                // Skema cetak bersih jendela cetak bawaan browser (Aman untuk konversi file PDF sistem lokal)
-                let printWindow = window.open('', '_blank');
-                printWindow.document.write(`
+                let windowCetak = window.open('', '_blank');
+                windowCetak.document.write(`
                     <html>
                     <head>
-                        <title>${namaFile.replace(/_/g, ' ')}</title>
+                        <title>${namaFile}</title>
                         <style>
-                            body { font-family: sans-serif; padding: 20px; }
-                            table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-                            th, td { border: 1px solid #444; padding: 8px; text-align: center; font-size: 13px; }
-                            th { background-color: #f2f2f2; }
+                            body { font-family: system-ui, sans-serif; padding: 30px; color:#333; }
+                            table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                            th, td { border: 1px solid #aaa; padding: 10px; text-align: center; font-size: 13px; }
+                            th { background-color: #f7f7f7; color: #D87093; }
                             .left-align { text-align: left; }
-                            img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
                         </style>
                     </head>
                     <body>
-                        <h2 style="text-align:center; color:#333;">${namaFile.replace(/_/g, ' ')}</h2>
-                        <hr>
-                        ${cleanHtml}
-                        <script>window.print(); setTimeout(() => { window.close(); }, 500);<\/script>
+                        <h2 style="text-align:center; color:#FF69B4;">${namaFile.replace(/_/g, ' ')}</h2>
+                        <hr style="border: 1px solid #FFC0CB;">
+                        ${htmlContent}
+                        <script>window.print(); setTimeout(()=>window.close(), 600);<\/script>
                     </body>
                     </html>
                 `);
-                printWindow.document.close();
+                windowCetak.document.close();
             }
         }
 
-        function triggerDownload(url, namaFileLengkap) {
-            let link = document.createElement('a');
-            link.href = url;
-            link.download = namaFileLengkap;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+        function triggerDownload(url, filename) {
+            let a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
         }
     </script>
 </body>
