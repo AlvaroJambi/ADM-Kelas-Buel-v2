@@ -102,7 +102,7 @@
         #app-interface {
             display: none; 
             min-height: 100vh;
-            flex-direction: row; /* Memastikan sidebar dan konten berdampingan */
+            flex-direction: row;
         }
 
         .sidebar {
@@ -296,6 +296,24 @@
             margin-bottom: 15px;
         }
 
+        .export-group {
+            display: flex;
+            gap: 5px;
+        }
+
+        .btn-export {
+            padding: 6px 10px;
+            font-size: 12px;
+            font-weight: bold;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            background-color: #fff;
+        }
+        .btn-pdf { background-color: #FFCDD2; color: #B71C1C; border-color: #EF9A9A; }
+        .btn-word { background-color: #BBDEFB; color: #0D47A1; border-color: #90CAF9; }
+        .btn-excel { background-color: #C8E6C9; color: #1B5E20; border-color: #A5D6A7; }
+
         .btn-siswa {
             padding: 8px 14px;
             font-size: 13px;
@@ -348,6 +366,7 @@
         .table-siswa th.left-align, .table-siswa td.left-align { text-align: left; }
 
         .avatar-mini { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 1px solid #FFB6C1; }
+        .preview-img-box { width: 60px; height: 60px; border-radius: 50%; border: 1px solid #FFB6C1; object-fit: cover; display: block; margin-top: 5px; }
 
         /* --- ABSENSI SPECIFIC --- */
         .absensi-layout { display: grid; grid-template-columns: 280px 1fr; gap: 20px; align-items: start; }
@@ -439,6 +458,11 @@
     <div class="modal-edit" id="modalSiswa">
         <h3 id="modal-siswa-title" style="color:#FF69B4; margin-bottom:15px; text-align:center;">🎒 Formulir Data Siswa</h3>
         <input type="hidden" id="siswa-edit-index">
+        <div class="form-group">
+            <label>Foto Siswa</label>
+            <input type="file" id="s-input-foto" accept="image/*" onchange="previewFotoSiswa(this)">
+            <img id="s-preview-tampil" class="preview-img-box" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/200svg' width='40' height='40'><circle cx='20' cy='20' r='20' fill='%23FFB6C1'/></svg>">
+        </div>
         <div class="form-group"><label>NISN</label><input type="text" id="s-input-nisn"></div>
         <div class="form-group"><label>Nama Lengkap</label><input type="text" id="s-input-nama"></div>
         <div class="form-group"><label>L / P</label>
@@ -553,12 +577,17 @@
                     </div>
                     <div class="toolbar-siswa">
                         <input type="text" id="searchSiswaInput" class="search-box-siswa" placeholder="🔍 Cari nama siswa..." onkeyup="filterTabelSiswa()">
+                        <div class="export-group">
+                            <button class="btn-export btn-pdf" onclick="eksporKeHalaman('pdf', 'table-siswa-utama', 'Data_Siswa_Kelas_Buel')">PDF</button>
+                            <button class="btn-export btn-word" onclick="eksporKeHalaman('word', 'table-siswa-utama', 'Data_Siswa_Kelas_Buel')">WORD</button>
+                            <button class="btn-export btn-excel" onclick="eksporKeHalaman('excel', 'table-siswa-utama', 'Data_Siswa_Kelas_Buel')">EXCEL</button>
+                        </div>
                     </div>
                     <div class="table-responsive">
-                        <table class="table-siswa">
+                        <table class="table-siswa" id="table-siswa-utama">
                             <thead>
                                 <tr>
-                                    <th class="left-align">Foto</th>
+                                    <th>Foto</th>
                                     <th>NISN</th>
                                     <th class="left-align">Nama Lengkap</th>
                                     <th>L/P</th>
@@ -566,7 +595,7 @@
                                     <th>Nama Ibu</th>
                                     <th>Nomor Telepon Aktif</th>
                                     <th class="left-align">Alamat</th>
-                                    <th>Aksi</th>
+                                    <th class="ignore-export">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody id="tbody-siswa"></tbody>
@@ -591,9 +620,16 @@
                             </div>
                         </div>
                         <div class="card" style="padding: 15px; width: 100%; margin-bottom: 0;">
-                            <h3 style="color:#FF69B4; font-size:16px; margin-bottom: 10px;">Daftar Lembar Absensi Kehadiran</h3>
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                                <h3 style="color:#FF69B4; font-size:16px;">Daftar Lembar Absensi Kehadiran</h3>
+                                <div class="export-group">
+                                    <button class="btn-export btn-pdf" onclick="eksporKeHalaman('pdf', 'table-absensi-utama', 'Absensi_Siswa_Kelas_Buel')">PDF</button>
+                                    <button class="btn-export btn-word" onclick="eksporKeHalaman('word', 'table-absensi-utama', 'Absensi_Siswa_Kelas_Buel')">WORD</button>
+                                    <button class="btn-export btn-excel" onclick="eksporKeHalaman('excel', 'table-absensi-utama', 'Absensi_Siswa_Kelas_Buel')">EXCEL</button>
+                                </div>
+                            </div>
                             <div class="table-responsive">
-                                <table class="table-siswa">
+                                <table class="table-siswa" id="table-absensi-utama">
                                     <thead>
                                         <tr><th>Nama Siswa</th><th>NISN</th><th>Status Kehadiran</th></tr>
                                     </thead>
@@ -610,6 +646,11 @@
                     <div class="card-title" style="font-size: 22px; color: #FF69B4;">📊 ASESMEN HARIAN SISWA</div>
                     <div class="toolbar-siswa">
                         <button class="btn-siswa btn-pink-primary" onclick="tambahParameterNilai()">➕ Tambah Parameter Nilai</button>
+                        <div class="export-group">
+                            <button class="btn-export btn-pdf" onclick="eksporKeHalaman('pdf', 'table-penilaian', 'Asesmen_Siswa_Kelas_Buel')">PDF</button>
+                            <button class="btn-export btn-word" onclick="eksporKeHalaman('word', 'table-penilaian', 'Asesmen_Siswa_Kelas_Buel')">WORD</button>
+                            <button class="btn-export btn-excel" onclick="eksporKeHalaman('excel', 'table-penilaian', 'Asesmen_Siswa_Kelas_Buel')">EXCEL</button>
+                        </div>
                     </div>
                     <div class="table-responsive">
                         <table class="table-siswa" id="table-penilaian">
@@ -634,16 +675,23 @@
                         </div>
                         <div style="text-align: right;"><button class="btn-siswa btn-pink-primary" onclick="simpanJurnalBaru()">➕ Simpan & Sinkronkan</button></div>
                     </div>
-                    <div class="table-responsive" style="margin-top: 20px;">
-                        <table class="table-siswa">
+                    <div style="display:flex; justify-content:flex-end; margin-top:20px; margin-bottom:5px;">
+                        <div class="export-group">
+                            <button class="btn-export btn-pdf" onclick="eksporKeHalaman('pdf', 'table-jurnal-utama', 'Jurnal_Mengajar_Kelas_Buel')">PDF</button>
+                            <button class="btn-export btn-word" onclick="eksporKeHalaman('word', 'table-jurnal-utama', 'Jurnal_Mengajar_Kelas_Buel')">WORD</button>
+                            <button class="btn-export btn-excel" onclick="eksporKeHalaman('excel', 'table-jurnal-utama', 'Jurnal_Mengajar_Kelas_Buel')">EXCEL</button>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table-siswa" id="table-jurnal-utama">
                             <thead>
-                                <tr><th>Mata Pelajaran</th><th>Materi / Catatan Tugas</th><th>Aksi</th></tr>
+                                <tr><th>Mata Pelajaran</th><th>Materi / Catatan Tugas</th><th class="ignore-export">Aksi</th></tr>
                             </thead>
                             <tbody id="tbody-jurnal-mengajar">
                                 <tr>
                                     <td style="font-weight:bold; color:#DB7093;">Matematika</td>
                                     <td>Siapkan Materi Matematika (NISN: Anisa)</td>
-                                    <td><button class="btn-action btn-delete" onclick="this.closest('tr').remove(); updateDropdownPilihanTugasJurnal();">🗑️</button></td>
+                                    <td class="ignore-export"><button class="btn-action btn-delete" onclick="this.closest('tr').remove(); updateDropdownPilihanTugasJurnal();">🗑️</button></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -681,6 +729,9 @@
     <audio id="alarm-sound-media" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-500.wav" loop></audio>
 
     <script>
+        // Default avatar svg jika tidak upload foto
+        const defaultAvatar = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/200svg' width='40' height='40'><circle cx='20' cy='20' r='20' fill='%23FFB6C1'/></svg>";
+
         // Database Utama Instansi/Wali Kelas
         let dataGuruUtama = {
             wali: "Kelas Buel B",
@@ -689,10 +740,10 @@
             foto: "Profil.jpeg"
         };
 
-        // Array Data Utama Siswa
+        // Array Data Utama Siswa (Dengan variabel foto)
         let databaseSiswa = [
-            { nisn: "0123456781", nama: "Anisa", jk: "Perempuan", ayah: "Bambang", ibu: "Siti", telp: "081234567890", alamat: "Jl. Melati No. 12" },
-            { nisn: "0123456782", nama: "Budi", jk: "Laki-laki", ayah: "Supardi", ibu: "Sri", telp: "089876543210", alamat: "Jl. Rose No. 4" }
+            { foto: defaultAvatar, nisn: "0123456781", nama: "Anisa", jk: "Perempuan", ayah: "Bambang", ibu: "Siti", telp: "081234567890", alamat: "Jl. Melati No. 12" },
+            { foto: defaultAvatar, nisn: "0123456782", nama: "Budi", jk: "Laki-laki", ayah: "Supardi", ibu: "Sri", telp: "089876543210", alamat: "Jl. Rose No. 4" }
         ];
 
         let listKategoriNilai = ["Ulangan Harian 1", "Tugas Mandiri 1"];
@@ -701,6 +752,9 @@
             { ikon: '🏫', waktu: '07:30', tipe: 'Persiapan Kelas', nama: 'Siapkan Materi Matematika (NISN: Anisa)', aktif: true },
             { ikon: '📝', waktu: '09:45', tipe: 'Tugas Remedial', nama: 'Koreksi Tugas IPA (Budi)', aktif: true }
         ];
+
+        // Global cache variabel penampung string Base64 foto sementara
+        let dataFotoSiswaSementara = defaultAvatar;
 
         // --- VALIDASI AKSES LOGIN & SCREEN LOADING ---
         function prosesValidasiLogin() {
@@ -774,14 +828,26 @@
             closeAllModals();
         }
 
-        // --- LOGIKA DATA SISWA (CRUD FULLY FUNCTIONAL) ---
+        // --- PREVIEW DAN CONVERT INPUTAN FOTO SISWA ---
+        function previewFotoSiswa(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    dataFotoSiswaSementara = e.target.result;
+                    document.getElementById('s-preview-tampil').src = e.target.result;
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // --- LOGIKA DATA SISWA (CRUD) ---
         function renderTabelSiswa() {
             const tbody = document.getElementById('tbody-siswa');
             tbody.innerHTML = '';
             databaseSiswa.forEach((siswa, index) => {
                 tbody.innerHTML += `
                     <tr>
-                        <td><img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/200svg' width='40' height='40'><circle cx='20' cy='20' r='20' fill='%23FFB6C1'/></svg>" class="avatar-mini"></td>
+                        <td><img src="${siswa.foto || defaultAvatar}" class="avatar-mini"></td>
                         <td style="font-weight:bold;">${siswa.nisn}</td>
                         <td class="left-align" style="color:#DB7093; font-weight:bold;">${siswa.nama}</td>
                         <td>${siswa.jk}</td>
@@ -789,7 +855,7 @@
                         <td>${siswa.ibu}</td>
                         <td>${siswa.telp}</td>
                         <td class="left-align">${siswa.alamat}</td>
-                        <td>
+                        <td class="ignore-export">
                             <button class="btn-action btn-edit" onclick="openSiswaModal(true, ${index})">✏️</button>
                             <button class="btn-action btn-delete" onclick="hapusSiswa(${index})">🗑️</button>
                         </td>
@@ -802,6 +868,7 @@
         function openSiswaModal(isEdit, index = null) {
             document.getElementById('modalOverlay').style.display = 'block';
             document.getElementById('modalSiswa').style.display = 'block';
+            document.getElementById('s-input-foto').value = ""; 
             
             if(isEdit) {
                 document.getElementById('modal-siswa-title').innerText = "✏️ Edit Data Siswa Lengkap";
@@ -813,6 +880,8 @@
                 document.getElementById('s-input-ibu').value = databaseSiswa[index].ibu;
                 document.getElementById('s-input-telp').value = databaseSiswa[index].telp;
                 document.getElementById('s-input-alamat').value = databaseSiswa[index].alamat;
+                dataFotoSiswaSementara = databaseSiswa[index].foto || defaultAvatar;
+                document.getElementById('s-preview-tampil').src = dataFotoSiswaSementara;
             } else {
                 document.getElementById('modal-siswa-title').innerText = "🎒 Tambah Siswa Baru (Semua Kolom)";
                 document.getElementById('siswa-edit-index').value = "-1";
@@ -823,6 +892,8 @@
                 document.getElementById('s-input-ibu').value = "";
                 document.getElementById('s-input-telp').value = "";
                 document.getElementById('s-input-alamat').value = "";
+                dataFotoSiswaSementara = defaultAvatar;
+                document.getElementById('s-preview-tampil').src = defaultAvatar;
             }
         }
 
@@ -830,6 +901,7 @@
             const idx = parseInt(document.getElementById('siswa-edit-index').value);
             
             const data = {
+                foto: dataFotoSiswaSementara,
                 nisn: document.getElementById('s-input-nisn').value.trim(),
                 nama: document.getElementById('s-input-nama').value.trim(),
                 jk: document.getElementById('s-input-jk').value,
@@ -873,7 +945,7 @@
             if(!mapel || !materi) return alert("Mohon lengkapi isi jurnal!");
 
             const tr = document.createElement('tr');
-            tr.innerHTML = `<td style="font-weight:bold; color:#DB7093;">${mapel}</td><td>${materi}</td><td><button class="btn-action btn-delete" onclick="this.closest('tr').remove(); updateDropdownPilihanTugasJurnal();">🗑️</button></td>`;
+            tr.innerHTML = `<td style="font-weight:bold; color:#DB7093;">${mapel}</td><td>${materi}</td><td class="ignore-export"><button class="btn-action btn-delete" onclick="this.closest('tr').remove(); updateDropdownPilihanTugasJurnal();">🗑️</button></td>`;
             document.getElementById('tbody-jurnal-mengajar').appendChild(tr);
             document.getElementById('jur-mapel').value = "";
             document.getElementById('jur-materi').value = "";
@@ -1024,6 +1096,85 @@
         function tambahParameterNilai() {
             const p = prompt("Nama Penilaian Baru:");
             if(p) { listKategoriNilai.push(p); renderStrukturTabelAsesmen(); }
+        }
+
+        // --- ENGINE FITUR AUTOMATIC EXPORT TO DEVICE (PDF, WORD, EXCEL) ---
+        function eksporKeHalaman(format, tableId, namaFile) {
+            const targetTable = document.getElementById(tableId);
+            if(!targetTable) return alert("Tabel data kosong atau tidak ditemukan!");
+
+            // Membuat clone tabel agar data asli halaman tidak rusak saat manipulasi data ekspor
+            let cloneTable = targetTable.cloneNode(true);
+            
+            // Pembersihan element input form, tombol, atau kolom aksi yang tidak perlu masuk dokumen download
+            cloneTable.querySelectorAll('.ignore-export, button').forEach(el => el.remove());
+            
+            // Konversi nilai input dinamis (seperti nilai angka & radio button absen) ke teks murni agar terbaca dokumen
+            targetTable.querySelectorAll('input[type="number"]').forEach((inputAsli, index) => {
+                let inputsClone = cloneTable.querySelectorAll('input[type="number"]');
+                if(inputsClone[index]) {
+                    inputsClone[index].parentNode.innerText = inputAsli.value;
+                }
+            });
+
+            targetTable.querySelectorAll('input[type="radio"]:checked').forEach((radioAsli, index) => {
+                let labelSamping = radioAsli.parentNode.innerText;
+                let groupsClone = cloneTable.querySelectorAll('.status-radio-group');
+                if(groupsClone[index]) {
+                    groupsClone[index].parentNode.innerText = labelSamping;
+                }
+            });
+
+            let cleanHtml = cloneTable.outerHTML;
+            let blob, dataUrl, link;
+
+            if (format === 'excel') {
+                let templates = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="UTF-8"></head><body>${cleanHtml}</body></html>`;
+                blob = new Blob([templates], { type: 'application/vnd.ms-excel' });
+                dataUrl = URL.createObjectURL(blob);
+                triggerDownload(dataUrl, `${namaFile}.xls`);
+            } 
+            else if (format === 'word') {
+                let templates = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="UTF-8"></head><body>${cleanHtml}</body></html>`;
+                blob = new Blob([templates], { type: 'application/msword' });
+                dataUrl = URL.createObjectURL(blob);
+                triggerDownload(dataUrl, `${namaFile}.doc`);
+            } 
+            else if (format === 'pdf') {
+                // Skema cetak bersih jendela cetak bawaan browser (Aman untuk konversi file PDF sistem lokal)
+                let printWindow = window.open('', '_blank');
+                printWindow.document.write(`
+                    <html>
+                    <head>
+                        <title>${namaFile.replace(/_/g, ' ')}</title>
+                        <style>
+                            body { font-family: sans-serif; padding: 20px; }
+                            table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+                            th, td { border: 1px solid #444; padding: 8px; text-align: center; font-size: 13px; }
+                            th { background-color: #f2f2f2; }
+                            .left-align { text-align: left; }
+                            img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+                        </style>
+                    </head>
+                    <body>
+                        <h2 style="text-align:center; color:#333;">${namaFile.replace(/_/g, ' ')}</h2>
+                        <hr>
+                        ${cleanHtml}
+                        <script>window.print(); setTimeout(() => { window.close(); }, 500);<\/script>
+                    </body>
+                    </html>
+                `);
+                printWindow.document.close();
+            }
+        }
+
+        function triggerDownload(url, namaFileLengkap) {
+            let link = document.createElement('a');
+            link.href = url;
+            link.download = namaFileLengkap;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         }
     </script>
 </body>
