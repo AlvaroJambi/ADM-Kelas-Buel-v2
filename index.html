@@ -100,8 +100,9 @@
 
         /* --- APP WRAPPER LAYOUT --- */
         #app-interface {
-            display: none; /* Muncul setelah login & loading sukses */
+            display: none; 
             min-height: 100vh;
+            flex-direction: row; /* Memastikan sidebar dan konten berdampingan */
         }
 
         .sidebar {
@@ -223,6 +224,12 @@
             gap: 20px;
         }
 
+        @media (max-width: 900px) {
+            .dashboard-grid { grid-template-columns: 1fr; }
+            #app-interface { flex-direction: column; }
+            .sidebar { width: 100%; border-right: none; border-bottom: 2px solid #FFB6C1; }
+        }
+
         .card {
             background: white;
             border-radius: 20px;
@@ -244,14 +251,14 @@
             align-items: center;
         }
 
-        .profile-container { display: flex; gap: 20px; align-items: center; }
+        .profile-container { display: flex; gap: 20px; align-items: center; position: relative;}
         .profile-img { width: 100px; height: 100px; border-radius: 50%; background-color: #FFE4E1; border: 3px solid #FFB6C1; object-fit: cover; }
         .profile-details table { width: 100%; font-size: 14px; }
         .profile-details td { padding: 4px 8px; }
 
         .quick-access-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(2, 1fr);
             gap: 12px;
         }
 
@@ -273,21 +280,11 @@
 
         .quick-btn div { font-size: 12px; font-weight: bold; color: #DB7093; margin-top: 5px; }
 
-        .list-container { display: flex; flex-direction: column; }
-        .list-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #FFF0F5; font-size: 14px; }
-        .item-content { display: flex; flex-direction: column; gap: 2px; width: 70%; overflow: hidden; }
-        .item-link { color: #4A4A4A; text-decoration: none; font-weight: 500; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; cursor: pointer; }
-        .item-link:hover { color: #FF69B4; text-decoration: underline; }
-        .actions { display: flex; gap: 5px; }
-
         .btn-action { padding: 4px 8px; font-size: 12px; border: none; border-radius: 6px; cursor: pointer; }
         .btn-edit { background-color: #FFE4B5; color: #8B5A2B; }
         .btn-delete { background-color: #FFC1C1; color: #8B2323; }
 
         .manage-section { margin-top: 15px; display: flex; gap: 10px; justify-content: center; align-items: center; background-color: #FFF5F5; padding: 12px; border: 1px dashed #FFB6C1; border-radius: 12px; }
-        .file-input-label { padding: 6px 12px; background-color: #FFB6C1; color: white; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: bold; }
-        .file-input { display: none; }
-        .btn-add-manual { background-color: #E0F2FE; color: #0369A1; padding: 6px 12px; font-size: 12px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; }
 
         /* --- TABLES GENERAL --- */
         .toolbar-siswa {
@@ -353,7 +350,8 @@
         .avatar-mini { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 1px solid #FFB6C1; }
 
         /* --- ABSENSI SPECIFIC --- */
-        .absensi-layout { display: grid; grid-template-columns: 320px 1fr; gap: 20px; align-items: start; }
+        .absensi-layout { display: grid; grid-template-columns: 280px 1fr; gap: 20px; align-items: start; }
+        @media (max-width: 768px) { .absensi-layout { grid-template-columns: 1fr; } }
         .absensi-summary-box { background: white; padding: 15px; border-radius: 15px; border: 1px solid #FFC0CB; margin-bottom: 15px; }
         .date-picker-card { background: white; padding: 20px; border-radius: 15px; border: 1px solid #FFC0CB; text-align: center; }
         .date-input-pink { width: 100%; padding: 10px; border: 1px solid #FFC0CB; border-radius: 10px; color: #DB7093; font-weight: bold; outline: none; font-size: 15px; text-align: center; }
@@ -423,6 +421,21 @@
 
     <div class="modal-overlay" id="modalOverlay" onclick="closeAllModals()"></div>
 
+    <div class="modal-edit" id="modalGuru">
+        <h3 style="color:#FF69B4; margin-bottom:15px; text-align:center;">✏️ Edit Profil Instansi Guru</h3>
+        <div class="form-group"><label>Grup Wali / Nama Kelas</label><input type="text" id="g-input-wali"></div>
+        <div class="form-group"><label>Nama Sekolah</label><input type="text" id="g-input-sekolah"></div>
+        <div class="form-group"><label>Status Perangkat</label><input type="text" id="g-input-status"></div>
+        <div class="form-group">
+            <label>Link / URL Foto Profil (Atau ketik default)</label>
+            <input type="text" id="g-input-foto" placeholder="Profil.jpeg">
+        </div>
+        <div class="modal-actions" style="display:flex; justify-content:flex-end; gap:10px; margin-top:15px;">
+            <button class="btn-siswa btn-white" onclick="closeAllModals()">Batal</button>
+            <button class="btn-siswa btn-pink-primary" onclick="simpanDataGuru()">Perbarui Profil</button>
+        </div>
+    </div>
+
     <div class="modal-edit" id="modalSiswa">
         <h3 id="modal-siswa-title" style="color:#FF69B4; margin-bottom:15px; text-align:center;">🎒 Formulir Data Siswa</h3>
         <input type="hidden" id="siswa-edit-index">
@@ -476,7 +489,7 @@
     </div>
 
 
-    <div id="app-interface" style="display: none;">
+    <div id="app-interface">
         <div class="sidebar">
             <div class="logo-section">
                 <img src="Logo Kelas Buel.jpeg" alt="Logo Kelas Buel" class="logo-img">
@@ -505,14 +518,17 @@
 
                 <div class="dashboard-grid">
                     <div class="card">
-                        <div class="card-title">PROFIL UTAMA INSTANSI</div>
+                        <div class="card-title">
+                            <span>PROFIL UTAMA INSTANSI</span>
+                            <button class="btn-siswa btn-white" style="font-size:11px; padding:3px 8px;" onclick="openGuruModal()">✏️ Edit Profil</button>
+                        </div>
                         <div class="profile-container">
-                            <img src="Profil.jpeg" alt="Foto Profil" class="profile-img">
+                            <img src="Profil.jpeg" alt="Foto Profil" id="prof-img-display" class="profile-img">
                             <div class="profile-details">
                                 <table>
-                                    <tr><td><strong>Grup Wali</strong></td><td>: Kelas Buel B</td></tr>
-                                    <tr><td><strong>Sekolah</strong></td><td>: SD Islam Al Falah</td></tr>
-                                    <tr><td><strong>Status Perangkat</strong></td><td>: Sinkron Terenkripsi</td></tr>
+                                    <tr><td><strong>Grup Wali</strong></td><td>: <span id="prof-wali-display">Kelas Buel B</span></td></tr>
+                                    <tr><td><strong>Sekolah</strong></td><td>: <span id="prof-sekolah-display">SD Islam Al Falah</span></td></tr>
+                                    <tr><td><strong>Status</strong></td><td>: <span id="prof-status-display">Sinkron Terenkripsi</span></td></tr>
                                 </table>
                             </div>
                         </div>
@@ -553,8 +569,7 @@
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
-                            <tbody id="tbody-siswa">
-                                </tbody>
+                            <tbody id="tbody-siswa"></tbody>
                         </table>
                     </div>
                 </div>
@@ -575,7 +590,7 @@
                                 <input type="date" id="absensi-date" class="date-input-pink" value="2026-06-22" onchange="hitungUlangAbsensi()">
                             </div>
                         </div>
-                        <div class="card" style="padding: 15px; width: 100%;">
+                        <div class="card" style="padding: 15px; width: 100%; margin-bottom: 0;">
                             <h3 style="color:#FF69B4; font-size:16px; margin-bottom: 10px;">Daftar Lembar Absensi Kehadiran</h3>
                             <div class="table-responsive">
                                 <table class="table-siswa">
@@ -666,13 +681,22 @@
     <audio id="alarm-sound-media" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-500.wav" loop></audio>
 
     <script>
-        // Data Awal Siswa Lengkap sesuai parameter request Anda
+        // Database Utama Instansi/Wali Kelas
+        let dataGuruUtama = {
+            wali: "Kelas Buel B",
+            sekolah: "SD Islam Al Falah",
+            status: "Sinkron Terenkripsi",
+            foto: "Profil.jpeg"
+        };
+
+        // Array Data Utama Siswa
         let databaseSiswa = [
             { nisn: "0123456781", nama: "Anisa", jk: "Perempuan", ayah: "Bambang", ibu: "Siti", telp: "081234567890", alamat: "Jl. Melati No. 12" },
             { nisn: "0123456782", nama: "Budi", jk: "Laki-laki", ayah: "Supardi", ibu: "Sri", telp: "089876543210", alamat: "Jl. Rose No. 4" }
         ];
 
         let listKategoriNilai = ["Ulangan Harian 1", "Tugas Mandiri 1"];
+        
         let databaseAlarm = [
             { ikon: '🏫', waktu: '07:30', tipe: 'Persiapan Kelas', nama: 'Siapkan Materi Matematika (NISN: Anisa)', aktif: true },
             { ikon: '📝', waktu: '09:45', tipe: 'Tugas Remedial', nama: 'Koreksi Tugas IPA (Budi)', aktif: true }
@@ -684,22 +708,19 @@
             const pass = document.getElementById('login-password').value;
 
             if (user === "Kelas Buel" && pass === "222228") {
-                // Sembunyikan form login, tampilkan animasi loading
                 document.getElementById('login-form-box').style.display = 'none';
                 document.getElementById('loading-box').style.display = 'flex';
 
-                // Simulasi waktu loading selama 2 detik sebelum masuk dashboard
                 setTimeout(() => {
                     document.getElementById('auth-screen').style.display = 'none';
                     document.getElementById('app-interface').style.display = 'flex';
                     
-                    // Inisialisasi data aplikasi
+                    renderProfilGuru();
                     renderTabelSiswa();
                     renderTabelAlarm();
                     if ("Notification" in window) { Notification.requestPermission(); }
                     setInterval(engineCekAlarmWaktu, 15000);
                 }, 2000);
-
             } else {
                 alert("Username atau Password salah! Periksa kembali kredensial Anda.");
             }
@@ -717,12 +738,43 @@
         }
 
         function closeAllModals() {
+            document.getElementById('modalGuru').style.display = 'none';
             document.getElementById('modalSiswa').style.display = 'none';
             document.getElementById('modalAlarm').style.display = 'none';
             document.getElementById('modalOverlay').style.display = 'none';
         }
 
-        // --- LOGIKA UTAMA DATA SISWA (CRUD) ---
+        // --- LOGIKA EDIT PROFILE GURU ---
+        function renderProfilGuru() {
+            document.getElementById('prof-wali-display').innerText = dataGuruUtama.wali;
+            document.getElementById('prof-sekolah-display').innerText = dataGuruUtama.sekolah;
+            document.getElementById('prof-status-display').innerText = dataGuruUtama.status;
+            document.getElementById('prof-img-display').src = dataGuruUtama.foto;
+        }
+
+        function openGuruModal() {
+            document.getElementById('modalOverlay').style.display = 'block';
+            document.getElementById('modalGuru').style.display = 'block';
+            document.getElementById('g-input-wali').value = dataGuruUtama.wali;
+            document.getElementById('g-input-sekolah').value = dataGuruUtama.sekolah;
+            document.getElementById('g-input-status').value = dataGuruUtama.status;
+            document.getElementById('g-input-foto').value = dataGuruUtama.foto;
+        }
+
+        function simpanDataGuru() {
+            dataGuruUtama.wali = document.getElementById('g-input-wali').value.trim();
+            dataGuruUtama.sekolah = document.getElementById('g-input-sekolah').value.trim();
+            dataGuruUtama.status = document.getElementById('g-input-status').value.trim();
+            dataGuruUtama.foto = document.getElementById('g-input-foto').value.trim() || 'Profil.jpeg';
+
+            if(!dataGuruUtama.wali || !dataGuruUtama.sekolah) {
+                return alert("Kolom Nama Kelas dan Sekolah wajib diisi!");
+            }
+            renderProfilGuru();
+            closeAllModals();
+        }
+
+        // --- LOGIKA DATA SISWA (CRUD FULLY FUNCTIONAL) ---
         function renderTabelSiswa() {
             const tbody = document.getElementById('tbody-siswa');
             tbody.innerHTML = '';
@@ -750,8 +802,9 @@
         function openSiswaModal(isEdit, index = null) {
             document.getElementById('modalOverlay').style.display = 'block';
             document.getElementById('modalSiswa').style.display = 'block';
+            
             if(isEdit) {
-                document.getElementById('modal-siswa-title').innerText = "✏️ Edit Data Siswa";
+                document.getElementById('modal-siswa-title').innerText = "✏️ Edit Data Siswa Lengkap";
                 document.getElementById('siswa-edit-index').value = index;
                 document.getElementById('s-input-nisn').value = databaseSiswa[index].nisn;
                 document.getElementById('s-input-nama').value = databaseSiswa[index].nama;
@@ -761,10 +814,11 @@
                 document.getElementById('s-input-telp').value = databaseSiswa[index].telp;
                 document.getElementById('s-input-alamat').value = databaseSiswa[index].alamat;
             } else {
-                document.getElementById('modal-siswa-title').innerText = "🎒 Tambah Siswa Baru";
+                document.getElementById('modal-siswa-title').innerText = "🎒 Tambah Siswa Baru (Semua Kolom)";
                 document.getElementById('siswa-edit-index').value = "-1";
                 document.getElementById('s-input-nisn').value = "";
                 document.getElementById('s-input-nama').value = "";
+                document.getElementById('s-input-jk').value = "Laki-laki";
                 document.getElementById('s-input-ayah').value = "";
                 document.getElementById('s-input-ibu').value = "";
                 document.getElementById('s-input-telp').value = "";
@@ -774,20 +828,26 @@
 
         function simpanDataSiswa() {
             const idx = parseInt(document.getElementById('siswa-edit-index').value);
+            
             const data = {
-                nisn: document.getElementById('s-input-nisn').value,
-                nama: document.getElementById('s-input-nama').value,
+                nisn: document.getElementById('s-input-nisn').value.trim(),
+                nama: document.getElementById('s-input-nama').value.trim(),
                 jk: document.getElementById('s-input-jk').value,
-                ayah: document.getElementById('s-input-ayah').value,
-                ibu: document.getElementById('s-input-ibu').value,
-                telp: document.getElementById('s-input-telp').value,
-                alamat: document.getElementById('s-input-alamat').value
+                ayah: document.getElementById('s-input-ayah').value.trim(),
+                ibu: document.getElementById('s-input-ibu').value.trim(),
+                telp: document.getElementById('s-input-telp').value.trim(),
+                alamat: document.getElementById('s-input-alamat').value.trim()
             };
 
-            if(!data.nisn || !data.nama) return alert("NISN dan Nama lengkap wajib diisi!");
+            if(!data.nisn || !data.nama || !data.ayah || !data.ibu || !data.telp || !data.alamat) {
+                return alert("⚠️ Gagal menyimpan! Semua kolom formulir data siswa wajib diisi lengkap.");
+            }
 
-            if(idx === -1) databaseSiswa.push(data);
-            else databaseSiswa[idx] = data;
+            if(idx === -1) {
+                databaseSiswa.push(data);
+            } else {
+                databaseSiswa[idx] = data;
+            }
 
             closeAllModals();
             renderTabelSiswa();
